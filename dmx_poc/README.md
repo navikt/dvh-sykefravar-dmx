@@ -1,6 +1,7 @@
 Welcome to your new dbt project!
 
 ### Using the starter project
+Vi sjekker ut om det er mulig å bruker DBT med Oracle
 
 Try running the following commands:
 - dbt run
