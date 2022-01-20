@@ -1,0 +1,27 @@
+
+
+============================== 2022-01-20 13:24:50.586290 | ecdbccbd-a191-4196-a1de-d809d978d44a ==============================
+13:24:50.586290 [info ] [MainThread]: Running with dbt=1.0.1
+13:24:50.587292 [debug] [MainThread]: running dbt with arguments Namespace(cls=<class 'dbt.task.init.InitTask'>, debug=None, defer=None, event_buffer_size=None, fail_fast=None, log_cache_events=False, log_format=None, partial_parse=None, printer_width=None, profile=None, profiles_dir='C:\\Users\\H157898\\.dbt', project_dir=None, project_name='dmx_poc', record_timing_info=None, rpc_method=None, send_anonymous_usage_stats=None, single_threaded=False, skip_profile_setup=False, state=None, static_parser=None, target=None, use_colors=None, use_experimental_parser=None, vars='{}', version_check=None, warn_error=None, which='init', write_json=None)
+13:24:50.588293 [debug] [MainThread]: Tracking: tracking
+13:24:50.590293 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F3A247FD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F3A247E80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F3A247E50>]}
+13:24:50.591299 [debug] [MainThread]: Starter project path: c:\users\h157898\appdata\local\programs\python\python38\lib\site-packages\dbt\include\starter_project
+13:25:10.546551 [info ] [MainThread]: No sample profile found for oracle.
+13:25:10.549550 [info ] [MainThread]: 
+Your new dbt project "dmx_poc" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+13:25:10.554551 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F35BD2EB0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F3A2231C0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000029F3A223580>]}
+13:25:10.630549 [warn ] [MainThread]: Error sending message, disabling tracking
