@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: dmx_pox_dialogmote
+    description: 'Dialogdata '
+    database: dwhu1
+    schema: DVH_SYFO
+    tables:
+      - name: FK_ISDIALOGMOTE_DM2
