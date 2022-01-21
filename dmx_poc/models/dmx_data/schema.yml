@@ -7,3 +7,4 @@ sources:
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
+      - name: dt_p.fak_sf_oppfolging_d2_mnd
