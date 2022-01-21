@@ -1,12 +1,12 @@
 
 with stg_oppfolging as (
-    select  * from {{ ref 'source_fs_dialogmote') }}
+    select  * from {{ ref ('stg_dmx_data_fs_dialogmote_dmx') }}
 ),
 
 fak_oppfolging as 
 (
-   select  * from {{ ref 'source_fak_sf_oppfolging') }} 
-)
+   select  * from {{ ref ('stg_dmx_data_fs_fak_sf_oppfolging') }} 
+),
 
 final fak_oppfolging_tot 
 (
