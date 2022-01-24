@@ -1,4 +1,5 @@
-**Installering i utviklingsimaget **
+# Installering i utviklingsimaget
+
 
 Følgene må på plass:
 
@@ -14,3 +15,4 @@ Følgende må konfigures:
 2. Legg
 
 
+ 
