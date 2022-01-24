@@ -3,18 +3,20 @@
 
 Følgene må på plass:
 
-1. Installering av  dbt med Oracle adapter. Python må være installert først.
+1. Installering av dbt med Oracle adapter. Python må være installert først.
+   - Kjør kommandoen python --version så vil du får versjonsnummeret tilbake.Dette gjøres fra en kommando linje i windows.
    - Utføres med følgende kommando: pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle
-3. Installering av Oracle Client bibliotek
-   - Dette finnes på fellesdisken og kan kopieres lokalt. Det er     instantclient-basiclite-windows som benyttes. Dette 
-4. Innstallering av utviklingsmiljø her Visual Studio Code
-5. Installering av Git 
+2. Installering av Oracle Client bibliotek
+   - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
+   - PATH miljøvariabel oppdateres med referanse til biblioteket
+3. Innstallering av utviklingsmiljø her Visual Studio Code
+   - Denne finnes også på nettet. Bruk https://code.visualstudio.com/download, velg Windows versjonen. Last ned, pakk ut og start programmet code. Følg instruksjonene ved innstalleringen.
+3. Innstallering av GIT - har du den allerede er det flott.
+   - Denne finner du på felles disken under programvare. 
+  
 
 
-Følgende må konfigures:
 
-1. Legge inn enviroment variabel for å koble mot GIT
-2. Legg
 
 
  
