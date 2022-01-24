@@ -1,6 +1,6 @@
 
 with source_fak_sf_oppfolging as (
-    select  * from {{ source('dmx_pox_dialogmote', 'dt_p.fak_sf_oppfolging_d2_mnd') }}
+    select  * from {{ source ('dmx_pox_oppfolging', 'FAK_SF_OPPFOLGING_D2_MND')}} 
 ),
 
 final as (

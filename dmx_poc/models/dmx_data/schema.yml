@@ -7,4 +7,9 @@ sources:
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
-      - name: dt_p.fak_sf_oppfolging_d2_mnd
+  - name: dmx_pox_oppfolging
+    description: 'Oppfølging'
+    database: dwhu1
+    schema: DT_P
+    tables:
+      - name: FAK_SF_OPPFOLGING_D2_MND
