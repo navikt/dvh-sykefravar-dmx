@@ -1,4 +1,4 @@
-# Installering i utviklingsimaget
+# Innstallering i utviklingsimaget
 
 
 Følgene må på plass:
