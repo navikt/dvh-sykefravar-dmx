@@ -12,7 +12,8 @@ Følgene må på plass:
 3. Innstallering av utviklingsmiljø her Visual Studio Code
    - Denne finnes også på nettet. Bruk https://code.visualstudio.com/download, velg Windows versjonen. Last ned, pakk ut og start programmet code. Følg instruksjonene ved innstalleringen.
 3. Innstallering av GIT - har du den allerede er det flott.
-   - Denne finner du på felles disken under programvare. 
+   - Denne finner du på felles disken under programvare. programvare\git\. Installer f.eks Git-2.30.2-64-bit. Legg installasjon directory inn i miljøvariabel  PATH.
+4. Oppdatere miljøvariabler slik at utviklingsimaget kan kommunisere med Github. Følgende legges inn: 
   
 
 
