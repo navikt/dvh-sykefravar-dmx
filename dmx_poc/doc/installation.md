@@ -20,7 +20,7 @@ Følgene må på plass:
    - http_proxy: http://155.55.60.117:8088/
    - no_proxy: localhost,127.0.0.1,*.adeo.no,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no,devel
 
-6. Kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
+6. Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
 7. Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
   
 
