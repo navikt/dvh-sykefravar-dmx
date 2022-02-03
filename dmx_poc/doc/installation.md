@@ -27,6 +27,23 @@
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
 4. Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
 5. Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
+   - `profiles.yml` skal opprettes under `C:\Users\<NAV-IDENT>\.dbt\profiles.yml` med 
+   
+```yaml
+dmx_poc:
+   target: dev
+   outputs:
+      dev:
+         type: oracle
+         host: dm07-scan.adeo.no
+         user: Personlig bruker med proxy til DVH_SYFO eks. A123456[DVH_SYFO]
+         password: passord
+         dbname: dwhu1
+         port: 1521
+         service: dwhu1
+         schema: dvh_syfo
+         threads: 4
+```
 
 ## Visual Studio Code
 
