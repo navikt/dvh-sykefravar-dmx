@@ -5,7 +5,10 @@ Følgene må på plass:
 
 1. Installering av dbt med Oracle adapter. Python må være installert først.
    - Kjør kommandoen python --version så vil du får versjonsnummeret tilbake.Dette gjøres fra en kommando linje i windows.
-   - Utføres med følgende kommando: pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle
+   - Først innstalleres redshift adapteret dette innstallere dbt-core. Dette gjøres med følgende kommando:
+   - pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-redshift
+   - Deretter Oracle adapter. Dette utføres med følgende kommando: 
+   - pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle
 2. Installering av Oracle Client bibliotek
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
