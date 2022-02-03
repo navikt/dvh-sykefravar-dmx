@@ -19,12 +19,14 @@
 1. Installering av dbt med Oracle adapter. Python må være installert først.
    - Deretter Oracle adapter. Dette utføres med følgende kommando: 
    - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle`
-   - Ved feil under installering kan det hende at C++ 14.0 må være installert. Last ned og installer fra https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16 
-2. Installering av Oracle Client bibliotek
+   - Ved feil under installering kan det hende at C++ 14.0 må være installert. Last ned og installer fra https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
+2. Installer DBT-core 1.0.1
+   - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-core==1.0.1`
+3. Installering av Oracle Client bibliotek
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
-3. Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
-3. Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
+4. Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
+5. Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
 
 ## Visual Studio Code
 
