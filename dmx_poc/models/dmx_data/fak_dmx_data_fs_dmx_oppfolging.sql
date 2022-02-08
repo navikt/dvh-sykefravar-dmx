@@ -16,5 +16,9 @@ final  as
 
 )
 
+/* legger inn litt kommentarer
+*/
 
 select * from final
+
+/* Den er grei stig */
