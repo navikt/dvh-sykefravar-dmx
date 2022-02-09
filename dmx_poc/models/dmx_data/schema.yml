@@ -2,13 +2,13 @@ version: 2
 
 sources:
   - name: dmx_pox_dialogmote
-    description: 'Dialogdata '
+    description: 'Dialogmøte data som kommer fra MODIA '
     database: dwhu1
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
   - name: dmx_pox_oppfolging
-    description: 'Oppfølging'
+    description: 'Oppfølging FAK fra dagens løsning'
     database: dwhu1
     schema: DT_P
     tables:
