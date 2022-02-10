@@ -7,9 +7,28 @@ sources:
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
+        description: Informasjon om dialogmøte som kommer fra modia
   - name: dmx_pox_oppfolging
-    description: 'Oppfølging FAK fra dagens løsning'
+    description: 'Oppfølging samt diverse felles dimensjoner'
     database: dwhu1
     schema: DT_P
     tables:
       - name: FAK_SF_OPPFOLGING_D2_MND
+        description: Facta med oppfølgingsdata
+      - name: DIM_TID
+        description: Tidsdimensjonen
+      - name: DIM_ORGANISASJON
+        description: Organiasjonene - alle
+      - name: DIM_VARIGHET 
+        description: Varighet - alle
+  - name: dmx_poc_person
+    description: 'henter fra DT_PERSON'
+    database: dwhu1
+    schema: DT_PERSON
+    tables:
+      - name: DIM_PERSON1
+        description: informasjon om person
+models: 
+  - name: stg_dmx_data_dim_organisasjon
+    description: Oversikt over organisasjonen
+
