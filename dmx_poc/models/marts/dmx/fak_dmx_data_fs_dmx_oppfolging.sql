@@ -1,6 +1,6 @@
 
 with stg_dialogmote as (
-    select  * from {{ref ('stg_dmx_data_fs_dialogmote_dmx')}}
+    select  * from {{ref ('stg_fk_isdialogmote_dm2')}}
 ),
 
 fak_oppfolging as 
