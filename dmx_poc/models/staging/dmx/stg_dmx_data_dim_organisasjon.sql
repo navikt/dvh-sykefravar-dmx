@@ -8,3 +8,12 @@ final as (
 )
 
 select * from final
+
+/*
+dette er en tekst dette er en test
+*/
+
+/* da er vi alle koblet sammen
+ja!
+
+*/
