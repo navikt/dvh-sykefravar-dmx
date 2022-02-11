@@ -17,7 +17,7 @@ sources:
         description: Facta med oppfølgingsdata
       - name: DIM_TID
         description: Tidsdimensjonen
-      - name: DIM_ORGANISASJON
+      - name: DIM_ORG
         description: Organiasjonene - alle
       - name: DIM_VARIGHET 
         description: Varighet - alle
