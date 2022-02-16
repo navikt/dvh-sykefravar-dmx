@@ -1,0 +1,16 @@
+{
+  "dbt-formatter.upper": true,
+  "dbt-formatter.lowerWords": true,
+  "dbt-formatter.camelCase": true,
+  "files.associations": {
+    "**/dmx_poc/**/*.yaml": "jinja-yaml",
+    "**/dmx_poc/**/*.yml": "jinja-yaml",
+    "**/dmx_poc/**/*.sql": "jinja-sql",
+    "**/dmx_poc/**/docs/**/*.md": "jinja-md"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true
+}
