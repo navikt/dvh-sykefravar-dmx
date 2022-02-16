@@ -21,7 +21,7 @@
    - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle`
    - Ved feil under installering kan det hende at C++ 14.0 må være installert. Last ned og installer fra https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
 2. Installer DBT-core 1.0.1
-   - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-core==1.0.1`
+   - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-core==0.19.1`
 3. Installering av Oracle Client bibliotek
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
