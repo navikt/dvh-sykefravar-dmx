@@ -28,7 +28,3 @@ sources:
     tables:
       - name: DIM_PERSON1
         description: informasjon om person
-models: 
-  - name: stg_dmx_data_dim_organisasjon
-    description: Oversikt over organisasjonen
-
