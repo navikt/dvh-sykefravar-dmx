@@ -16,19 +16,17 @@
 
 ## DBT
 
-1. Installering av dbt med Oracle adapter. Python må være installert først.
-   - Deretter Oracle adapter. Dette utføres med følgende kommando: 
+- Installering av dbt med Oracle adapter. Python må være installert først.
+   - Deretter Oracle adapter. Dette utføres med følgende kommando:
    - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle`
    - Ved feil under installering kan det hende at C++ 14.0 må være installert. Last ned og installer fra https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
-2. Installer DBT-core 1.0.1
-   - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-core==0.19.1`
-3. Installering av Oracle Client bibliotek
+- Installering av Oracle Client bibliotek
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
-4. Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
-5. Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
-   - `profiles.yml` skal opprettes under `C:\Users\<NAV-IDENT>\.dbt\profiles.yml` med 
-   
+- Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
+- Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
+   - `profiles.yml` skal opprettes under `C:\Users\<NAV-IDENT>\.dbt\profiles.yml` med
+
 ```yaml
 dmx_poc:
    target: dev
@@ -53,9 +51,9 @@ dmx_poc:
 ## GIT
 
 1. Innstallering av GIT - har du den allerede er det flott.
-   - Denne finner du på felles disken under programvare. programvare\git\. Installer f.eks Git-2.30.2-64-bit. Legg installasjon directory inn i miljøvariabel  PATH. F.eks C:\Users\H157898\AppData\Local\GitHubDesktop\bin 
-2. Oppdatere miljøvariabler slik at utviklingsimaget kan kommunisere med Github. Dette er beskrevet i https://confluence.adeo.no/pages/viewpage.action?pageId=272519832 punkt 10c 
-   - Følgende legges inn som miljø variabler 
+   - Denne finner du på felles disken under programvare. programvare\git\. Installer f.eks Git-2.30.2-64-bit. Legg installasjon directory inn i miljøvariabel  PATH. F.eks C:\Users\H157898\AppData\Local\GitHubDesktop\bin
+2. Oppdatere miljøvariabler slik at utviklingsimaget kan kommunisere med Github. Dette er beskrevet i https://confluence.adeo.no/pages/viewpage.action?pageId=272519832 punkt 10c
+   - Følgende legges inn som miljø variabler
    - https_proxy til http://webproxy-utvikler.nav.no:8088
    - http_proxy: http://155.55.60.117:8088/
    - no_proxy: localhost,127.0.0.1,*.adeo.no,.local,.adeo.no,.nav.no,.aetat.no,.devillo.no,.oera.no,devel
