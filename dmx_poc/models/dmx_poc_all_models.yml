@@ -1,30 +1,39 @@
 version:  2
 
-models: 
+models:
   - name: stg_dmx_data_dim_tid
     description: 'Tidsdimensjonen'
-    columns:  
+    columns:
       - name: pk_dim_tid
         tests:
         - unique
-        - not_null 
-        - not_null_syk 
+        - not_null
+        - not_null_syk
 
   - name: stg_dmx_data_dim_person1
     description: 'Persondimenjsons'
-    columns:  
+    columns:
       - name: pk_dim_person
         tests:
         - unique
-        - not_null  
+        - not_null
 
   - name: stg_dmx_data_dim_organisasjon
     description: Oversikt over organisasjonen
-    columns:  
-      - name: mapping_node_kode
+    columns:
+      - name: ek_org_node
         tests:
         - unique
-        - not_null 
+        - not_null
+
+  - name: fak_syfo_oppfolging_pvt
+    description: sykefravær_info pivotert
+    columns:
+      - name: DIALOGMOTE_UUID
+        description: unique identifikator
+        tests:
+        - unique
+        - not_null
 
 
- 
+
