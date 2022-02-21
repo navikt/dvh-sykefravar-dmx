@@ -1,24 +1,39 @@
-with isdialogmote as
-(
-    select *
-    from {{ ref('stg_fk_isdialogmote_dm2') }}
+WITH isdialogmote AS (
+    SELECT
+        *
+    FROM
+        {{ ref('fak_syfo_oppfolging_pvt') }}
 ),
-dim_person1 as
-(
-    select *
-    from {{ ref('stg_dmx_data_dim_person1') }}
+dim_person1 AS (
+    SELECT
+        *
+    FROM
+        {{ ref('stg_dmx_data_dim_person1') }}
 ),
-resultat as
-(
-    select 
-        ID, isdialogmote.FK_PERSON1, DIALOGMOTE_UUID, DIALOGMOTE_TIDSPUNKT, STATUS_ENDRING_TYPE,
-        STATUS_ENDRING_TIDSPUNKT, VIRKSOMHETSNR, ENHET_NR, NAV_IDENT, TILFELLE_STARTDATO, 
-        ARBEIDSTAKER_FLAGG, ARBEIDSGIVER_FLAGG, SYKMELDER_FLAGG, 
-        dim_person1.pk_dim_person as fk_dim_person
-    from isdialogmote
-    join dim_person1
-    on isdialogmote.fk_person1 = dim_person1.fk_person1
-    and isdialogmote.dialogmote_tidspunkt between dim_person1.gyldig_fra_dato and dim_person1.gyldig_til_dato
+resultat AS (
+    SELECT
+        id,
+        isdialogmote.fk_person1,
+        dialogmote_uuid,
+        dialogmote_tidspunkt,
+        status_endring_type,
+        status_endring_tidspunkt,
+        virksomhetsnr,
+        enhet_nr,
+        nav_ident,
+        tilfelle_startdato,
+        arbeidstaker_flagg,
+        arbeidsgiver_flagg,
+        sykmelder_flagg,
+        dim_person1.pk_dim_person AS fk_dim_person
+    FROM
+        isdialogmote
+        JOIN dim_person1
+        ON isdialogmote.fk_person1 = dim_person1.fk_person1
+        AND isdialogmote.dialogmote_tidspunkt BETWEEN dim_person1.gyldig_fra_dato
+        AND dim_person1.gyldig_til_dato
 )
-select *
-from resultat
+SELECT
+    *
+FROM
+    resultat
