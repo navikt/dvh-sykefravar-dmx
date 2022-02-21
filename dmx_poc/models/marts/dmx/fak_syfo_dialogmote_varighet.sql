@@ -7,11 +7,11 @@ dim_varighet AS (
 ),
 
 final AS (
-    SELECT 
-    varighet.*, 
-    dim_varighet.pk_dim_varighet as fk_dim_varighet 
-    FROM fak_syfo_dialogmote_varighet varighet
-    LEFT JOIN dim_varighet on dim_varighet.varighet_dager = trunc(varighet.dialogmote_tidspunkt) - trunc(varighet.tilfelle_startdato)
+    SELECT fak_syfo_dialogmote_varighet.*,
+           dim_varighet.pk_dim_varighet as fk_dim_varighet
+    FROM fak_syfo_dialogmote_varighet
+    LEFT JOIN dim_varighet
+    ON dim_varighet.varighet_dager = trunc(fak_syfo_dialogmote_varighet.nyeste_dialogmote) - trunc(fak_syfo_dialogmote_varighet.nyeste_tilfelle_startdato)
 )
 
 SELECt final.* FROM final
