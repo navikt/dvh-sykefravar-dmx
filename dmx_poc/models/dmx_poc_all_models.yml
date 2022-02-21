@@ -35,5 +35,32 @@ models:
         - unique
         - not_null
 
+  - name: fak_syfo_dialogmote
+    description: fak_syfo_dialogmote
+    columns:
+      - name: DIALOGMOTE_UUID
+        description: unique identifikator
+        tests:
+        - unique
+        - not_null
+
+  - name: fak_syfo_dialogmote_org
+    description: fak_syfo_dialogmote_org
+    columns:
+      - name: DIALOGMOTE_UUID
+        description: unique identifikator
+        tests:
+        - unique
+        - not_null
+
+  - name: fak_syfo_dialogmote_varighet
+    description: fak_syfo_dialogmote_varighet
+    columns:
+      - name: DIALOGMOTE_UUID
+        description: unique identifikator
+        tests:
+        - unique
+        - not_null
+
 
 
