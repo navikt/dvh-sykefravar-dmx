@@ -1,4 +1,4 @@
-WITH isdialogmote AS (
+WITH fak_syfo_dialogmote AS (
     SELECT
         *
     FROM
@@ -10,30 +10,34 @@ dim_person1 AS (
     FROM
         {{ ref('stg_dmx_data_dim_person1') }}
 ),
-resultat AS (
+final AS (
     SELECT
-        id,
-        isdialogmote.fk_person1,
-        dialogmote_uuid,
-        dialogmote_tidspunkt,
-        status_endring_type,
-        status_endring_tidspunkt,
-        virksomhetsnr,
-        enhet_nr,
-        nav_ident,
-        tilfelle_startdato,
-        arbeidstaker_flagg,
-        arbeidsgiver_flagg,
-        sykmelder_flagg,
-        dim_person1.pk_dim_person AS fk_dim_person
-    FROM
-        isdialogmote
-        JOIN dim_person1
-        ON isdialogmote.fk_person1 = dim_person1.fk_person1
-        AND isdialogmote.dialogmote_tidspunkt BETWEEN dim_person1.gyldig_fra_dato
-        AND dim_person1.gyldig_til_dato
+          --id,
+           fak_syfo_dialogmote.fk_person1,
+           fak_syfo_dialogmote.dialogmote_uuid,
+           fak_syfo_dialogmote.nyeste_dialogmote,
+           fak_syfo_dialogmote.innkalt,
+           fak_syfo_dialogmote.innkalt_tidspunkt,
+           fak_syfo_dialogmote.nytt_tid_sted,
+           fak_syfo_dialogmote.nytt_tid_sted_tidspunkt,
+           fak_syfo_dialogmote.ferdigstilt,
+           fak_syfo_dialogmote.ferdigstilt_tidspunkt,
+           fak_syfo_dialogmote.avlyst,
+           fak_syfo_dialogmote.avlyst_tidspunkt,
+           fak_syfo_dialogmote.virksomhetsnr,
+           fak_syfo_dialogmote.enhet_nr,
+           --nav_ident,
+           fak_syfo_dialogmote.nyeste_tilfelle_startdato,
+           fak_syfo_dialogmote.arbeidstaker_flagg,
+           fak_syfo_dialogmote.arbeidsgiver_flagg,
+           --sykmelder_flagg,
+           dim_person1.pk_dim_person AS fk_dim_person
+    FROM fak_syfo_dialogmote
+    LEFT JOIN dim_person1
+    ON fak_syfo_dialogmote.fk_person1 = dim_person1.fk_person1
+    AND fak_syfo_dialogmote.nyeste_dialogmote BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
 )
 SELECT
     *
 FROM
-    resultat
+    final
