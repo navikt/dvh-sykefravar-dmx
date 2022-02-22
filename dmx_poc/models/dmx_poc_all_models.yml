@@ -53,14 +53,13 @@ models:
         - unique
         - not_null
 
-  - name: fak_syfo_dialogmote_varighet
-    description: fak_syfo_dialogmote_varighet
+  - name: fak_syfo_dt_dialogmote
+    config:
+      materialized: table
+    description: Target tabell 
     columns:
       - name: DIALOGMOTE_UUID
         description: unique identifikator
         tests:
         - unique
         - not_null
-
-
-
