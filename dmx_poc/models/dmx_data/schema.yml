@@ -3,14 +3,12 @@ version: 2
 sources:
   - name: dmx_pox_dialogmote
     description: 'Dialogmøte data som kommer fra MODIA '
-    database: dwhu1
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
         description: Informasjon om dialogmøte som kommer fra modia
   - name: dmx_pox_oppfolging
     description: 'Oppfølging samt diverse felles dimensjoner'
-    database: dwhu1
     schema: DT_P
     tables:
       - name: FAK_SF_OPPFOLGING_D2_MND
@@ -23,7 +21,6 @@ sources:
         description: Varighet - alle
   - name: dmx_poc_person
     description: 'henter fra DT_PERSON'
-    database: dwhu1
     schema: DT_PERSON
     tables:
       - name: DIM_PERSON1
