@@ -24,7 +24,7 @@
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
 - Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
-   - Ved feil ved kjøring av `dbt --version` med feilmelding: "ImportError: cannot import name 'soft_unicode' from 'markupsafe'" må markupsafe negraderes.
+   - Ved feil ved kjøring av `dbt --version` med feilmelding: "ImportError: cannot import name 'soft_unicode' from 'markupsafe'" må markupsafe nedgraderes.
       - `pip uninstall markusafe`
       - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org markupsafe==2.0.1`
 - Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
