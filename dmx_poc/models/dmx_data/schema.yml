@@ -19,6 +19,8 @@ sources:
         description: Organiasjonene - alle
       - name: DIM_VARIGHET 
         description: Varighet - alle
+      - name: DIM_NAERING 
+        description: Næringer 
   - name: dmx_poc_person
     description: 'henter fra DT_PERSON'
     schema: DT_PERSON
