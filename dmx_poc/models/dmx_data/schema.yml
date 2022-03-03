@@ -21,6 +21,8 @@ sources:
         description: Varighet - alle
       - name: DIM_NAERING 
         description: Næringer 
+      - name: FAK_SF_HENDELSE_DAG 
+        description: Arena fakta per dag
   - name: dmx_poc_person
     description: 'henter fra DT_PERSON'
     schema: DT_PERSON

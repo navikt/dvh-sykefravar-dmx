@@ -1,6 +1,6 @@
 
 WITH fak_syfo_dialogmote_s AS (
-    SELECT * FROM {{ref('fak_syfo_dialogmote_tid')}}
+    SELECT * FROM {{ref('fak_syfo_dialogmote')}}
 ),
 
 dim_varighet AS (
@@ -12,13 +12,8 @@ final AS (
            dim_varighet.pk_dim_varighet as fk_dim_varighet
     FROM fak_syfo_dialogmote_s
     LEFT JOIN dim_varighet
-    ON dim_varighet.varighet_dager = trunc(fak_syfo_dialogmote_s.nyeste_dialogmote) - trunc(fak_syfo_dialogmote_s.nyeste_tilfelle_startdato)
+    ON dim_varighet.varighet_dager = trunc(fak_syfo_dialogmote_s.nyeste_dialogmote) - 
+    trunc(fak_syfo_dialogmote_s.nyeste_tilfelle_startdato)
 )
-/*
-legger inn table som target tabell
-*/
-{{ config(
-    materialized="table"
-) }}
 
 SELECt final.* FROM final
