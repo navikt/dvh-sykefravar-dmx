@@ -1,3 +1,9 @@
+{{ config(
+    pre_hook=[
+      "drop  view {{this}}"
+    ]
+) }}
+
 WITH fak_syfo_dialogmote AS (
     SELECT
         *

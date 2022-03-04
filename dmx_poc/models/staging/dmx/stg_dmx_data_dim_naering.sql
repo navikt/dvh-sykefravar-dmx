@@ -1,3 +1,8 @@
+{{ config(
+    pre_hook=[
+      "drop  view {{this}}"
+    ]
+) }}
 
 with source_dim_naering as (
     select  * from {{ source('dmx_pox_oppfolging', 'DIM_NAERING') }}

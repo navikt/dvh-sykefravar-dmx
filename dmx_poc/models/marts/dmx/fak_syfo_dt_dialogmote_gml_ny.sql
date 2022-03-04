@@ -1,4 +1,8 @@
-
+{{ config(
+    pre_hook=[
+      "drop  view {{this}}"
+    ]
+) }}
 WITH fak_syfo_dialogmote_ny AS (
     SELECT * FROM {{ref('fak_syfo_dialogmote_tid')}}
 ),

@@ -1,3 +1,9 @@
+{{ config(
+    pre_hook=[
+      "drop  view {{this}}"
+    ]
+) }}
+
 WITH isdialogmote8 AS (
   SELECT *
   FROM {{ ref('stg_fk_isdialogmote_dm2') }}
