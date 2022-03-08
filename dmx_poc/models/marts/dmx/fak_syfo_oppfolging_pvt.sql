@@ -18,6 +18,7 @@ info_minus_tid AS (
         status_endring_type,
         virksomhetsnr,
         enhet_nr,
+        sykmelder_flagg,
         arbeidstaker_flagg,
         arbeidsgiver_flagg
       FROM
@@ -28,6 +29,7 @@ info_minus_tid AS (
         status_endring_type,
         virksomhetsnr,
         enhet_nr,
+        sykmelder_flagg,
         arbeidstaker_flagg,
         arbeidsgiver_flagg
     )
@@ -77,6 +79,7 @@ FINAL AS (
     info_minus_tid.VIRKSOMHETSNR,
     info_minus_tid.ENHET_NR,
     tid.nyeste_TILFELLE_STARTDATO,
+    info_minus_tid.SYKMELDER_FLAGG,
     info_minus_tid.ARBEIDSTAKER_FLAGG,
     info_minus_tid.ARBEIDSGIVER_FLAGG
   FROM
