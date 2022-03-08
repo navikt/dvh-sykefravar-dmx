@@ -1,8 +1,4 @@
-{{ config(
-    pre_hook=[
-      "drop  table {{this}}"
-    ]
-) }}
+
 
 {{ config(materialized='table') }}
 

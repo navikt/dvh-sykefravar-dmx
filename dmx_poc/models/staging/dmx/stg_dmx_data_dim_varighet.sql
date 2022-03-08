@@ -1,8 +1,3 @@
-{{ config(
-    pre_hook=[
-      "drop  view {{this}}"
-    ]
-) }}
 
 with source_dim_varighet as (
     select  * from {{ source('dmx_pox_oppfolging', 'DIM_VARIGHET') }}

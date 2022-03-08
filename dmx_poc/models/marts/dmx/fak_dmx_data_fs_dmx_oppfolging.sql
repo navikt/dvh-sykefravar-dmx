@@ -1,9 +1,4 @@
 
-{{ config(
-    pre_hook=[
-      "drop  view {{this}}"
-    ]
-) }}
 
 with stg_dialogmote as (
     select  * from {{ref ('stg_fk_isdialogmote_dm2')}}

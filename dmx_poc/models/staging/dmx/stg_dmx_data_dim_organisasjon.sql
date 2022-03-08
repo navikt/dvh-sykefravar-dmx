@@ -1,9 +1,3 @@
-{{ config(
-    pre_hook=[
-      "drop  view {{this}}"
-    ]
-) }}
-
 
 
 with source_dim_organisasjon as (
