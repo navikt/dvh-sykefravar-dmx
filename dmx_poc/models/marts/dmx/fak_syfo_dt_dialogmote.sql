@@ -24,14 +24,14 @@ final AS (
            fak_syfo_dialogmote_s.arbeidstaker_flagg as arbeidstaker_deltatt_flagg,
            fak_syfo_dialogmote_s.arbeidsgiver_flagg as arbeidsgiver_deltatt_flagg,
            fak_syfo_dialogmote_s.sykmelder_flagg as sykemelder_deltatt_flagg,
-          -- fak_syfo_dialogmote_s.nyeste_tilfelle_startdato,
-          --fak_syfo_dialogmote_s.nyeste_dialogmote,
-          -- fak_syfo_dialogmote_s.enhet_nr,
-          -- fak_syfo_dialogmote_s.virksomhetsnr,
-          -- fak_syfo_dialogmote_s.dialogmote_uuid,
-          -- fak_syfo_dialogmote_s.fk_person1,
-          -- fak_syfo_dialogmote_s.fk_dim_person,
-           fak_syfo_dialogmote_s.*,
+           fak_syfo_dialogmote_s.nyeste_tilfelle_startdato,
+           fak_syfo_dialogmote_s.nyeste_dialogmote,
+           fak_syfo_dialogmote_s.enhet_nr,
+           fak_syfo_dialogmote_s.virksomhetsnr,
+           fak_syfo_dialogmote_s.dialogmote_uuid,
+           fak_syfo_dialogmote_s.fk_person1,
+           fak_syfo_dialogmote_s.fk_dim_person,
+           fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
            dim_varighet.pk_dim_varighet as fk_dim_varighet
            
     FROM fak_syfo_dialogmote_s
