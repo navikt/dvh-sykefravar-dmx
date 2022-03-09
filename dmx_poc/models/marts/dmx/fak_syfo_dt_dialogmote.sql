@@ -33,6 +33,7 @@ final AS (
            fak_syfo_dialogmote_s.fk_dim_person,
            fak_syfo_dialogmote_s.EK_ORG_NODE,
            fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
+           fak_syfo_dialogmote_s.ferdigstilt_tidspunkt,
           -- fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
            dim_varighet.pk_dim_varighet as fk_dim_varighet
            
