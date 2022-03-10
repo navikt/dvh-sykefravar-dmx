@@ -46,6 +46,28 @@ dmx_poc:
          threads: 4
 ```
 
+## I prod
+
+```yaml
+pass på dbname
+
+dvh_familie:
+   target: dev
+   outputs:
+      dev:
+         type: oracle
+         host: dm08-scan.adeo.no
+         user: Personlig bruker med proxy til dvh_fam_ef eks. r164210[DVH_FAM_EF]
+         password: passord
+
+         # NB: I prod skal dbname være 'dwh' og ikke 'dwh_ha'. Dersom dbname blir satt til dwh_ha medfører dette til at dbt gjorde feil oppslag mot databasen når dbt skal sjekke om tabellen / viewet allerede eksisterer og ender opp med å ikke få treff (None/Null tabell/view eksisterer). Dette fører til at dbt hopper over “renaming” av en eksisterende tabellen / viewet og forårsaker feil når man skal kjør en modell mer enn en gang.
+         dbname: dwh
+         port: 1521
+         service: dwh_ha
+         schema: dvh_fam_ef
+         threads: 4
+```
+
 ## Visual Studio Code
 
 1. Innstallering av utviklingsmiljø her Visual Studio Code
