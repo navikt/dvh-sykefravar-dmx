@@ -1,6 +1,7 @@
+{{ config(materialized='table') }}
 
 WITH fak_syfo_dialogmote_ny AS (
-    SELECT * FROM {{ref('fak_syfo_dialogmote_tid')}}
+    SELECT *  FROM {{ref('fak_syfo_dt_dialogmote')}}
 ),
 
 fak_arena AS (
@@ -9,17 +10,19 @@ fak_arena AS (
 
 final AS 
 (
-    SELECT fak_syfo_dialogmote_ny.*,
+    SELECT fak_syfo_dialogmote_ny.*, 
     fak_arena.PK_FAK_SF_HENDELSE_DAG as a_PK_FAK_SF_HENDELSE_DAG,
     fak_arena.FK_DIM_NAERING as a_FK_DIM_NAERING,
     fak_arena.FK_DIM_ORGANISASJON as  a_FK_DIM_ORGANISASJON,
     fak_arena.FK_DIM_PERSON as a_FK_DIM_PERSON,
     fak_arena.FK_DIM_PERSON_BEHOV as a_FK_DIM_PERSON_BEHOV,
     fak_arena.FK_DIM_SF_AARSAK as  a_FK_DIM_SF_AARSAK,
-    fak_arena.FK_DIM_SF_HENDELSESTYPE as a_FK_DIM_SF_HENDELSESTYPE,
-    fak_arena.KILDESYSTEM as a_KILDESYSTEM
+    fak_arena.FK_DIM_SF_HENDELSESTYPE,
+    fak_arena.KILDESYSTEM as a_kildesystem
     
     FROM fak_syfo_dialogmote_ny
-    full outer join fak_arena ON  fak_syfo_dialogmote_ny.FK_PERSON1 = fak_arena.FK_PERSON1 )
+    full outer join fak_arena ON  fak_syfo_dialogmote_ny.FK_PERSON1 = fak_arena.FK_PERSON1 
+    where fak_arena.FK_DIM_SF_HENDELSESTYPE = 243
+     )
 
 SELECt * FROM final
