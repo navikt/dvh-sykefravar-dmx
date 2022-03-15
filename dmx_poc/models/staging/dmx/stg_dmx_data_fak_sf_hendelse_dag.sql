@@ -6,7 +6,7 @@ with source_fak_sf_hendelse as (
 
 final as (
     select * from source_fak_sf_hendelse where FK_DIM_SF_HENDELSESTYPE = 244 
-    and extract(Year from lastet_dato) = 2021
+    and extract(Year from LASTET_DATO) > 2020
 )
 
 select * from final

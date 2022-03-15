@@ -11,16 +11,18 @@ fak_syfo_modia AS (
 final AS (
     SELECT 
            fak_syfo_arena.fk_person1 as f_fk_person1,
-           fak_syfo_arena.KILDESYSTEM as f_kildesystem,
+           'Arena' as f_kildesystem,
            fak_syfo_arena.FK_EK_DIM_ORG as f_fk_dim_org,
-           fak_syfo_arena.OPPRETTET_DK_SF_HEND_DATO as f_dialog_motedato
+           fak_syfo_arena.OPPRETTET_DK_SF_HEND_DATO as f_dialog_motedato,
+           999999 as fk_dim_varighet
     FROM fak_syfo_arena
     union all 
         select 
           fak_syfo_modia.fk_person1 as f_fk_person1,
-          fak_syfo_modia.KILDESYSTEM as f_kildesystem,
+          'Modia' as f_kildesystem,
           fak_syfo_modia.EK_ORG_NODE as f_fk_orgnode,
-          fak_syfo_modia.ferdigstilt_tidspunkt as f_dialog_motedato
+          fak_syfo_modia.ferdigstilt_tidspunkt as f_dialog_motedato,
+          fak_syfo_modia.fk_dim_varighet as fk_dim_varighet
     from fak_syfo_modia
     
 )
