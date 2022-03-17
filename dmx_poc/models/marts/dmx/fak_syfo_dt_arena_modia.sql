@@ -1,7 +1,7 @@
 
 
 WITH fak_syfo_arena AS (
-    SELECT * FROM {{ref('stg_dmx_data_fak_sf_hendelse_dag')}}
+    SELECT * FROM {{ref('fak_syfo_hendelse_varighet')}}
 ),
 
 fak_syfo_modia AS (
@@ -14,7 +14,7 @@ final AS (
            'Arena' as f_kildesystem,
            fak_syfo_arena.FK_EK_DIM_ORG as f_fk_dim_org,
            fak_syfo_arena.OPPRETTET_DK_SF_HEND_DATO as f_dialog_motedato,
-           999999 as fk_dim_varighet
+           fak_syfo_arena.fk_dim_varighet as fk_dim_varighet
     FROM fak_syfo_arena
     union all 
         select 
