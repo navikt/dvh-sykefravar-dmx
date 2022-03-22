@@ -1,0 +1,6 @@
+[sqlfluff]
+templater = dbt
+dialect = oracle
+
+[sqlfluff:rules]
+tab_space_size = 2
