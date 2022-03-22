@@ -8,7 +8,6 @@ models:
         tests:
         - unique
         - not_null
-        - not_null_syk
 
   - name: stg_dim_person1
     description: 'Persondimenjsons'
