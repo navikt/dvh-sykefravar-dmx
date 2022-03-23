@@ -2,7 +2,8 @@
 {{config(materialized='table')}}
 
 with fak_syfo_arena_modia AS (
-    SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
+   -- SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
+   SELECT * FROM {{ref('fak_syfo_dt_arena_modia_pluss_arena')}} 
 ),
 
 fak_syfo_modia_org AS (

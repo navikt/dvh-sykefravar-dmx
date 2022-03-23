@@ -9,7 +9,7 @@ dim_org AS (
 ),
 
 final AS (
-    SELECT fak_syfo_dialogmote_org.*, dim_org.EK_ORG_NODE
+    SELECT fak_syfo_dialogmote_org.*, dim_org.mapping_node_kode
     FROM fak_syfo_dialogmote_org
     LEFT JOIN dim_org
     ON fak_syfo_dialogmote_org.enhet_nr = dim_org.mapping_node_kode
