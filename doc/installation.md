@@ -33,6 +33,12 @@
 - Oppsett av dbt for Oracle se dokumentasjon for Oracle adapter: https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
    - `profiles.yml` skal opprettes under `C:\Users\<NAV-IDENT>\.dbt\profiles.yml` med
 
+## SQLFluff
+
+SQLFluff er en linter som hjelper oss med å formattere SQL-koden på en fornuftig måte.
+- Installering av SQLFluff
+  - `pip install sqlfluff sqlfluff-templater-dbt --trusted-host pypi.org --trusted-host files.pythonhosted.org`
+
 ```yaml
 dmx_poc:
    target: dev
