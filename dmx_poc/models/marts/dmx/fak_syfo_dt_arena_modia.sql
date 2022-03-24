@@ -19,7 +19,7 @@ final AS (
            fak_syfo_arena.OPPRETTET_DK_SF_HEND_DATO as f_dialog_motedato,
            fak_syfo_arena.fk_dim_varighet as fk_dim_varighet
     FROM fak_syfo_arena
-    union  
+    union  all
         select 
           fak_syfo_modia.fk_person1 as f_fk_person1,
           'Modia' as f_kildesystem,
@@ -27,7 +27,7 @@ final AS (
          -- fak_syfo_modia.EK_ORG_NODE as f_fk_orgnode,
           fak_syfo_modia.mapping_node_kode as f_fk_orgnode,
           fak_syfo_modia.key_dmx,
-          fak_syfo_modia.ferdigstilt_tidspunkt as f_dialog_motedato,
+          fak_syfo_modia.avholdt_dialog_tidspunkt as f_dialog_motedato,
           fak_syfo_modia.fk_dim_varighet as fk_dim_varighet
     from fak_syfo_modia
     

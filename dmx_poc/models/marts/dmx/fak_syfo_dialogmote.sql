@@ -40,6 +40,7 @@ final AS (
     LEFT JOIN dim_person1
     ON fak_syfo_dialogmote.fk_person1 = dim_person1.fk_person1
     AND fak_syfo_dialogmote.nyeste_dialogmote BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
+    and fak_syfo_dialogmote.ferdigstilt = 1
 )
 SELECT
     *
