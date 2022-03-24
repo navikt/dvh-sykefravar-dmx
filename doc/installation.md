@@ -16,14 +16,17 @@
 
 ## DBT
 
-- Installering av dbt med Oracle adapter. Python må være installert først.
-   - Deretter Oracle adapter. Dette utføres med følgende kommando:
-   - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org dbt-oracle`
+- Installering av dbt med Oracle adapter. Python må være installert først. Den "offisielle" adapteren støtter kun dbt v0.19.x.
+   - dbt v0.19.x
+      - `pip install dbt-oracle --trusted-host pypi.org --trusted-host  files.pythonhosted.org`
+   - dbt v1.0.x (uoffisiell)
+      - Clone (last ned) prosjektet https://github.com/patped/dbt-oracle på maskinen din og kjør følgende kommando fra prosjektmappen:
+         - `pip install . --trusted-host pypi.org --trusted-host  files.pythonhosted.org`
    - Ved feil under installering kan det hende at C++ 14.0 må være installert. Last ned og installer fra https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
 - Installering av Oracle Client bibliotek
    - Dette finnes på fellesdisken og mappen programvare\oracle\ og kan kopieres lokalt. Det er er instantclient-basiclite-windows som benyttes. Dette installeres lokalt.
    - PATH miljøvariabel oppdateres med referanse til biblioteket. F.eks C:\data\instantclient-basiclite-windows\instantclient_19_11
-- Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1
+- Fra kommando linjen kjør dbt --version for å sjekke at dbt er på plass. Du skal få opp Plugins: - Oracle: 0.19.1 eller 1.0.3 avhengig av hvem versjon du bruker.
    - Ved feil ved kjøring av `dbt --version` med feilmelding: "ImportError: cannot import name 'soft_unicode' from 'markupsafe'" må markupsafe nedgraderes.
       - `pip uninstall markusafe`
       - `pip install --trusted-host pypi.org --trusted-host  files.pythonhosted.org markupsafe==2.0.1`
