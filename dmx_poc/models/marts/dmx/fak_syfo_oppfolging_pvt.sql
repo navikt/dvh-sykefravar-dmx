@@ -16,7 +16,8 @@ info_minus_tid AS (
         enhet_nr,
         sykmelder_flagg,
         arbeidstaker_flagg,
-        arbeidsgiver_flagg
+        arbeidsgiver_flagg,
+        key_dmx
       FROM
         isdialogmote8
       GROUP BY
@@ -27,7 +28,8 @@ info_minus_tid AS (
         enhet_nr,
         sykmelder_flagg,
         arbeidstaker_flagg,
-        arbeidsgiver_flagg
+        arbeidsgiver_flagg,
+        key_dmx
     )
     pivot(COUNT(status_endring_type) for status_endring_type IN ('INNKALT' as INNKALT, 'NYTT_TID_STED' as NYTT_TID_STED, 'FERDIGSTILT' as FERDIGSTILT, 'AVLYST' as AVLYST))
 ),
@@ -77,7 +79,8 @@ FINAL AS (
     tid.nyeste_TILFELLE_STARTDATO,
     info_minus_tid.SYKMELDER_FLAGG,
     info_minus_tid.ARBEIDSTAKER_FLAGG,
-    info_minus_tid.ARBEIDSGIVER_FLAGG
+    info_minus_tid.ARBEIDSGIVER_FLAGG,
+    info_minus_tid.key_dmx
   FROM
     info_minus_tid
     left JOIN

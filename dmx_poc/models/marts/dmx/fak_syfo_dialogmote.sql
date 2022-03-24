@@ -33,6 +33,7 @@ final AS (
            fak_syfo_dialogmote.arbeidstaker_flagg,
            fak_syfo_dialogmote.arbeidsgiver_flagg,
             fak_syfo_dialogmote.sykmelder_flagg,
+           fak_syfo_dialogmote.key_dmx,
            --sykmelder_flagg,
            dim_person1.pk_dim_person AS fk_dim_person
     FROM fak_syfo_dialogmote

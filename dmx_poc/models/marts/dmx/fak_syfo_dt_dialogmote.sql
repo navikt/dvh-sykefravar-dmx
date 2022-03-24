@@ -36,6 +36,7 @@ final AS (
            fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
            fak_syfo_dialogmote_s.ferdigstilt_tidspunkt,
           -- fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
+           fak_syfo_dialogmote_s.key_dmx,
            dim_varighet.pk_dim_varighet as fk_dim_varighet,
            'Modia' as KILDESYSTEM
            
