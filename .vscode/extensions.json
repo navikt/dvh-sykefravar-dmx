@@ -1,8 +1,8 @@
 {
   "recommendations": [
     "innoverio.vscode-dbt-power-user",
-    "henriblancke.vscode-dbt-formatter",
     "bastienboutonnet.vscode-dbt",
-    "Oracle.oracledevtools"
+    "oracle.oracledevtools",
+    "dorzey.vscode-sqlfluff"
   ]
 }
