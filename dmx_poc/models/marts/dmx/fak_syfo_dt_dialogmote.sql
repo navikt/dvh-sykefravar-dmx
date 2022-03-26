@@ -32,7 +32,7 @@ final AS (
            fak_syfo_dialogmote_s.fk_person1,
            fak_syfo_dialogmote_s.fk_dim_person,
           -- fak_syfo_dialogmote_s.EK_ORG_NODE,
-           fak_syfo_dialogmote_s.mapping_node_kode,
+           fak_syfo_dialogmote_s.fk_dim_organisasjon,
            fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,
            fak_syfo_dialogmote_s.ferdigstilt_tidspunkt,
           -- fak_syfo_dialogmote_s.fk_dim_tid_tilfelle_startdato,

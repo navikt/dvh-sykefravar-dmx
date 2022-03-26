@@ -14,12 +14,12 @@ fak_syfo_modia2 AS (
 
 final AS (
          SELECT  
-                 fak_syfo_arena2.*,
+                 fak_syfo_arena2.fk_dim_naering,
                  fak_syfo_arena_modia.f_fk_person1,
                  fak_syfo_arena_modia.f_kildesystem,
-                 fak_syfo_arena_modia.f_fk_orgnode,
+                 fak_syfo_arena_modia.fk_dim_organisasjon,
                 fak_syfo_arena_modia.f_dialog_motedato,
-                fak_syfo_arena_modia.fk_dim_varighet as fk_dim_varighet_am,
+                fak_syfo_arena_modia.fk_dim_varighet,
                 fak_syfo_modia2.fk_person1 as fk_person1_m,
                 fak_syfo_modia2.arbeidstaker_deltatt_flagg,
                 fak_syfo_modia2.fk_dim_varighet as fk_dim_varighet_m
@@ -27,7 +27,7 @@ final AS (
                  --fak_syfo_arena_modia.f_fk_person1
          from fak_syfo_arena_modia
          left join fak_syfo_arena2
-            on fak_syfo_arena_modia.key_dmx = fak_syfo_arena2.KEY_DMX_ARENA
+             on fak_syfo_arena_modia.key_dmx = fak_syfo_arena2.KEY_DMX_ARENA
              and  fak_syfo_arena_modia.F_KILDESYSTEM like  'Arena%'
         left join  fak_syfo_modia2
             on  fak_syfo_arena_modia.key_dmx = fak_syfo_modia2.key_dmx
