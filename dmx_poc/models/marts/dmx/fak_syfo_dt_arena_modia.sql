@@ -28,7 +28,8 @@ final AS (
          -- fak_syfo_modia.EK_ORG_NODE as f_fk_orgnode,
           fak_syfo_modia.fk_dim_organisasjon,
           fak_syfo_modia.key_dmx,
-          fak_syfo_modia.avholdt_dialog_tidspunkt as f_dialog_motedato,
+        --  fak_syfo_modia.avholdt_dialog_tidspunkt as f_dialog_motedato,
+          fak_syfo_modia.nyeste_dialogmote as f_dialog_motedato,
           fak_syfo_modia.fk_dim_varighet as fk_dim_varighet
     from fak_syfo_modia
     
