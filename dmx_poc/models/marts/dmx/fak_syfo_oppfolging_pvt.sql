@@ -91,7 +91,7 @@ FINAL AS (
     on info_minus_tid.dialogmote_uuid = tid.dialogmote_uuid
 )
 
-SELECT * FROM FINAL
+SELECT * FROM FINAL where ferdigstilt = 1
 
 --count(distinct(DIALOGMOTE_UUID))
 -- 887401ee-88ca-45b9-ac5c-7076f2fa2988
