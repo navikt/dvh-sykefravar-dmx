@@ -11,7 +11,7 @@ final as (
      source_fak_sf_hendelse.*
     from source_fak_sf_hendelse where FK_DIM_SF_HENDELSESTYPE = 105 and
       -- FK_DIM_TID_IDENT_DATO > 20210101   and GYLDIG_FLAGG = 1
-    fk_dim_tid_dato_hendelse>= '20210101'  and fk_dim_tid_dato_hendelse < '20220401'
+    fk_dim_tid_dato_hendelse>= '20210101'  
     and GYLDIG_FLAGG = 1 
 )
 
