@@ -1,9 +1,9 @@
-with source_dim_naering as (
-  select * from {{ source('dmx_pox_oppfolging', 'DIM_NAERING') }}
+WITH source_dim_naering AS (
+  SELECT * FROM {{ source('dmx_pox_oppfolging', 'DIM_NAERING') }}
 ),
 
-final as (
-  select * from source_dim_naering
+final AS (
+  SELECT * FROM source_dim_naering
 )
 
-select * from final
+SELECT * FROM final

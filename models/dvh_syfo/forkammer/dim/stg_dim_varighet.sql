@@ -1,9 +1,9 @@
-with source_dim_varighet as (
-  select * from {{ source('dmx_pox_oppfolging', 'DIM_VARIGHET') }}
+WITH source_dim_varighet AS (
+  SELECT * FROM {{ source('dmx_pox_oppfolging', 'DIM_VARIGHET') }}
 ),
 
-final as (
-  select * from source_dim_varighet
+final AS (
+  SELECT * FROM source_dim_varighet
 )
 
-select * from final
+SELECT * FROM final

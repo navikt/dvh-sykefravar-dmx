@@ -1,12 +1,12 @@
-with source_dim_organisasjon as (
-  select * from {{ source('dmx_pox_oppfolging', 'DIM_ORG') }}
+WITH source_dim_organisasjon AS (
+  SELECT * FROM {{ source('dmx_pox_oppfolging', 'DIM_ORG') }}
 ),
 
-final as (
-  select * from source_dim_organisasjon
+final AS (
+  SELECT * FROM source_dim_organisasjon
 )
 
-select * from final
+SELECT * FROM final
 
 /*
 dette er en tekst dette er en test

@@ -1,9 +1,9 @@
-with source_dim_tid as (
-  select * from {{ source('dmx_pox_oppfolging', 'DIM_TID') }}
+WITH source_dim_tid AS (
+  SELECT * FROM {{ source('dmx_pox_oppfolging', 'DIM_TID') }}
 ),
 
-final as (
-  select * from source_dim_tid
+final AS (
+  SELECT * FROM source_dim_tid
 )
 
-select * from final
+SELECT * FROM final
