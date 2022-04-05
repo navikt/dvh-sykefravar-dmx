@@ -17,7 +17,7 @@ final AS (
                  fak_syfo_arena2.fk_dim_naering,
                  fak_syfo_arena_modia.f_fk_person1,
                  fak_syfo_arena_modia.f_kildesystem,
-                 fak_syfo_arena_modia.fk_dim_organisasjon_a as fk_dim_organisasjon,
+                 fak_syfo_arena_modia.fk_dim_organisasjon,
                 fak_syfo_arena_modia.f_dialog_motedato,
                 fak_syfo_arena_modia.fk_dim_varighet,
                 fak_syfo_modia2.fk_person1 as fk_person1_m,
