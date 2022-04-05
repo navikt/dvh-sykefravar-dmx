@@ -7,7 +7,7 @@ WITH fak_syfo_hendelse_v AS (
 ),
 
      final AS (
-         SELECT fak_syfo_hendelse_v.*,
+         SELECT fak_syfo_hendelse_v.*
          --  fjerner den foreløpig bruker
          -- den som kommer fra tabellen dim_org.pk_dim_organisasjon as fk_dim_organisasjon
          FROM fak_syfo_hendelse_v
