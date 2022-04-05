@@ -10,9 +10,8 @@ final as (
      'a' ||to_char(source_fak_sf_hendelse.fk_person1) as key_dmx_arena,
      source_fak_sf_hendelse.*
     from source_fak_sf_hendelse where FK_DIM_SF_HENDELSESTYPE = 105 and
-      -- FK_DIM_TID_IDENT_DATO > 20210101   and GYLDIG_FLAGG = 1
     fk_dim_tid_dato_hendelse>= '20210101'  
-    and GYLDIG_FLAGG = 1 
+    and GYLDIG_FLAGG = 1 and source_fak_sf_hendelse.Kildesystem like 'ARENA%'
 )
 
 select * from final
