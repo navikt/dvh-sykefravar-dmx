@@ -1,6 +1,10 @@
 {{config(materialized='table')}}
 
+with fak_syfo_arena_modia AS (
+    SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
+),
 
+/*
 with fak_syfo_arena_modia AS (
     SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
 ),
@@ -33,6 +37,7 @@ final AS (
          and fak_syfo_arena_modia.f_kildesystem like  'Modia%'
 )
 
+*/
 
 SELECt final.* FROM final
 
