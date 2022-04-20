@@ -17,7 +17,8 @@ final AS (
     FROM fak_syfo_hendelse_org_v
     LEFT JOIN dim_varighet
     ON dim_varighet.varighet_dager = 
-    trunc(fak_syfo_hendelse_org_v.fK_DIM_TID_DATO_HENDELSE - fak_syfo_hendelse_org_v.FK_DIM_TID_IDENT_DATO,0) 
+    (trunc(fak_syfo_hendelse_org_v.fK_DIM_TID_DATO_HENDELSE) -
+     trunc(fak_syfo_hendelse_org_v.FK_DIM_TID_IDENT_DATO)) 
 )
 
 SELECt final.* FROM final
