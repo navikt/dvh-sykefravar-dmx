@@ -10,7 +10,7 @@ dim_person1 AS (
     SELECT
         *
     FROM
-        {{ ref('stg_dmx_data_dim_person1') }}
+        {{ ref('stg_dim_person1') }}
 ),
 final AS (
     SELECT
