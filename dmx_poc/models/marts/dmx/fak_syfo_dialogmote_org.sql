@@ -5,7 +5,7 @@ WITH fak_syfo_dialogmote_org AS (
 ),
 
 dim_org AS (
-    SELECT * FROM {{ref('stg_dmx_data_dim_organisasjon')}}
+    SELECT * FROM {{ref('stg_dim_organisasjon')}}
 ),
 
 final AS (
