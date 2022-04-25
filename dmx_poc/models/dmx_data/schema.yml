@@ -28,4 +28,4 @@ sources:
     schema: DT_PERSON
     tables:
       - name: DIM_PERSON1
-        description: informasjon om person
+        description: Informasjon om person
