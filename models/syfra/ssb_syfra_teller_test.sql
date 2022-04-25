@@ -13,8 +13,7 @@ final AS (
     p_start,
     p_slutt,
     gj_uforg,
-    kvartal,
-    lastet_dato
+    kvartal
   FROM {{ source('dt_sensitiv', 'ssb_syfra_teller') }}
   RIGHT JOIN versjon ON fk_dim_versjon = versjon.pk_dim_versjon
 )
