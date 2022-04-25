@@ -1,7 +1,7 @@
 version:  2
 
 models:
-  - name: stg_dmx_data_dim_tid
+  - name: stg_dim_tid
     description: 'Tidsdimensjonen'
     columns:
       - name: pk_dim_tid
@@ -9,7 +9,7 @@ models:
         - unique
         - not_null
 
-  - name: stg_dmx_data_dim_person1
+  - name: stg_dim_person1
     description: 'Persondimenjsons'
     columns:
       - name: pk_dim_person
@@ -17,7 +17,7 @@ models:
         - unique
         - not_null
 
-  - name: stg_dmx_data_dim_organisasjon
+  - name: stg_dim_organisasjon
     description: Oversikt over organisasjonen
     columns:
       - name: ek_org_node
