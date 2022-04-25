@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: dt_sensitiv
+    schema: dt_sensitiv
+    tables:
+      - name: ssb_syfra_teller
+        description: Tellerfildata
+  - name: dt_p
+    schema: dt_p
+    tables:
+      - name: dim_versjon
