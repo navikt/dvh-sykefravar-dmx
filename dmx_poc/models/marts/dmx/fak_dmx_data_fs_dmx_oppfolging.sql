@@ -6,7 +6,7 @@ with stg_dialogmote as (
 
 fak_oppfolging as
 (
-   select  * from {{ref('stg_dmx_data_fs_fak_sf_oppfolging')}}
+   select  * from {{ref('stg_fs_fak_sf_oppfolging')}}
 ),
 
 final  as
