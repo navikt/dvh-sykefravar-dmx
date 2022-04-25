@@ -8,3 +8,7 @@ tab_space_size = 2
 [sqlfluff:rules:L010]
 # Keywords
 capitalisation_policy = upper
+
+[sqlfluff:rules:L011]
+# Table aliasing
+aliasing = implicit
