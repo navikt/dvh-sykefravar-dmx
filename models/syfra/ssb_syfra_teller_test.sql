@@ -12,6 +12,7 @@ tellerfil AS (
 
 final AS (
   SELECT
+    tellerfil.pk_ssb_syfra_teller AS fk_ssb_syfra_teller,
     tellerfil.fk_person1,
     tellerfil.s_start,
     tellerfil.s_stopp,
