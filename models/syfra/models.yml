@@ -3,6 +3,5 @@ version: 2
 models:
   - name: ssb_syfra_teller_test
     description: 'Test view brukt for verifisering av tellerfilerdata'
-    tags: ['syfra']
-    columns:
-      - name: gj_uforg
+    config:
+      tags: syfra
