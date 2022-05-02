@@ -23,6 +23,7 @@ if __name__ == "__main__":
     print ("-- oracle stuff")
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     print (os.environ["DBT_ORCL_USER_U"])
+    print (" file path", sys.path[0])
 
     try:
         subprocess.run(
