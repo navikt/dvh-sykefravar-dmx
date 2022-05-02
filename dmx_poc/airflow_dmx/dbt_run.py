@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     
     vault_api.set_secrets_as_envs()
-  #  oracle_secrets = json.loads(os.environ[os.environ["oracle_env"]])
+    #  oracle_secrets = json.loads(os.environ[os.environ["oracle_env"]])
 
    
 
@@ -31,5 +31,3 @@ if __name__ == "__main__":
         )
     except subprocess.CalledProcessError as err:
         raise Exception(err.stdout.decode("utf-8"))
-
-   
