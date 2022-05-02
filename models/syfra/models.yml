@@ -3,8 +3,6 @@ version: 2
 models:
   - name: test__ssb_syfra_teller_kv
     description: 'Test view brukt for verifisering av tellerfilerdata'
-    config:
-      tags: syfra
     columns:
       - name: s_start
         tests:
