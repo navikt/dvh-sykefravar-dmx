@@ -33,7 +33,7 @@ if __name__ == "__main__":
     try:
         print ("running ", theModel_run)
         subprocess.run(
-            ["dbt", "run ", "--profiles-dir", sys.path[0], "--project-dir", sys.path[0], "--select ", theModel_run], 
+            ["dbt", "run","--model", theModel_run "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
             check=True, capture_output=True
         )
     except subprocess.CalledProcessError as err:
