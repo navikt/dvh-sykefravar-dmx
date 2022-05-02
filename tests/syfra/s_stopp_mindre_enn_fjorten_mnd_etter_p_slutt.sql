@@ -1,7 +1,3 @@
-{{ config(
-    tags="syfra"
-) }}
-
 SELECT s_stopp
 FROM {{ ref('test__ssb_syfra_teller_kv') }}
 WHERE

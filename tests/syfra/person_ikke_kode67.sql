@@ -1,7 +1,3 @@
-{{ config(
-    tags="syfra"
-) }}
-
 SELECT teller.fnr
 FROM {{ ref('test__ssb_syfra_teller_kv') }} teller
 LEFT JOIN

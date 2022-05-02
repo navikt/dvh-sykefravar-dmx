@@ -1,7 +1,3 @@
-{{ config(
-    tags="syfra"
-) }}
-
 SELECT
   tilfelle.s_start,
   tilfelle.s_stopp
