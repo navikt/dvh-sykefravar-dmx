@@ -1,0 +1,13 @@
+dmx_poc:
+  target: dev
+  outputs:
+    dev:
+      type: oracle
+      host: "{{env_var('ORACLE_HOST')}}"
+      user: "{{env_var('ORACLE_USER')}}"
+      password: "{{env_var('ORACLE_PASSWORD')}}"
+      dbname: "{{env_var('ORACLE_DBNAME')}}"
+      port: "{{env_var('ORACLE_PORT') | as_number}}"
+      service: "{{env_var('ORACLE_SERVICE')}}"
+      schema: dvh_syfo
+      threads: 4        
