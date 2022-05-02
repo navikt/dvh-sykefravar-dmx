@@ -2,12 +2,14 @@ version: 2
 
 sources:
   - name: dmx_pox_dialogmote
+    tags: ['syfo']
     description: 'Dialogmøte data som kommer fra MODIA '
     schema: DVH_SYFO
     tables:
       - name: FK_ISDIALOGMOTE_DM2
         description: Informasjon om dialogmøte som kommer fra modia
   - name: dmx_pox_oppfolging
+    tags: ['syfo']
     description: 'Oppfølging samt diverse felles dimensjoner'
     schema: DT_P
     tables:
@@ -22,6 +24,7 @@ sources:
       - name: DIM_NAERING
         description: Næringer
   - name: dmx_poc_person
+    tags: ['syfo']
     description: 'henter fra DT_PERSON'
     schema: DT_PERSON
     tables:
