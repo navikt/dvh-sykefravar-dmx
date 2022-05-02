@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print (" file path", sys.path[0])
     
     # Skal jeg kjøre hele modellen, ellers kjør en modell
-    if len(theModel_run) > 1:
+    if len(theModel_run) < 1:
         try:
             print (" startet hele løpet")
             subprocess.run(
