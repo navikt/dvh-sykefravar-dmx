@@ -3,11 +3,11 @@ dmx_poc:
   outputs:
     dev:
       type: oracle
-      host: "{{env_var('ORACLE_HOST')}}"
-      user: "{{env_var('ORACLE_USER')}}"
-      password: "{{env_var('ORACLE_PASSWORD')}}"
-      dbname: "{{env_var('ORACLE_DBNAME')}}"
-      port: "{{env_var('ORACLE_PORT') | as_number}}"
-      service: "{{env_var('ORACLE_SERVICE')}}"
+      host: "{{env_var('DBT_ORCL_HOST_U')}}"
+      user: "{{env_var('DBT_ORCL_USER_U')}}"
+      password: "{{env_var('DBT_ORCL_PASS_U')}}"
+      dbname: "{{env_var('DBT_ORCL_DB_U')}}"
+      port: 1521
+      service: "{{env_var('DBT_ORCL_SERVICE_U')}}"
       schema: dvh_syfo
       threads: 4        
