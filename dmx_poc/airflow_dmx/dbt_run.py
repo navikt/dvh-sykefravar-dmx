@@ -29,11 +29,12 @@ if __name__ == "__main__":
 
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
-    print (os.environ)
+
   
     print ( os.environ["DBT_ORCL_USER_U"])
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     os.environ["ORACLE_PORT"] = '1521'
+    print ("-- oracle users")
     os.environ["ORACLE_USER"] = os.environ["DBT_ORCL_USER_U"]
     print (os.environ["ORACLE_USER"])
     
