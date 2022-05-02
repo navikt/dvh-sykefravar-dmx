@@ -5,8 +5,8 @@
 SELECT
   tilfelle.s_start,
   tilfelle.s_stopp
-FROM {{ ref('ssb_syfra_teller_test') }} tilfelle
-LEFT JOIN {{ ref('ssb_syfra_teller_test') }} ref_tilfelle ON
+FROM {{ ref('test__ssb_syfra_teller_kv') }} tilfelle
+LEFT JOIN {{ ref('test__ssb_syfra_teller_kv') }} ref_tilfelle ON
   tilfelle.id != ref_tilfelle.id
   AND tilfelle.fnr = ref_tilfelle.fnr
 WHERE

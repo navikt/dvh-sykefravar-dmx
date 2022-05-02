@@ -3,7 +3,7 @@
 ) }}
 
 SELECT teller.fnr
-FROM {{ ref('ssb_syfra_teller_test') }} teller
+FROM {{ ref('test__ssb_syfra_teller_kv') }} teller
 LEFT JOIN
   {{ source('dt_person', 'dvh_person_ident_off_id') }} person_ident ON
     teller.fnr = person_ident.off_id
