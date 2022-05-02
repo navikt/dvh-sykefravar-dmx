@@ -4,5 +4,5 @@
 
 SELECT s_stopp
 FROM {{ ref('ssb_syfra_teller_test') }}
-WHERE kvartal = {{ var('kvartal', 202101) }}
-  AND trunc(s_stopp) > trunc(add_months(p_slutt, 14))
+WHERE
+  TRUNC(s_stopp) > TRUNC(ADD_MONTHS(p_slutt, 14))

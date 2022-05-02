@@ -1,16 +1,11 @@
 version: 2
 
 sources:
-  - name: dt_sensitiv
-    schema: dt_sensitiv
-    tables:
-      - name: ssb_syfra_teller
-        description: Tellerfildata
-  - name: dt_p
-    schema: dt_p
-    tables:
-      - name: dim_versjon
   - name: dt_person
     schema: dt_person
     tables:
       - name: dvh_person_ident_off_id
+  - name: dvh_syfra
+    schema: dvh_syfra
+    tables:
+      - name: ssb_syfra_teller_kv
