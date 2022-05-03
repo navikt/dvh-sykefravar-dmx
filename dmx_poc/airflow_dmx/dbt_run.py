@@ -25,7 +25,7 @@ if __name__ == "__main__":
             subprocess.run(
                 ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
                 check=True, capture_output=True
-            )
+            ).wait()
             print (" Ferdig hele løpet")
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8")) 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
             subprocess.run(
                 ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
                 check=True, capture_output=True
-            )
+            ).wait()
             print (" ferdig modell ", theModel_run)
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8"))   
