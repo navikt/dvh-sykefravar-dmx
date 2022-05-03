@@ -23,27 +23,29 @@ if __name__ == "__main__":
     file_contents = a_file. read()
     print(file_contents)
     print ("leser inn file")
-    project_path = "/workspace/dmx_poc"
-    # Skal jeg kjøre hele modellen, ellers kjør en modell
+    project_path_tst = "/workspace/dmx_poc"
+    project_path = os.path.dirname(os.getcwd())
+    print (" prosjekt path er ", project_path)
+    # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
     if theModel_run == 'all':
         try:
-            print (" startet hele løpet")
+            print (" Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
                 ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", project_path], 
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
-            print (" Ferdig hele løpet")
+            print (" Ferdig hele løpet - alle modeller")
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8")) 
     else:
         try:
-            print (" startet modell ", theModel_run)
+            print (" Starter modell  ---> ", theModel_run)
             output = subprocess.run(
                 ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", project_path], 
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
-            print (" ferdig modell ", theModel_run)
+            print (" Ferdig modell  ---> ", theModel_run)
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8"))   
