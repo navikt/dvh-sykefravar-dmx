@@ -19,7 +19,7 @@ if __name__ == "__main__":
     print("service bruker ", os.getenv('DBT_ORCL_SERVICE_U'))
     print (" file path", sys.path[0])
     print ("leser inn file")
-    a_file = open("/workspace/dmx_poc/airflow_dmx/profile.yml")
+    a_file = open("/workspace/dmx_poc/airflow_dmx/profiles.yml")
     file_contents = a_file. read()
     print(file_contents)
     print ("leser inn file")
