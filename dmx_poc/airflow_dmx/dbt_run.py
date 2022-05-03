@@ -17,10 +17,11 @@ if __name__ == "__main__":
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     print (os.environ["DBT_ORCL_USER_U"])
     print (" file path", sys.path[0])
-    print ("alle environ")
-    print (os.environ)
-    print ("ferdig alle environ")
-   
+    print ("leser inn file")
+    a_file = open("/workspace/dmx_poc/airflow_dmx/profile.yml")
+    file_contents = a_file. read()
+    print(file_contents)
+    print ("leser inn file")
     project_path = "/workspace/dmx_poc"
     # Skal jeg kjøre hele modellen, ellers kjør en modell
     if theModel_run == 'all':
