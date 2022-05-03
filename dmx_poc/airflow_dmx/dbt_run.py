@@ -17,13 +17,13 @@ if __name__ == "__main__":
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     print (os.environ["DBT_ORCL_USER_U"])
     print (" file path", sys.path[0])
-    
+    project_path = "/workspace/dmx_poc"
     # Skal jeg kjøre hele modellen, ellers kjør en modell
     if theModel_run == 'all':
         try:
             print (" startet hele løpet")
             output = subprocess.run(
-                ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
+                ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", project_path], 
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         try:
             print (" startet modell ", theModel_run)
             output = subprocess.run(
-                ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
+                ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", project_path], 
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
