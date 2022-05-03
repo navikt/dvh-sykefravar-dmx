@@ -17,6 +17,8 @@ if __name__ == "__main__":
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     print (os.environ["DBT_ORCL_USER_U"])
     print (" file path", sys.path[0])
+    print (" bruker fra env")
+    print ("{{env_var('DBT_ORCL_USER_U')}}")
     project_path = "/workspace/dmx_poc"
     # Skal jeg kjøre hele modellen, ellers kjør en modell
     if theModel_run == 'all':
