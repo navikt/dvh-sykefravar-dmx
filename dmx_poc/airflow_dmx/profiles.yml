@@ -1,5 +1,5 @@
 dmx_poc:
-  target: dev
+  target: "{{env_var('DBT_DEV')}}"
   outputs:
     dev:
       type: oracle
