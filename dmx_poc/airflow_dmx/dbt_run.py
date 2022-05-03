@@ -16,6 +16,7 @@ if __name__ == "__main__":
     print ("-- oracle stuff")
     print ( os.environ["DBT_ORCL_SERVICE_U"])
     print (os.environ["DBT_ORCL_USER_U"])
+    print("service bruker ", os.getenv('DBT_ORCL_SERVICE_U'))
     print (" file path", sys.path[0])
     print ("leser inn file")
     a_file = open("/workspace/dmx_poc/airflow_dmx/profile.yml")
