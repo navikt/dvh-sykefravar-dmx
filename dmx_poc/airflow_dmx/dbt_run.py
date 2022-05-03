@@ -22,19 +22,7 @@ if __name__ == "__main__":
         print(file_contents)
     
     os.environ["DBT_DEV"] =  fetch_environment 
-    print ("-- oracle stuff")
-    print ( os.environ["DBT_ORCL_SERVICE_U"])
-    print (os.environ["DBT_ORCL_USER_U"])
-    print("service bruker ", os.getenv('DBT_ORCL_SERVICE_U'))
-    print (" file path", sys.path[0])
-    print (" miljø ", os.environ["DBT_DEV"])
-    
-    print ("leser inn file")
-    a_file = open("/workspace/dmx_poc/airflow_dmx/profiles.yml")
-    file_contents = a_file. read()
-    print(file_contents)
-    print ("leser inn file")
- 
+
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
