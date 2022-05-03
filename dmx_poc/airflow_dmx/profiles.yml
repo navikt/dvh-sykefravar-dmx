@@ -10,4 +10,14 @@ dmx_poc:
       port: 1521
       service: "{{env_var('DBT_ORCL_SERVICE_U')}}"
       schema: dvh_syfo
-      threads: 4        
+      threads: 4
+    prod:
+      type: oracle
+      host: "{{env_var('DBT_ORCL_HOST_PROD')}}"
+      user: "{{env_var('DBT_ORCL_USER_PROD')}}"
+      password: "{{env_var('DBT_ORCL_PASS_PROD')}}"
+      dbname: "{{env_var('DBT_ORCL_DB_PROD')}}"
+      port: 1521
+      service: "{{env_var('DBT_ORCL_SERVICE_PROD')}}"
+      schema: dvh_syfo
+      threads: 4
