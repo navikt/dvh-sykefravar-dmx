@@ -10,6 +10,9 @@ if __name__ == "__main__":
     os.environ["TZ"] = "Europe/Oslo"
     time.tzset()
     theModel_run  = str(sys.argv[1])
+    fetch_log = str(sys.argv[2])
+    fetch_environment = str(sys.argv[3])
+    
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
     
@@ -41,7 +44,8 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
-            skriver_logg(project_path)
+            if fetch_log == 'logg':
+                skriver_logg(project_path)
             print (" Ferdig hele løpet - alle modeller") 
         except subprocess.CalledProcessError as err:
             raise Exception(skriver_logg(project_path), 
@@ -54,7 +58,8 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
-            skriver_logg(project_path)
+            if fetch_log == 'logg':
+                skriver_logg(project_path)
             print (" Ferdig modell  ---> ", theModel_run)
         except subprocess.CalledProcessError as err:
             raise Exception(skriver_logg(project_path), 
