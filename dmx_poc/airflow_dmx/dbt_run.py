@@ -22,20 +22,22 @@ if __name__ == "__main__":
     if len(theModel_run) == 'all':
         try:
             print (" startet hele løpet")
-            subprocess.call(
+            output = subprocess.run(
                 ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
                 check=True, capture_output=True
             )
+            print (output)
             print (" Ferdig hele løpet")
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8")) 
     else:
         try:
             print (" startet modell ", theModel_run)
-            subprocess.call(
+            output = subprocess.run(
                 ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", sys.path[0]], 
                 check=True, capture_output=True
-            ).wait()
+            )
+            print (output)
             print (" ferdig modell ", theModel_run)
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8"))   
