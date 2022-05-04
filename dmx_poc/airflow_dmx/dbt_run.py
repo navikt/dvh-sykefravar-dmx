@@ -12,6 +12,7 @@ if __name__ == "__main__":
     theModel_run  = str(sys.argv[1])
     fetch_log = str(sys.argv[2])
     fetch_environment = str(sys.argv[3])
+    fetch_schema = str(sys.argv[4])
     
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
@@ -21,7 +22,11 @@ if __name__ == "__main__":
         file_contents = a_file. read()
         print(file_contents)
     
+    # setter miljø og korrekt skjema med riktig proxy
     os.environ["DBT_DEV"] =  fetch_environment 
+    os.environ['DBT_ORCL_SCHEMA'] = fetch_schema
+    os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + fetch_schema + ']'
+    
 
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
