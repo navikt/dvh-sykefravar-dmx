@@ -40,5 +40,3 @@ models:
       +tags: syfra
       +schema: dvh_syfra
     # Config indicated by + and applies to all files under models/example/
-
-
