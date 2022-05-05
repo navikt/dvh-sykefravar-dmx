@@ -41,7 +41,4 @@ models:
       +schema: dvh_syfra
     # Config indicated by + and applies to all files under models/example/
 
-tests:
-  dmx_poc:
-    syfra:
-      +tags: syfra
+
