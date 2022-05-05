@@ -1,12 +1,10 @@
 {
-  "dbt-formatter.upper": true,
-  "dbt-formatter.lowerWords": true,
-  "dbt-formatter.camelCase": true,
   "files.associations": {
-    "**/dmx_poc/**/*.yaml": "jinja-yaml",
-    "**/dmx_poc/**/*.yml": "jinja-yaml",
-    "**/dmx_poc/**/*.sql": "jinja-sql",
-    "**/dmx_poc/**/docs/**/*.md": "jinja-md"
+    "*.yaml": "jinja-yaml",
+    "*.yml": "jinja-yaml",
+    "*.sql": "jinja-sql",
+    "*.md": "jinja-md",
+    "**/target/compiled/**/*.sql": "oraclesql",
   },
   "editor.formatOnSave": true,
   "editor.formatOnType": true,

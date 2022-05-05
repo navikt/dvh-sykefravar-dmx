@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: test__ssb_syfra_teller_kv
+    description: 'Test view brukt for verifisering av tellerfilerdata'
+    columns:
+      - name: s_start
+        tests:
+          - not_null
+      - name: s_stopp
+        tests:
+          - not_null
+      - name: fnr
+        tests:
+          - not_null
+      - name: gj_uforg
+        tests:
+          - not_null
+      - name: p_start
+        tests:
+          - not_null
+      - name: p_slutt
+        tests:
+          - not_null

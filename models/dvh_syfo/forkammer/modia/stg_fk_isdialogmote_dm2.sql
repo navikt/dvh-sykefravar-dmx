@@ -6,8 +6,8 @@ with source_fs_dialogmote as (
 
 final as (
     select to_char(source_fs_dialogmote.DIALOGMOTE_TIDSPUNKT) || 'm' ||
-             to_char(source_fs_dialogmote.fk_person1) as key_dmx, 
-            source_fs_dialogmote.* 
+             to_char(source_fs_dialogmote.fk_person1) as key_dmx,
+            source_fs_dialogmote.*
             from source_fs_dialogmote
 )
 
