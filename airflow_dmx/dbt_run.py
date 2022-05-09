@@ -56,5 +56,4 @@ if __name__ == "__main__":
                 skriver_logg(project_path)
             print (" Ferdig modell  ---> ", theModel_run)
         except subprocess.CalledProcessError as err:
-            raise Exception(skriver_logg(project_path),
-                            err.stdout.decode("utf-8"))
+            raise Exception(err.stdout.decode("utf-8"))
