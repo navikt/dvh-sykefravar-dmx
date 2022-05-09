@@ -46,8 +46,7 @@ if __name__ == "__main__":
                 skriver_logg(project_path)
             print (" Ferdig hele løpet - alle modeller")
         except subprocess.CalledProcessError as err:
-            raise Exception(skriver_logg(project_path),
-                            err.stdout.decode("utf-8"))
+            raise Exception(err.stdout.decode("utf-8"))
     else:
         try:
             print (" Starter modell  ---> ", theModel_run)
