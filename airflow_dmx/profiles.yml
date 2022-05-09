@@ -11,6 +11,12 @@ dmx_poc:
       port: 1521
       service: "{{env_var('DBT_ORCL_SERVICE_U')}}"
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
+      shardingkey:
+        - skey
+      supershardingkey:
+        - sskey
+      cclass: CONNECTIVITY_CLASS
+      purity: self
       threads: 4
     prod:
       type: oracle
