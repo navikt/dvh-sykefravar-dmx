@@ -26,7 +26,8 @@ if __name__ == "__main__":
     os.environ["DBT_DEV"] =  fetch_environment
     os.environ['DBT_ORCL_SCHEMA'] = fetch_schema
     os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + fetch_schema + ']'
-
+    print ("-->db prod", os.environ['DBT_ORCL_USER_PROD_PROXY'] )
+    print ("--> user test ", os.environ['DBT_ORCL_USER_U'])
 
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
