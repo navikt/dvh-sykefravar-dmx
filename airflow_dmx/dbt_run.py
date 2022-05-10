@@ -27,6 +27,8 @@ if __name__ == "__main__":
     os.environ['DBT_ORCL_SCHEMA'] = fetch_schema
     os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + fetch_schema + ']'
     print ("-- Skjema er ", fetch_schema, " lengde er ", len(fetch_schema))
+    print ("-- host  test er  ", os.environ['DBT_ORCL_HOST_U'], " lengde er ", len(os.environ['DBT_ORCL_HOST_U']))
+    print ("-- host  prod er  ", os.environ['DBT_ORCL_HOST_PROD'], " lengde er ", len(os.environ['DBT_ORCL_HOST_PROD']))
     print ("--> user prod", os.environ['DBT_ORCL_USER_PROD_PROXY'] , " lengde = ",  len(os.environ['DBT_ORCL_USER_PROD_PROXY']))
     print ("--> user test ", os.environ['DBT_ORCL_USER_U'], " lengde er ", len(os.environ['DBT_ORCL_USER_U']))
     print (" --> service er test ", os.environ['DBT_ORCL_SERVICE_U']," lengde er ", len(os.environ['DBT_ORCL_SERVICE_U']))
