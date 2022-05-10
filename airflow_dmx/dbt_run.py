@@ -26,10 +26,12 @@ if __name__ == "__main__":
     os.environ["DBT_DEV"] =  fetch_environment
     os.environ['DBT_ORCL_SCHEMA'] = fetch_schema
     os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + fetch_schema + ']'
-    print ("-->db prod", os.environ['DBT_ORCL_USER_PROD_PROXY'] )
-    print ("--> user test ", os.environ['DBT_ORCL_USER_U'])
-    print (" --> service er test ", os.environ['DBT_ORCL_SERVICE_U'])
-    print ("- > service er prod  ", os.environ['DBT_ORCL_SERVICE_PROD'])
+    print ("-- Skjema er ", fetch_schema, " lengde er ", len(fetch_schema))
+    print ("--> user prod", os.environ['DBT_ORCL_USER_PROD_PROXY'] , " lengde = ",  len(os.environ['DBT_ORCL_USER_PROD_PROXY']))
+    print ("--> user test ", os.environ['DBT_ORCL_USER_U'], " lengde er ", len(os.environ['DBT_ORCL_USER_U']))
+    print (" --> service er test ", os.environ['DBT_ORCL_SERVICE_U']," lengde er ", len(os.environ['DBT_ORCL_SERVICE_U']))
+    print ("- > service er prod  ", os.environ['DBT_ORCL_SERVICE_PROD'], " lengde er ", len(os.environ['DBT_ORCL_SERVICE_PROD'] ))
+
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
