@@ -23,7 +23,7 @@ if __name__ == "__main__":
         print(file_contents)
 
     def skriver_profile(my_path):
-        a_file = open(my_path + "profiles.yml")
+        a_file = open(my_path + "/profiles.yml")
         file_contents = a_file. read()
         print(file_contents)
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print ("- > service er prod  ", os.environ['DBT_ORCL_SERVICE_PROD'], " lengde er ", len(os.environ['DBT_ORCL_SERVICE_PROD'] ))
     print(" path profiles", sys.path[0])
     skriver_profile(sys.path[0])
-    
+
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
