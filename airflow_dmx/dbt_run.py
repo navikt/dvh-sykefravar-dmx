@@ -58,7 +58,7 @@ if __name__ == "__main__":
                 skriver_logg(project_path)
             print (" Ferdig hele løpet - alle modeller")
         except subprocess.CalledProcessError as err:
-            raise Exception(  skriver_profile(sys.path[0]), err.stdout.decode("utf-8"))
+            raise Exception( skriver_logg(project_path), skriver_profile(sys.path[0]), err.stdout.decode("utf-8"))
     else:
         try:
             print (" Starter modell  ---> ", theModel_run)
@@ -66,9 +66,10 @@ if __name__ == "__main__":
                 ["dbt", "run","--model", theModel_run, "--profiles-dir", sys.path[0], "--project-dir", project_path],
                 check=True, capture_output=True
             )
+            skriver_profile(sys.path[0])
             print (output.stdout.decode("utf-8"))
             if fetch_log == 'logg':
                 skriver_logg(project_path)
             print (" Ferdig modell  ---> ", theModel_run)
         except subprocess.CalledProcessError as err:
-            raise Exception(err.stdout.decode("utf-8"))
+            raise Exception(skriver_logg(project_path), err.stdout.decode("utf-8"))
