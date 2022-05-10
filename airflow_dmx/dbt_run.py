@@ -22,6 +22,12 @@ if __name__ == "__main__":
         file_contents = a_file. read()
         print(file_contents)
 
+    def skriver_profile(my_path):
+        a_file = open(my_path + "profiles.yml")
+        file_contents = a_file. read()
+        print(file_contents)
+
+
     # setter miljø og korrekt skjema med riktig proxy
     os.environ["DBT_DEV"] =  fetch_environment
     os.environ['DBT_ORCL_SCHEMA'] = fetch_schema
@@ -33,7 +39,9 @@ if __name__ == "__main__":
     print ("--> user test ", os.environ['DBT_ORCL_USER_U'], " lengde er ", len(os.environ['DBT_ORCL_USER_U']))
     print (" --> service er test ", os.environ['DBT_ORCL_SERVICE_U']," lengde er ", len(os.environ['DBT_ORCL_SERVICE_U']))
     print ("- > service er prod  ", os.environ['DBT_ORCL_SERVICE_PROD'], " lengde er ", len(os.environ['DBT_ORCL_SERVICE_PROD'] ))
-
+    print(" path profiles", sys.path[0])
+    skriver_profile(sys.path[0])
+    
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
