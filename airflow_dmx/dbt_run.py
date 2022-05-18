@@ -38,7 +38,7 @@ if __name__ == "__main__":
         try:
             print (" Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
-                ["dbt", "run", "--profiles-dir", sys.path[0], "--project-dir", project_path],
+                ["dbt", "run", --select tag:syfo"--profiles-dir", sys.path[0], "--project-dir", project_path],
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
