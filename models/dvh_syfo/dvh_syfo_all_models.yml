@@ -53,6 +53,7 @@ models:
         - not_null
 
   - name: fak_syfo_dt_dialogmote
+    description: Target tabell
     config:
       materialized: table
     description: Target tabell

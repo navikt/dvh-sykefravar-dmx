@@ -1,9 +1,11 @@
-WITH source_dim_person1 AS (
-  SELECT * FROM {{ source('dmx_poc_person', 'DIM_PERSON1') }}
+
+with source_dim_person1 as (
+    select  * from {{ source('dmx_poc_person', 'DIM_PERSON1') }}
 ),
 
-final AS (
-  SELECT * FROM source_dim_person1
+final as (
+    select * from source_dim_person1
 )
 
-SELECT * FROM final
+select * from final
+

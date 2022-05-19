@@ -1,9 +1,14 @@
-WITH source_fs_dialogmote AS (
-  SELECT * FROM {{ source('dmx_pox_dialogmote', 'FK_ISDIALOGMOTE_DM2') }}
+
+
+with source_fs_dialogmote as (
+    select  * from {{ source('dmx_pox_dialogmote', 'FK_ISDIALOGMOTE_DM2') }}
 ),
 
-final AS (
-  SELECT * FROM source_fs_dialogmote
+final as (
+    select to_char(source_fs_dialogmote.DIALOGMOTE_TIDSPUNKT) || 'm' ||
+             to_char(source_fs_dialogmote.fk_person1) as key_dmx,
+            source_fs_dialogmote.*
+            from source_fs_dialogmote
 )
 
-SELECT * FROM final
+select * from final
