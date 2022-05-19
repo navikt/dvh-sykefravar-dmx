@@ -53,11 +53,8 @@ if __name__ == "__main__":
     # setter miljø og korrekt skjema med riktig proxy
     os.environ["DBT_DEV"] = environment
     os.environ['DBT_ORCL_SCHEMA'] = schema
-    os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + schema + ']'
-    print( " bruker test")
-    print (os.environ['DBT_ORCL_USER_U'] )
-    print( " bruker prod")
-    print (os.environ['DBT_ORCL_USER_PROD'] )
+    os.environ['DBT_ORCL_USER_PROD_PROXY'] = f"{os.environ['DBT_ORCL_USER_PROD']}[{schema}]"
+    os.environ['DBT_ORCL_USER_U_PROXY'] = f"{os.environ['DBT_ORCL_USER_U']}[{schema}]"
 
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)

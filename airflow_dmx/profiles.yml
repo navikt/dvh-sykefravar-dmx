@@ -4,19 +4,13 @@ dmx_poc:
     dev:
       type: oracle
       host: "{{env_var('DBT_ORCL_HOST_U')}}"
-      user: "{{env_var('DBT_ORCL_USER_U')}}"
+      user: "{{env_var('DBT_ORCL_USER_U_PROXY')}}"
       protocol: "tcp"
       pass: "{{env_var('DBT_ORCL_PASS_U')}}"
       database: "{{env_var('DBT_ORCL_DB_U')}}"
       port: 1521
       service: "{{env_var('DBT_ORCL_SERVICE_U')}}"
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
-      shardingkey:
-        - skey
-      supershardingkey:
-        - sskey
-      cclass: CONNECTIVITY_CLASS
-      purity: self
       threads: 4
     prod:
       type: oracle
