@@ -34,11 +34,12 @@ if __name__ == "__main__":
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
+    min_tag = "syfo"
     if theModel_run == 'all':
         try:
             print (" Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
-                ["dbt", "run --select tag:syfo", "--profiles-dir", sys.path[0], "--project-dir", project_path],
+                ["dbt", "run","--select", "tag:", min_tag, "--profiles-dir", sys.path[0], "--project-dir", project_path],
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
