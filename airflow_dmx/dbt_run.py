@@ -3,6 +3,7 @@ import os
 import time
 import json
 import sys
+import logging
 from typing import List
 from dataverk_vault import api as vault_api
 from dataverk_vault.api import set_secrets_as_envs
@@ -32,6 +33,7 @@ def filter_logs(file_path: str) -> List[dict]:
 
 
 if __name__ == "__main__":
+    logger = logging.getLogger(__name__)
     os.environ["TZ"] = "Europe/Oslo"
     time.tzset()
     profiles_dir = str(sys.path[0])
@@ -41,9 +43,13 @@ if __name__ == "__main__":
     schema = str(sys.argv[4])
     tag = str(sys.argv[5])
     command = str(sys.argv[6])
+    log_level = str(sys.argv[7])
 
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
+
+    if not log_level: log_level = 'INFO'
+    logger.setLevel(log_level)
 
     def skriver_logg(my_path):
         a_file = open(my_path + "/logs/dbt.log")
@@ -55,35 +61,37 @@ if __name__ == "__main__":
     os.environ['DBT_ORCL_SCHEMA'] = schema
     os.environ['DBT_ORCL_USER_PROD_PROXY'] = f"{os.environ['DBT_ORCL_USER_PROD']}[{schema}]"
     os.environ['DBT_ORCL_USER_U_PROXY'] = f"{os.environ['DBT_ORCL_USER_U']}[{schema}]"
+    logger.info(f"bruker dev: {os.environ['DBT_ORCL_USER_U_PROXY']}")
+    logger.info(f"bruker prod: {os.environ['DBT_ORCL_USER_PROD_PROXY']}")
 
     project_path = os.path.dirname(os.getcwd())
-    print (" prosjekt path er ", project_path)
+    logger.info(f"Prosjekt path er: {project_path}")
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
 
     if model == 'all':
         try:
-            print (" Startet hele løpet - kjører alle modeller")
+            logger.info("Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
                 ["dbt", "--no-use-colors", "--log-format", "json", command, "--select", f"tag:{tag}", "--profiles-dir", profiles_dir, "--project-dir", project_path],
                 check=True, capture_output=True
             )
-            print (output.stdout.decode("utf-8"))
+            logger.info(output.stdout.decode("utf-8"))
             if log == 'logg':
                 skriver_logg(project_path)
-            print (" Ferdig hele løpet - alle modeller")
+            logger.info("Ferdig hele løpet - alle modeller")
         except subprocess.CalledProcessError as err:
             raise Exception(err.stdout.decode("utf-8"))
     else:
         try:
-            print (" Starter modell  ---> ", model)
+            logger.info(f"Starter modell  ---> {model}")
             output = subprocess.run(
                 ["dbt", command,"--model", model, "--profiles-dir", profiles_dir, "--project-dir", project_path],
                 check=True, capture_output=True
             )
-            print (output.stdout.decode("utf-8"))
+            logger.info(output.stdout.decode("utf-8"))
             if log == 'logg':
                 skriver_logg(project_path)
-            print (" Ferdig modell  ---> ", model)
+            logger.info(f"Ferdig modell  ---> {model}")
         except subprocess.CalledProcessError as err:
             raise Exception(skriver_logg(project_path),
                             err.stdout.decode("utf-8"))
