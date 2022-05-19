@@ -13,6 +13,7 @@ if __name__ == "__main__":
     fetch_log = str(sys.argv[2])
     fetch_environment = str(sys.argv[3])
     fetch_schema = str(sys.argv[4])
+    fetch_tag    = str(sys.argv[5])
 
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
@@ -34,12 +35,13 @@ if __name__ == "__main__":
     project_path = os.path.dirname(os.getcwd())
     print (" prosjekt path er ", project_path)
     # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
-    min_tag = "syfo"
+
+    min_tag = "tag:" + fetch_tag
     if theModel_run == 'all':
         try:
             print (" Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
-                ["dbt", "run","--select", "tag:syfo", "--profiles-dir", sys.path[0], "--project-dir", project_path],
+                ["dbt", "run","--select", min_tag, "--profiles-dir", sys.path[0], "--project-dir", project_path],
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
