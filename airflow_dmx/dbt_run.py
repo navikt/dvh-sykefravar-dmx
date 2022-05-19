@@ -22,6 +22,7 @@ def filter_logs(file_path: str) -> List[dict]:
 
     dbt_codes = [
       'Q009', #PASS
+      'Q010', #WARN
       'Q011', #FAIL
       'Z022', #Info about failing tests
       'E040', #Total runtime
