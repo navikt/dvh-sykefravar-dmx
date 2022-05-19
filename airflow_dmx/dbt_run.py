@@ -3,13 +3,38 @@ import os
 import time
 import json
 import sys
+from typing import List
 from dataverk_vault import api as vault_api
 from dataverk_vault.api import set_secrets_as_envs
+
+
+def write_to_xcom_push_file(content: List[dict]):
+    with open('/airflow/xcom/return.json', 'w') as xcom_file:
+        json.dump(content, xcom_file)
+
+
+def filter_logs(file_path: str) -> List[dict]:
+    logs = []
+    with open(file_path) as logfile:
+      for log in logfile:
+        logs.append(json.loads(log))
+
+    dbt_codes = [
+      'Q009', #PASS
+      'Q011', #FAIL
+      'Z022', #Info about failing tests
+      'E040', #Total runtime
+    ]
+
+    filtered_logs = [log for log in logs if log['code'] in dbt_codes]
+
+    return filtered_logs
+
 
 if __name__ == "__main__":
     os.environ["TZ"] = "Europe/Oslo"
     time.tzset()
-    profiles_dir = str(sys.argv[0])
+    profiles_dir = str(sys.path[0])
     model = str(sys.argv[1])
     log = str(sys.argv[2])
     environment = str(sys.argv[3])
@@ -27,7 +52,7 @@ if __name__ == "__main__":
 
     # setter miljø og korrekt skjema med riktig proxy
     os.environ["DBT_DEV"] = environment
-    os.environ['DBT_ORCL_SCHEMA'] =schema
+    os.environ['DBT_ORCL_SCHEMA'] = schema
     os.environ['DBT_ORCL_USER_PROD_PROXY'] = os.environ['DBT_ORCL_USER_PROD'] + '[' + schema + ']'
     print( " bruker test")
     print (os.environ['DBT_ORCL_USER_U'] )
@@ -42,7 +67,7 @@ if __name__ == "__main__":
         try:
             print (" Startet hele løpet - kjører alle modeller")
             output = subprocess.run(
-                ["dbt", command, "--select", f"tag:{tag}", "--profiles-dir", profiles_dir, "--project-dir", project_path],
+                ["dbt", "--no-use-colors", "--log-format", "json", command, "--select", f"tag:{tag}", "--profiles-dir", profiles_dir, "--project-dir", project_path],
                 check=True, capture_output=True
             )
             print (output.stdout.decode("utf-8"))
@@ -65,3 +90,5 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as err:
             raise Exception(skriver_logg(project_path),
                             err.stdout.decode("utf-8"))
+    filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
+    write_to_xcom_push_file(filtered_logs)
