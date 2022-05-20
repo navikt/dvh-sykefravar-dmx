@@ -35,27 +35,26 @@ def filter_logs(file_path: str) -> List[dict]:
 
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)
+    stream_handler = logging.StreamHandler(sys.stdout)
     os.environ["TZ"] = "Europe/Oslo"
     time.tzset()
     profiles_dir = str(sys.path[0])
     model = str(sys.argv[1])
-    log = str(sys.argv[2])
+    log_level = str(sys.argv[2])
     environment = str(sys.argv[3])
     schema = str(sys.argv[4])
     tag = str(sys.argv[5])
     command = str(sys.argv[6])
-    log_level = str(sys.argv[7])
 
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
 
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
+    logger.addHandler(stream_handler)
 
-    def skriver_logg(my_path):
-        a_file = open(my_path + "/logs/dbt.log")
-        file_contents = a_file. read()
-        print(file_contents)
+    def dbt_logg(my_path) -> str:
+      with open(my_path + "/logs/dbt.log") as log: return log.read()
 
     # setter miljø og korrekt skjema med riktig proxy
     os.environ["DBT_DEV"] = environment
@@ -77,11 +76,11 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
             logger.info(output.stdout.decode("utf-8"))
-            if log == 'logg':
-                skriver_logg(project_path)
+            logger.debug(dbt_logg(project_path))
             logger.info("Ferdig hele løpet - alle modeller")
         except subprocess.CalledProcessError as err:
-            raise Exception(err.stdout.decode("utf-8"))
+            raise Exception(logger.error(dbt_logg(project_path)),
+                            err.stdout.decode("utf-8"))
     else:
         try:
             logger.info(f"Starter modell  ---> {model}")
@@ -90,11 +89,10 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
             logger.info(output.stdout.decode("utf-8"))
-            if log == 'logg':
-                skriver_logg(project_path)
+            logger.debug(dbt_logg(project_path))
             logger.info(f"Ferdig modell  ---> {model}")
         except subprocess.CalledProcessError as err:
-            raise Exception(skriver_logg(project_path),
+            raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
     write_to_xcom_push_file(filtered_logs)
