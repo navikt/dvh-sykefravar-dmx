@@ -24,6 +24,8 @@ def filter_logs(file_path: str) -> List[dict]:
       'Q009', #PASS
       'Q010', #WARN
       'Q011', #FAIL
+      'Q019', #Freshness WARN
+      'Q020', #Freshness PASS
       'Z021', #Info about warning in tests
       'Z022', #Info about failing tests
       'E040', #Total runtime
