@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: sykm
+    tags: ['sykm']
+    schema: fk_sensitiv
+    tables:
+      - name: sykm_sykmelding

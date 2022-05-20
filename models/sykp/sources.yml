@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: sykp
+    tags: ['sykp']
+    schema: dvh_sykp
+    tables:
+      - name: fk_sporbar_vedtak
