@@ -44,7 +44,6 @@ if __name__ == "__main__":
     profiles_dir = str(sys.path[0])
     command = os.environ["DBT_COMMAND"].split()
     log_level = os.environ["LOG_LEVEL"]
-    environment = os.environ["DB_MILJO"]
     schema = os.environ["DB_SCHEMA"]
 
     set_secrets_as_envs()
@@ -58,24 +57,22 @@ if __name__ == "__main__":
       with open(my_path + "/logs/dbt.log") as log: return log.read()
 
     # setter miljø og korrekt skjema med riktig proxy
-    os.environ["DBT_DEV"] = environment
-    os.environ['DBT_ORCL_USER_PROD_PROXY'] = f"{os.environ['DBT_ORCL_USER_PROD']}" + (f"[{schema}]" if schema else '')
-    os.environ['DBT_ORCL_USER_U_PROXY'] = f"{os.environ['DBT_ORCL_USER_U']}" + (f"[{schema}]" if schema else '')
-    os.environ['DBT_ORCL_SCHEMA'] = (schema if schema else os.environ['DBT_ORCL_USER_U_PROXY'])
+    os.environ['DBT_ORCL_USER_PROXY'] = f"{os.environ['DBT_ORCL_USER']}" + (f"[{schema}]" if schema else '')
+    os.environ['DBT_ORCL_SCHEMA'] = (schema if schema else os.environ['DBT_ORCL_USER_PROXY'])
 
-    logger.info(f"db_miljo: {environment}")
-    logger.info(f"bruker dev: {os.environ['DBT_ORCL_USER_U_PROXY']}")
-    logger.info(f"bruker prod: {os.environ['DBT_ORCL_USER_PROD_PROXY']}")
-    logger.info(f"")
+    logger.info(f"bruker: {os.environ['DBT_ORCL_USER_PROXY']}")
 
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Prosjekt path er: {project_path}")
-    # Skal jeg kjøre hele modellen, ellers kjør en spesifikk modell
 
     try:
         logger.debug(f"running command: {command}")
         output = subprocess.run(
-            ["dbt", "--no-use-colors", "--log-format", "json"] + command + ["--profiles-dir", profiles_dir, "--project-dir", project_path],
+            (
+              ["dbt", "--no-use-colors", "--log-format", "json"] +
+              command +
+              ["--profiles-dir", profiles_dir, "--project-dir", project_path]
+            ),
             check=True, capture_output=True
         )
         logger.info(output.stdout.decode("utf-8"))

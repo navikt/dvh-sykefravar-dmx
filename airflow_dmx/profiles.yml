@@ -1,25 +1,14 @@
 dmx_poc:
-  target: "{{env_var('DBT_DEV')}}"
+  target: dev
   outputs:
     dev:
       type: oracle
-      host: "{{env_var('DBT_ORCL_HOST_U')}}"
-      user: "{{env_var('DBT_ORCL_USER_U_PROXY')}}"
+      host: "{{env_var('DBT_ORCL_HOST')}}"
+      user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
       protocol: "tcp"
-      pass: "{{env_var('DBT_ORCL_PASS_U')}}"
-      database: "{{env_var('DBT_ORCL_DB_U')}}"
+      pass: "{{env_var('DBT_ORCL_PASS')}}"
+      database: "{{env_var('DBT_ORCL_DB')}}"
       port: 1521
-      service: "{{env_var('DBT_ORCL_SERVICE_U')}}"
-      schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
-      threads: 4
-    prod:
-      type: oracle
-      host: "{{env_var('DBT_ORCL_HOST_PROD')}}"
-      user: "{{env_var('DBT_ORCL_USER_PROD_PROXY')}}"
-      protocol: "tcp"
-      pass: "{{env_var('DBT_ORCL_PASS_PROD')}}"
-      database: "{{env_var('DBT_ORCL_DB_PROD')}}"
-      port: 1521
-      service: "{{env_var('DBT_ORCL_SERVICE_PROD')}}"
+      service: "{{env_var('DBT_ORCL_SERVICE')}}"
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
       threads: 4
