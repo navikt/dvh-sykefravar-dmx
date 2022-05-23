@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: sykp
+    tags: ['sykp']
+    schema: dvh_sykp
+    tables:
+      - name: fk_sporbar_vedtak
+        freshness:
+          warn_after: {count: 1, period: hour}
+        loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
