@@ -25,6 +25,10 @@ sources:
         description: Næringer
       - name: FAK_SF_HENDELSE_DAG
         description: Arena fakta per dag
+      - name: DIM_GEOGRAFI
+        description: Geografi
+      - name: DIM_DIAGNOSE
+        description: Diagnoser hovedkategori
   - name: dmx_poc_person
     tags: ['syfo']
     description: 'henter fra DT_PERSON'
@@ -32,3 +36,10 @@ sources:
     tables:
       - name: DIM_PERSON1
         description: informasjon om person
+  - name: sykefravar
+    tags: ['syfo']
+    description: 'henter fra diverse sykefraværsfakta'
+    schema: DT_SENSITIV
+    tables:
+      - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
+        description: Sykefraværstilfeller
