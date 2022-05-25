@@ -28,7 +28,7 @@ sources:
       - name: DIM_GEOGRAFI
         description: Geografi
       - name: DIM_DIAGNOSE
-        description: Diagnoser hovedkategori
+        description: 'Diagnoser hovedkategori'
   - name: dmx_poc_person
     tags: ['syfo']
     description: 'henter fra DT_PERSON'
@@ -36,10 +36,10 @@ sources:
     tables:
       - name: DIM_PERSON1
         description: informasjon om person
-  - name: sykefravar
+  - name: dmx_poc_sykefravar
     tags: ['syfo']
     description: 'henter fra diverse sykefraværsfakta'
     schema: DT_SENSITIV
     tables:
       - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
-        description: Sykefraværstilfeller
+        description: 'Sykefraværstilfeller'
