@@ -43,3 +43,10 @@ sources:
     tables:
       - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
         description: 'Sykefraværstilfeller'
+  - name: dmx_pov_sykefravar_andre
+    tags: ['syfo']
+    description: 'henter fra andre tabeller'
+    schema: DK_P
+    tables:
+      - name: ARBEIDSPERIODE
+        description: 'Oversikt over hvor personen jobbet'
