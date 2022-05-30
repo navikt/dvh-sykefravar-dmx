@@ -1,5 +1,6 @@
 {{ config(
     tags=["IA_PIA"]
+    mat
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_fra_dto AS (

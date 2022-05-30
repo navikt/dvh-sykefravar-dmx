@@ -4,6 +4,10 @@ WITH fak_sykm_sykefravar_tilfelle_geo AS (
     SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_geografi')}}
 ),
 
+{{ config(
+    tags=["IA_PIA"]
+) }}
+
 dim_arbeidsperiode AS (
     SELECT * FROM {{ref('stg_arbeidsperiode')}}
 ),

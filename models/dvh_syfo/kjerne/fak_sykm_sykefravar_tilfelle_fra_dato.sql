@@ -1,4 +1,6 @@
-
+{{ config(
+    tags=["IA_PIA"]
+) }}
 
 WITH fak_sykm_sykefravar_tilfelle_lastet_dto AS (
     SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_lastet_dato')}}
