@@ -3,8 +3,8 @@
     materialized='table'
 ) }}
 
-WITH fak_sykm_sykefravar_tilfelle_til_dto AS (
-    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_til_dato')}}
+WITH fak_sykm_sykefravar_tilfelle_naer AS (
+    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_naering')}}
 ),
 
 final AS (
@@ -15,14 +15,15 @@ final AS (
 	AVSLUTTA_TILFELLE_FLAGG,
 	DIAGNOSE_KORONA_FLAGG,
 	LASTET_DATO ,OPPDATERT_DATO,
-	KILDESYSTEM,FYLKE_NAVN ,
+	KILDESYSTEM,FYLKE_NAVN , KOMMUNE_NAVN,
 	KOMMUNE_NUMMER_ARBSTED,ICPC_HOVEDGRUPPE_BESK,
 	LASTET_UKE ,
 	LASTET_AAR_UKE ,
 	FRA_DATO_UKE ,
 	FRA_DATO_AAR_UKE ,
 	TIL_DATO_UKE ,
-	TIL_DATO_AAR_UKE from fak_sykm_sykefravar_tilfelle_til_dto
+	TIL_DATO_AAR_UKE,
+	NAERING_KODE,NAERING_BESK_LANG
+	 from fak_sykm_sykefravar_tilfelle_naer
 )
-
-SELECt final.* FROM final
+select final.* from final
