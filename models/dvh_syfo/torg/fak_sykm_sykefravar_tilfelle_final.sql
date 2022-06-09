@@ -17,13 +17,9 @@ final AS (
 	LASTET_DATO ,OPPDATERT_DATO,
 	KILDESYSTEM,FYLKE_NAVN , KOMMUNE_NAVN,
 	KOMMUNE_NUMMER_ARBSTED,ICPC_HOVEDGRUPPE_BESK,
-	LASTET_UKE ,
-	LASTET_AAR_UKE ,
-	FRA_DATO_UKE ,
-	FRA_DATO_AAR_UKE ,
-	TIL_DATO_UKE ,
-	TIL_DATO_AAR_UKE,
-	NAERING_KODE,NAERING_BESK_LANG
+	NAERING_KODE,NAERING_BESK_LANG,
+	fk_dim_tid_tilfelle_startdato,
+	pk_fak_sykm_sykefravar_tilf
 	 from fak_sykm_sykefravar_tilfelle_naer
 )
 select final.* from final

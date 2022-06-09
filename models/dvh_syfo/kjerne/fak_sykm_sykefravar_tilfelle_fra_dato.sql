@@ -11,10 +11,9 @@ dim_tid AS (
 ),
 
 final AS (
-    SELECT fak_sykm_sykefravar_tilfelle_lastet_dto.*, dim_tid.uke as fra_dato_uke ,dim_tid.aar_uke as fra_dato_aar_uke
+    SELECT fak_sykm_sykefravar_tilfelle_lastet_dto.*, 
+    to_number(to_char(fak_sykm_sykefravar_tilfelle_lastet_dto.sykefravar_fra_dato, 'YYYYMMDD')) as fk_dim_tid_tilfelle_startdato
     FROM fak_sykm_sykefravar_tilfelle_lastet_dto
-    LEFT JOIN dim_tid
-    ON fak_sykm_sykefravar_tilfelle_lastet_dto.sykefravar_fra_dato=dim_tid.dato
 
 )
 
