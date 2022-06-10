@@ -3,7 +3,7 @@
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_til_dto AS (
-    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_til_dato')}}
+    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_diagnose')}}
 ),
 
 dim_naering AS (
