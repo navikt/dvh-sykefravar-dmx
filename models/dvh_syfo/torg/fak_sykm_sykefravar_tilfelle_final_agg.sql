@@ -10,6 +10,7 @@ WITH fak_sykm_sykefravar_tilfelle_naer AS (
 final AS (
 	SELECT
 		FK_PERSON1,
+		KILDESYSTEM,
 		SYKEFRAVAR_FRA_DATO,
 		SYKEFRAVAR_TIL_DATO,
 		LOPENDE_TILFELLE_FLAGG,
@@ -21,7 +22,8 @@ final AS (
 		KOMMUNE_NAVN,
 		KOMMUNE_NUMMER_ARBSTED,
 		ICPC_HOVEDGRUPPE_BESK,
-  	NAERING_KODE,NAERING_BESK_LANG,
+  	NAERING_KODE,
+		NAERING_BESK_LANG,
 	  fk_dim_tid_tilfelle_startdato,
 	  pk_fak_sykm_sykefravar_tilf,
 		to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IYYY') as AAR,
@@ -30,6 +32,7 @@ final AS (
 FROM fak_sykm_sykefravar_tilfelle_naer
 GROUP BY
     FK_PERSON1,
+		KILDESYSTEM,
 		SYKEFRAVAR_FRA_DATO,
 		SYKEFRAVAR_TIL_DATO,
 		LOPENDE_TILFELLE_FLAGG,
