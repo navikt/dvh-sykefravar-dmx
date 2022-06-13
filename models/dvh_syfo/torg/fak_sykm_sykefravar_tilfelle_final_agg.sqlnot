@@ -4,7 +4,7 @@
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_naer AS (
-    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_naering')}}
+    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_final')}}
 ),
 
 final AS (

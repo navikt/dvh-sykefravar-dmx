@@ -9,15 +9,14 @@ WITH fak_sykm_sykefravar_tilfelle_geo AS (
 
 
 dim_arbeidsperiode AS (
-    SELECT * FROM {{ref('stg_arbeidsperiode')}}
+    SELECT * FROM {{ref('stg_arbeidsperiode_unique')}}
 ),
 
 final AS (
     SELECT fak_sykm_sykefravar_tilfelle_geo.*, diM_arbeidsperiode.KOMMUNE_NUMMER_ARBSTED
     FROM fak_sykm_sykefravar_tilfelle_geo
     LEFT JOIN dim_arbeidsperiode
-    ON fak_sykm_sykefravar_tilfelle_geo.fk_person1= dim_arbeidsperiode.fk_person1
-
+    ON fak_sykm_sykefravar_tilfelle_geo.fk_person1=  dim_arbeidsperiode.fk_person1
 )
 
 SELECt final.* FROM final

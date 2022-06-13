@@ -1,6 +1,6 @@
 {{ config(
     tags=["IA_PIA"],
-    materialized='table'
+    materialized='view'
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_naer AS (

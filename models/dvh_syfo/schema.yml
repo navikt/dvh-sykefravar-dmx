@@ -8,6 +8,8 @@ sources:
     tables:
       - name: FK_ISDIALOGMOTE_DM2
         description: Informasjon om dialogmøte som kommer fra modia
+      - name: ARBEIDS_PERIODE_SMALL
+        description: Arbeidsperiode med unike nøkler
   - name: dmx_pox_oppfolging
     tags: ['syfo']
     description: 'Oppfølging samt diverse felles dimensjoner'
