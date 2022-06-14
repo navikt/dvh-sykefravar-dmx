@@ -13,10 +13,8 @@ dim_arbeidsperiode AS (
 ),
 
 final AS (
-    SELECT fak_sykm_sykefravar_tilfelle_geo.*, diM_arbeidsperiode.KOMMUNE_NUMMER_ARBSTED
+    SELECT fak_sykm_sykefravar_tilfelle_geo.*
     FROM fak_sykm_sykefravar_tilfelle_geo
-    LEFT JOIN dim_arbeidsperiode
-    ON fak_sykm_sykefravar_tilfelle_geo.fk_person1=  dim_arbeidsperiode.fk_person1
-)
+
 
 SELECt final.* FROM final
