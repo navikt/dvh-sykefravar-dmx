@@ -9,8 +9,8 @@ WITH fak_sykm_sykefravar_tilfelle_naer AS (
 
 final AS (
 	SELECT
-		FK_PERSON1,
-		KILDESYSTEM,
+	--	FK_PERSON1,
+	--	KILDESYSTEM,
 		SYKEFRAVAR_FRA_DATO,
 		SYKEFRAVAR_TIL_DATO,
 		LOPENDE_TILFELLE_FLAGG,
@@ -31,8 +31,8 @@ final AS (
     COUNT (distinct pk_fak_sykm_sykefravar_tilf) as ant_tilfeller
 FROM fak_sykm_sykefravar_tilfelle_naer
 GROUP BY
-    FK_PERSON1,
-		KILDESYSTEM,
+   -- FK_PERSON1,
+	--	KILDESYSTEM,
 		SYKEFRAVAR_FRA_DATO,
 		SYKEFRAVAR_TIL_DATO,
 		LOPENDE_TILFELLE_FLAGG,
