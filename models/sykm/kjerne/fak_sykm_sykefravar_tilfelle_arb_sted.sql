@@ -1,6 +1,4 @@
-{{ config(
-    tags=["IA_PIA"]
-) }}
+
 
 WITH fak_sykm_sykefravar_tilfelle_arbp AS (
     SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_arbeidsperiode')}}
@@ -16,8 +14,8 @@ final AS (
     dim_geografi.kommune_navn as kommune_arbsted
     FROM fak_sykm_sykefravar_tilfelle_arbp
     LEFT JOIN dim_geografi
-    ON fak_sykm_sykefravar_tilfelle_arbp.fk_dim_geografi =
-    dim_geografi.FK_KOMMUNE_ARBSTED
+    ON fak_sykm_sykefravar_tilfelle_arbp.FK_KOMMUNE_ARBSTED =
+    dim_geografi.pk_dim_geografi
 
 )
 
