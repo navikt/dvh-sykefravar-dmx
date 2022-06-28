@@ -1,21 +1,21 @@
-WITH raw_dialogmote AS (
-  SELECT kafka_message
+WITH dialogmote AS (
+  SELECT kafka_message AS record
   FROM {{ source('dmx_pox_dialogmote', 'tmp__raw_isdialogmote') }}
 ),
 final AS (
   SELECT
-    d.kafka_message.dialogmoteUuid,
-    d.kafka_message.dialogmoteTidspunkt,
-    d.kafka_message.statusEndringType,
-    d.kafka_message.statusEndringTidspunkt,
-    d.kafka_message.personIdent,
-    d.kafka_message.virksomhetsnummer,
-    d.kafka_message.enhetNr,
-    d.kafka_message.navIdent,
-    d.kafka_message.tilfelleStartdato,
-    d.kafka_message.arbeidstaker,
-    d.kafka_message.arbeidsgiver,
-    d.kafka_message.sykmelder
-  FROM raw_dialogmote d
+    dialogmote.record.dialogmoteUuid,
+    dialogmote.record.dialogmoteTidspunkt,
+    dialogmote.record.statusEndringType,
+    dialogmote.record.statusEndringTidspunkt,
+    dialogmote.record.personIdent,
+    dialogmote.record.virksomhetsnummer,
+    dialogmote.record.enhetNr,
+    dialogmote.record.navIdent,
+    dialogmote.record.tilfelleStartdato,
+    dialogmote.record.arbeidstaker,
+    dialogmote.record.arbeidsgiver,
+    dialogmote.record.sykmelder
+  FROM dialogmote dialogmote
 )
 SELECT * FROM final
