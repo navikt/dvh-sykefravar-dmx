@@ -19,7 +19,8 @@ final AS (
     to_number(vedtak.record.grunnlagForSykepengegrunnlag) AS grunnlagForSykepengegrunnlag,
     vedtak.record.begrensning,
     vedtak.record.utbetalingId,
-    to_timestamp(vedtak.record.vedtakFattetTidspunkt, 'YYYY-MM-DD"T"HH24:MI:SS.FF') AS vedtakFattetTidspunkt
+    to_timestamp(vedtak.record.vedtakFattetTidspunkt, 'YYYY-MM-DD"T"HH24:MI:SS.FF') AS vedtakFattetTidspunkt,
+    vedtak.record.dokumenter
   FROM vedtak vedtak
 )
 
