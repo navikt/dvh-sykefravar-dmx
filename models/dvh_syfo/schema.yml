@@ -9,7 +9,7 @@ sources:
       - name: FK_ISDIALOGMOTE_DM2
         description: Informasjon om dialogmøte som kommer fra modia
         freshness:
-          warn_after: {count: 1, period: hour}
+          warn_after: {count: 3, period: day}
         loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
       - name: tmp__raw_isdialogmote
   - name: dmx_pox_oppfolging
