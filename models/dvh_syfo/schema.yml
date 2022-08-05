@@ -11,7 +11,7 @@ sources:
         freshness:
           warn_after: {count: 3, period: day}
         loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
-      - name: tmp__raw_isdialogmote
+      - name: raw_isdialogmote
   - name: dmx_pox_oppfolging
     tags: ['syfo']
     description: 'Oppfølging samt diverse felles dimensjoner'

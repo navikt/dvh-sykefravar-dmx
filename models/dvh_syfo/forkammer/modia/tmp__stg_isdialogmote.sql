@@ -1,6 +1,6 @@
 WITH dialogmote AS (
   SELECT kafka_message AS record
-  FROM {{ source('dmx_pox_dialogmote', 'tmp__raw_isdialogmote') }}
+  FROM {{ source('dmx_pox_dialogmote', 'raw_isdialogmote') }}
 ),
 final AS (
   SELECT
