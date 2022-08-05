@@ -1,5 +1,5 @@
 $target = Read-Host -Prompt "Target db"
-$schema = Read-Host -Prompt "Schema"
+$schema = Read-Host -Prompt "Proxy schema"
 $creds = Get-Credential
 
 $username = $creds.Username
