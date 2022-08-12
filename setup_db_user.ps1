@@ -10,5 +10,5 @@ if ($schema) {
   $env:DBT_DB_SCHEMA = $username
 }
 $env:DBT_DB_USER = $username
-$env:DBT_DB_PASS = $creds.GetNetworkCredential().password
+$env:DBT_DB_PASSWORD = $creds.GetNetworkCredential().password
 $env:DBT_DB_TARGET = $target
