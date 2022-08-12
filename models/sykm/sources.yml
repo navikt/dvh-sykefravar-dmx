@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: sykm
+    tags: ['sykm']
+    schema: fk_sensitiv
+    tables:
+      - name: sykm_sykmelding
+        freshness:
+          warn_after: {count: 1, period: hour}
+        loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"

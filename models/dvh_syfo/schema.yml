@@ -8,8 +8,12 @@ sources:
     tables:
       - name: FK_ISDIALOGMOTE_DM2
         description: Informasjon om dialogmøte som kommer fra modia
+        freshness:
+          warn_after: {count: 3, period: day}
+        loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
       - name: ARBEIDS_PERIODE_SMALL
-        description: Arbeidsperiode med unike nøkler
+        description: Arbeidsperiode med unike nøklerg
+      - name: raw_isdialogmote
   - name: dmx_pox_oppfolging
     tags: ['syfo']
     description: 'Oppfølging samt diverse felles dimensjoner'

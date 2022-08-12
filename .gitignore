@@ -3,3 +3,5 @@ target/
 dbt_packages/
 logs/
 dmx_poc/.vscode/settings.json
+airflow_dmx/.user.yml
+.DS_Store
