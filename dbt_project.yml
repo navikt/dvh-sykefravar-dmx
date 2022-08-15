@@ -37,8 +37,10 @@ models:
       +schema: dvh_syfo
       +tags: syfo
     syfra:
-      +tags: syfra
+      +tags: syfra | IA_PIA
       +schema: dvh_syfra
+      +pre-hook: grant read on dvh_syfo.stg_dim_diagnose to dvh_syfra |,
+                 grant read on dvh_syfo.stg_din_naering to dvh_syfra
     # Config indicated by + and applies to all files under models/example/
 tests:
   +severity: warn
