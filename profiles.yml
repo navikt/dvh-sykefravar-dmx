@@ -1,0 +1,45 @@
+dmx_poc:
+  target: "{{env_var('DBT_DB_TARGET')}}"
+  outputs:
+    dwhu1:
+      type: oracle
+      user: "{{env_var('DBT_DB_USER')}}"
+      pass: "{{env_var('DBT_DB_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
+      port: 1521
+      service: dwhu1
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 4
+    dwhr:
+      type: oracle
+      user: "{{env_var('DBT_DB_USER')}}"
+      pass: "{{env_var('DBT_DB_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
+      port: 1521
+      service: dwhr
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 4
+    dwhq0:
+      type: oracle
+      user: "{{env_var('DBT_DB_USER')}}"
+      pass: "{{env_var('DBT_DB_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
+      port: 1521
+      service: dwhq0
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 4
+    prod:
+      type: oracle
+      user: "{{env_var('DBT_DB_USER')}}"
+      pass: "{{env_var('DBT_DB_PASS')}}"
+      protocol: tcp
+      host: dm08-scan.adeo.no
+      port: 1521
+      service: dwh_ha
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 4
+config:
+  send_anonymous_usage_stats: False
