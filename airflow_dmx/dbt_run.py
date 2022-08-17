@@ -64,6 +64,12 @@ if __name__ == "__main__":
 
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Prosjekt path er: {project_path}")
+    print ( " bruker er ", os.environ['DBT_ORCL_USER_PROXY'] )
+    print (" miljø er ","utv" )
+    print (" skjema er ", os.environ['DBT_ORCL_SCHEMA'])
+    print (" db host ", os.environ['DBT_ORCL_HOST'] )
+    print ("pass ord - kun debug", os.environ['DBT_ORCL_PASS'] )
+    print ( " database ", os.environ['DBT_ORCL_DB'] )
 
     try:
         logger.debug(f"running command: {command}")
