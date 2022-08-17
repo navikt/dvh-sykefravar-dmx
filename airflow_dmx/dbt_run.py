@@ -67,7 +67,6 @@ if __name__ == "__main__":
     print ( " bruker er ", os.environ['DBT_ORCL_USER_PROXY'] )
     print (" miljø er ","utv" )
     print (" skjema er ", os.environ['DBT_ORCL_SCHEMA'])
-    print ("pass ord - kun debug", os.environ['DBT_ORCL_PASS'] )
     print ( " database ", os.environ['DBT_ORCL_DB'] )
     print (" db host ", os.environ['DBT_ORCL_HOST'] )
     print (" db host ", os.environ['DBT_ORCL_SERVICE'] )
