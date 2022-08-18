@@ -69,7 +69,7 @@ if __name__ == "__main__":
     print (" skjema er ", os.environ['DBT_ORCL_SCHEMA'])
     print ( " database ", os.environ['DBT_ORCL_DB'] )
     print (" db host ", os.environ['DBT_ORCL_HOST'] )
-    print (" db host ", os.environ['DBT_ORCL_SERVICE'] )
+    print (" db service ", os.environ['DBT_ORCL_SERVICE'] )
 
     try:
         logger.debug(f"running command: {command}")
