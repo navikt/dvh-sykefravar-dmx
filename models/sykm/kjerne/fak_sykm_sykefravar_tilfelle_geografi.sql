@@ -1,7 +1,3 @@
-{{ config(
-    tags=["IA_PIA"],
-    pre_hook="grant read on dvh_syfo.stg_dim_geografi to dvh_syfra"
-) }}
 
 WITH fak_sykm_sykefravar_tilfelle_org AS (
     SELECT * FROM {{ref('stg_fak_sykm_sykefravar_tilfelle')}}

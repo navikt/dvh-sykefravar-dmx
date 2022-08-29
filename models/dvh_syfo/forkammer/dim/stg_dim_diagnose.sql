@@ -1,6 +1,7 @@
 
 {{ config(
-    post_hook="grant read on {{this}} to dvh_syfra"
+    post_hook="grant read on {{this}} to dvh_syfra",
+    tags=["IA_PIA"]
 ) }}
 
 with source_dim_diagnose as (
