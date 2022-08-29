@@ -1,6 +1,5 @@
 {{ config(
-    post_hook="grant read on {{this}} to dvh_syfra",
-    tags=["IA_PIA"]
+    post_hook="grant read on {{this}} to dvh_syfra"
 ) }}
 
 with source_dim_tid as (
