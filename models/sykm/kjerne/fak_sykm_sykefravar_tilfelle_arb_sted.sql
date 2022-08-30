@@ -7,7 +7,7 @@ WITH fak_sykm_sykefravar_tilfelle_arbp AS (
 ),
 
 dim_geografi AS (
-    SELECT * FROM {{ref('stg_dim_geografi')}}
+    SELECT * FROM {{ref('stg_dim_geografi_sykm')}}
 ),
 
 final AS (

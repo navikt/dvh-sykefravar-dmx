@@ -7,7 +7,7 @@ WITH fak_sykm_sykefravar_tilfelle_arb AS (
 ),
 
 dim_diagnose AS (
-    SELECT * FROM {{ref('stg_dim_diagnose')}}
+    SELECT * FROM {{ref('stg_dim_diagnose_sykm')}}
 ),
 
 final AS (

@@ -7,7 +7,7 @@ WITH fak_sykm_sykefravar_tilfelle_fra_dato_1 AS (
 ),
 
 dim_tid AS (
-    SELECT * FROM {{ref('stg_dim_tid')}}
+    SELECT * FROM {{ref('stg_dim_tid_sykm')}}
 ),
 
 final AS (
