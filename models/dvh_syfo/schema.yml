@@ -15,7 +15,7 @@ sources:
         description: Arbeidsperiode med unike nøklerg
       - name: raw_isdialogmote
   - name: dmx_pox_oppfolging
-    tags: ['syfo']
+    tags: ['syfo','IA_PIA']
     description: 'Oppfølging samt diverse felles dimensjoner'
     schema: DT_P
     tables:
