@@ -3,7 +3,7 @@ WITH dialogmoter AS (
 )
 
 , dvh_person AS (
-  SELECT * FROM {{ source('dt_person', 'dvh_person_ident_off_id') }}
+  SELECT * FROM {{ ref('felles_dt_person__dvh_person_ident_off_id') }}
 )
 
 , final AS (
