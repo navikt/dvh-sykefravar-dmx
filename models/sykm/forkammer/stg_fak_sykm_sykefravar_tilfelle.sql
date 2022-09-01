@@ -9,7 +9,7 @@ with source_fak_sykm_sykefravar_tilfelle as (
 
 final as (
     select * from source_fak_sykm_sykefravar_tilfelle
-    where  extract(year from sykefravar_fra_dato) = 2022
+    where  extract(year from sykefravar_fra_dato) > 2022
 )
 
 select * from final
