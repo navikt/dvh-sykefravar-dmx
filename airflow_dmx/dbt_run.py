@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Prosjekt path er: {project_path}")
-
+   
     try:
         logger.debug(f"running command: {command}")
         output = subprocess.run(

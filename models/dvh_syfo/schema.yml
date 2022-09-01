@@ -11,6 +11,8 @@ sources:
         freshness:
           warn_after: {count: 3, period: day}
         loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
+      - name: ARBEIDS_PERIODE_SMALL
+        description: Arbeidsperiode med unike nøklerg
       - name: raw_isdialogmote
   - name: dmx_pox_oppfolging
     tags: ['syfo']
@@ -29,6 +31,10 @@ sources:
         description: Næringer
       - name: FAK_SF_HENDELSE_DAG
         description: Arena fakta per dag
+      - name: DIM_GEOGRAFI
+        description: Geografi
+      - name: DIM_DIAGNOSE
+        description: 'Diagnoser hovedkategori'
   - name: dmx_poc_person
     tags: ['syfo']
     description: 'henter fra DT_PERSON'
@@ -36,3 +42,17 @@ sources:
     tables:
       - name: DIM_PERSON1
         description: informasjon om person
+  - name: dmx_poc_sykefravar
+    tags: ['syfo']
+    description: 'henter fra diverse sykefraværsfakta'
+    schema: DT_SENSITIV
+    tables:
+      - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
+        description: 'Sykefraværstilfeller'
+  - name: dmx_pov_sykefravar_andre
+    tags: ['syfo']
+    description: 'henter fra andre tabeller'
+    schema: DK_P
+    tables:
+      - name: ARBEIDSPERIODE
+        description: 'Oversikt over hvor personen jobbet'
