@@ -18,7 +18,7 @@ WITH fk_dialogmote_dm2 AS (
     kafka_mottatt_dato,
     lastet_dato,
     kildesystem
-  FROM {{ source('dmx_pox_dialogmote', 'FK_ISDIALOGMOTE_DM2') }}
+  FROM {{ source('modia', 'fk_isdialogmote_dm2') }}
   WHERE kafka_offset < 1953
 )
 

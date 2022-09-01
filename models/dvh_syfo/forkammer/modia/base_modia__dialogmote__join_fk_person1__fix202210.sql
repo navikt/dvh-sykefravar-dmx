@@ -1,5 +1,5 @@
-WITH stg_dialogmoter AS (
-  SELECT * FROM {{ ref('tmp__stg_dialogmoter') }}
+WITH dialogmoter AS (
+  SELECT * FROM {{ ref('base_modia__dialogmote') }}
 )
 
 , dvh_person AS (
@@ -26,10 +26,10 @@ WITH stg_dialogmoter AS (
     kafka_mottatt_dato,
     lastet_dato,
     kildesystem
-  FROM stg_dialogmoter
+  FROM dialogmoter
   LEFT JOIN dvh_person
-  ON stg_dialogmoter.person_ident = dvh_person.off_id
-  WHERE stg_dialogmoter.kafka_mottatt_dato BETWEEN dvh_person.gyldig_fra_dato AND dvh_person.gyldig_til_dato
+  ON dialogmoter.person_ident = dvh_person.off_id
+  WHERE dialogmoter.kafka_mottatt_dato BETWEEN dvh_person.gyldig_fra_dato AND dvh_person.gyldig_til_dato
 )
 
 SELECT * FROM final

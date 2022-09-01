@@ -1,5 +1,5 @@
 WITH dialogmote AS (
-  SELECT * FROM {{ source('dmx_pox_dialogmote', 'raw_isdialogmote') }}
+  SELECT * FROM {{ source('modia', 'raw_isdialogmote') }}
 )
 
 , final AS (

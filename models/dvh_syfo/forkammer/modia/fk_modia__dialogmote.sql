@@ -1,9 +1,9 @@
 WITH dialogmoter AS (
-  SELECT * FROM {{ ref('tmp__int_dialogmoter_join_fk_person1') }}
+  SELECT * FROM {{ ref('base_modia__dialogmote__join_fk_person1__fix202210') }}
 )
 
 , manglende_dialogmoter AS (
-  SELECT * FROM {{ ref('tmp__int_dialogmoter_manglende_dialogmoter') }}
+  SELECT * FROM {{ ref('base_modia__dialogmote__manglende_moter') }}
 )
 
 , final AS (
