@@ -1,7 +1,8 @@
 WITH dialogmote AS (
-  SELECT * FROM {{ source('dmx_pox_dialogmote', 'raw_isdialogmote') }}
-),
-final AS (
+  SELECT * FROM {{ source('modia', 'raw_isdialogmote') }}
+)
+
+, final AS (
   SELECT
     dialogmote.kafka_message.dialogmoteUuid as dialogmote_uuid,
     TO_TIMESTAMP_TZ(dialogmote.kafka_message.dialogmoteTidspunkt, 'YYYY-MM-DD HH24:MI:SS:TZH:TZM') AT TIME ZONE 'CET' AS dialogmote_tidspunkt,
@@ -23,4 +24,5 @@ final AS (
     kildesystem
   FROM dialogmote dialogmote
 )
+
 SELECT * FROM final

@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: dt_person
+    schema: dt_person
+    tables:
+    - name: dvh_person_ident_off_id
