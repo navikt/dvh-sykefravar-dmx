@@ -1,5 +1,4 @@
 {{ config(
-    tags=["IA_PIA"],
     materialized='table'
 ) }}
 
