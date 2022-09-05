@@ -1,6 +1,7 @@
 {{ config(
     tags=["IA_PIA"],
-    materialized='table'
+    materialized='table',
+		post_hook="grant read on {{ this }} to dvh_syfra_app"
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_tid_1 AS (
