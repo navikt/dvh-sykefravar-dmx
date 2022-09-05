@@ -1,6 +1,7 @@
-
-
-{{ config(materialized='table') }}
+{{ config(
+    materialized='table',
+    tags="syfo_dialogmote"
+)}}
 
 
 

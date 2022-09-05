@@ -1,4 +1,7 @@
-{{config(materialized='table')}}
+{{config(
+    materialized='table',
+    tags="syfo_dialogmote"
+)}}
 
 with fak_syfo_arena_modiax AS (
     SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
@@ -16,8 +19,8 @@ fak_syfo_modia2 AS (
 ),
 
 final AS (
-         SELECT  
-                 
+         SELECT
+
                  fak_syfo_arena_modia.f_fk_person1,
                  fak_syfo_arena_modia.f_kildesystem,
                  fak_syfo_arena_modia.fk_dim_organisasjon,
@@ -38,12 +41,12 @@ final AS (
 
 */
 
-final as ( 
+final as (
     select fak_syfo_arena_modiax.*,
     '9999' as fk_dim_naering,
     '1' as arbeidstaker_deltatt_flagg
-     from  fak_syfo_arena_modiax 
-    
+     from  fak_syfo_arena_modiax
+
  )
 
 SELECt * FROM final
