@@ -1,4 +1,5 @@
 WITH source AS (
+  -- TODO
   SELECT
     'AA' as dialogmote_uuid,
     TO_TIMESTAMP_TZ('2022-09-02 13', 'YYYY-MM-DD HH24') AT TIME ZONE 'CET' AS dialogmote_tidspunkt,
