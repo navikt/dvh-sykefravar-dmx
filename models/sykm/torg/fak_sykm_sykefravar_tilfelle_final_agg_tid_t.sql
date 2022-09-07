@@ -1,5 +1,4 @@
 {{ config(
-    tags=["IA_PIA"],
     materialized='table'
 ) }}
 
@@ -30,6 +29,8 @@ final AS (
 		NAERING_BESK_LANG,
 		aar,
 		uke,
+		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IYYY') as AAR,
+		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IW') AS UKE_NR,
     COUNT (distinct pk_fak_sykm_sykefravar_tilf) as ant_tilfeller
 FROM fak_sykm_sykefravar_tilfelle_tid_1
 GROUP BY
@@ -54,5 +55,7 @@ GROUP BY
 		NAERING_BESK_LANG,
 		aar,
 		uke
+		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IYYY'),
+		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IW')
 )
 select final.* from final

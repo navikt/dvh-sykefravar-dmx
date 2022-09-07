@@ -4,7 +4,7 @@
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_tid_1 AS (
-    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_tid_t')}}
+    SELECT * FROM {{ref('fak_sykm_sykefravar_tilfelle_final_agg_tid_t')}}
 ),
 
 final AS (
