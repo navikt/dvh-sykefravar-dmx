@@ -25,7 +25,7 @@ models:
         - unique
         - not_null
 
-  - name: fak_syfo_oppfolging_pvt
+  - name: mk_syfo_oppfolging_pvt
     description: sykefravær_info pivotert
     columns:
       - name: DIALOGMOTE_UUID
@@ -34,8 +34,8 @@ models:
         - unique
         - not_null
 
-  - name: fak_syfo_dialogmote
-    description: fak_syfo_dialogmote
+  - name: mk_syfo_dialogmote_join_dim_person
+    description: koblet med dim person
     columns:
       - name: DIALOGMOTE_UUID
         description: unique identifikator
@@ -43,8 +43,8 @@ models:
         - unique
         - not_null
 
-  - name: fak_syfo_dialogmote_org
-    description: fak_syfo_dialogmote_org
+  - name: mk_syfo_dialogmote_join_dim_organisasjon
+    description: koblet med dim organisasjon
     columns:
       - name: DIALOGMOTE_UUID
         description: unique identifikator
@@ -52,7 +52,7 @@ models:
         - unique
         - not_null
 
-  - name: fak_syfo_dt_dialogmote
+  - name: mk_syfo_dialogmote_join_dim_varighet
     description: Target tabell
     config:
       materialized: table

@@ -6,7 +6,7 @@
 
 
 WITH fak_syfo_dialogmote_s AS (
-    SELECT * FROM {{ref('fak_syfo_dialogmote_tid')}}
+    SELECT * FROM {{ref('mk_syfo_dialogmote_tid')}}
 ),
 
 dim_varighet AS (

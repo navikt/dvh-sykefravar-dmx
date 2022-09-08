@@ -1,6 +1,6 @@
 
 WITH fak_syfo_dialogmote_tid AS (
-    SELECT * FROM {{ref('fak_syfo_dialogmote_org')}}
+    SELECT * FROM {{ref('mk_syfo_dialogmote_join_dim_organisasjon')}}
 ),
 
 final AS (

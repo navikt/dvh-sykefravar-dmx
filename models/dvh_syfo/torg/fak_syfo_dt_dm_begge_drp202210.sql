@@ -4,18 +4,18 @@
 )}}
 
 with fak_syfo_arena_modiax AS (
-    SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
+    SELECT * FROM {{ref('mk_syfo_arena_union_modia')}}
 ),
 /*
 with fak_syfo_arena_modia AS (
-    SELECT * FROM {{ref('fak_syfo_dt_arena_modia')}}
+    SELECT * FROM {{ref('mk_syfo_arena_union_modia')}}
 ),
 
 fak_syfo_arena2 AS (
-    SELECT * FROM {{ref('fak_syfo_hendelse_varighet')}}
+    SELECT * FROM {{ref('mk_sf_hendelse_varighet')}}
 ),
 fak_syfo_modia2 AS (
-         SELECT * FROM {{ref('fak_syfo_dt_dialogmote')}}
+         SELECT * FROM {{ref('mk_syfo_dialogmote_join_dim_varighet')}}
 ),
 
 final AS (

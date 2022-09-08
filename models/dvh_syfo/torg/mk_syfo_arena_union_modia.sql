@@ -1,15 +1,15 @@
 
 
 WITH fak_syfo_arena AS (
-    SELECT * FROM {{ref('fak_syfo_hendelse_varighet')}}
+    SELECT * FROM {{ref('mk_sf_hendelse_varighet')}}
 ),
 
 fak_syfo_modia AS (
-    SELECT * FROM {{ref('fak_syfo_dt_dialogmote')}}
+    SELECT * FROM {{ref('mk_syfo_dialogmote_join_dim_varighet')}}
 ),
 
 final AS (
-    SELECT 
+    SELECT
            fak_syfo_arena.fk_person1 as f_fk_person1,
            'Arena' as f_kildesystem,
            fak_syfo_arena.fk_dim_organisasjon,
@@ -18,7 +18,7 @@ final AS (
            fak_syfo_arena.fk_dim_varighet as fk_dim_varighet
     FROM fak_syfo_arena
     union all
-        select 
+        select
           fak_syfo_modia.fk_person1 as f_fk_person1,
           'Modia' as f_kildesystem,
           fak_syfo_modia.fk_dim_organisasjon,
@@ -26,7 +26,7 @@ final AS (
          fak_syfo_modia.avholdt_dialog_tidspunkt as f_dialog_motedato,
          fak_syfo_modia.fk_dim_varighet as fk_dim_varighet
     from fak_syfo_modia
-    
+
 )
 
 

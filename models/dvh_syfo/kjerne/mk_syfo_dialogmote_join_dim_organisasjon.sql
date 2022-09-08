@@ -1,7 +1,7 @@
 
 
 WITH fak_syfo_dialogmote_org AS (
-    SELECT * FROM {{ref('fak_syfo_dialogmote')}}
+    SELECT * FROM {{ref('mk_syfo_dialogmote_join_dim_person')}}
 ),
 
 dim_org AS (
