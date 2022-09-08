@@ -29,13 +29,10 @@ final AS (
 		NAERING_BESK_LANG,
 		aar,
 		uke,
-		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IYYY') as AAR,
-		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IW') AS UKE_NR,
-    COUNT (distinct pk_fak_sykm_sykefravar_tilf) as ant_tilfeller
+    COUNT (distinct pk_fak_sykm_sykefravar_tilf) as ant_tilfeller,
+		sum ( stipulert_tapte_dagsverk) as stipulert_tapte_dagsverk
 FROM fak_sykm_sykefravar_tilfelle_tid_1
 GROUP BY
-   -- FK_PERSON1,
-	--	KILDESYSTEM,
 	  pk_fak_sykm_sykefravar_tilf,
 	  fk_dim_tid_tilfelle_startdato,
 		SYKEFRAVAR_FRA_DATO,
@@ -55,7 +52,5 @@ GROUP BY
 		NAERING_BESK_LANG,
 		aar,
 		uke
-		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IYYY'),
-		--to_char(SYKEFRAVAR_FRA_DATO - 7/24,'IW')
 )
 select final.* from final
