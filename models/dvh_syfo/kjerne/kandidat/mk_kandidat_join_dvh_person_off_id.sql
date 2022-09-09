@@ -22,8 +22,14 @@ WITH kandidat AS (
 , final AS (
   SELECT
     uuid,
-    1234 AS fk_person1, -- TODO
+    CASE
+      WHEN
+        personIdentNumber = '0101190012345'
+      THEN
+        1234
+    END AS fk_person1, -- TODO
     createdAt,
+    tilfelle_startdato,
     kandidat,
     arsak
   FROM kandidat_join_fk_person1
