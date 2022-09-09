@@ -23,7 +23,8 @@ final AS (
 		NAERING_BESK_LANG,
 		aar,
 		uke,
-		ant_tilfeller
+		ant_tilfeller,
+		stipulert_tapte_dagsverk
 FROM fak_sykm_sykefravar_tilfelle_tid_1
 
 )
