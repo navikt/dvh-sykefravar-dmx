@@ -2,7 +2,7 @@ with
 tilfeller_fra_kandidat as (
   select
     fk_person1,
-    createdAt as tilfelle_startdato --må byttes ut
+    (createdat - 49) as tilfelle_startdato --må byttes ut
   from  {{ ref('mk_kandidat_join_dvh_person_off_id') }}
 )
 ,

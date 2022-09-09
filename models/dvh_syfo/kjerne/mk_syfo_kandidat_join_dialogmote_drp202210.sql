@@ -8,7 +8,7 @@ dialogmote as (
     tilfelle_start_dato,
     dilogmote_tidspunkt,
     enhet_nr
-  from {{ ref('fk_modia_dialogmote') }}
+  from {{ ref('fk_modia__dialogmote') }}
   where status_endring_type = 'FERDIGSTILT'
 ) ,
 
