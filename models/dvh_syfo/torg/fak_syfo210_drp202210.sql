@@ -5,8 +5,14 @@ as (
 
 , tilfeller_passerer_26u
 as (
-  select *
-  from tilfeller where tilfelle_startdato between to_date('2022-02-01','YYYY-MM-DD') and to_date('2022-03-30','YYYY-MM-DD') -- TODO
+  select
+    *
+  from tilfeller
+  where tilfelle_startdato
+    between add_months(
+      to_date('{{ var('rapportperiode') }}','YYYY-MM-DD'), - 6)
+    and add_months(
+      last_day(to_date('{{ var('rapportperiode') }}','YYYY-MM-DD')), - 6) -- TODO
 ),
 
 tilfeller_med_flagg1
