@@ -1,54 +1,58 @@
-with tilfeller
-as (
-  select * from {{ ref('mk_syfo_tilfeller_join_dialogmote_drp202210') }}
+WITH tilfeller AS (
+  SELECT * FROM {{ ref('mk_syfo_tilfeller_join_dialogmote_drp202210') }}
 )
 
-, tilfeller_passerer_26u
-as (
-  select
-    *
-  from tilfeller
-  where tilfelle_startdato
-    between add_months(
-      to_date('{{ var('rapportperiode') }}','YYYY-MM-DD'), - 6)
-    and add_months(
-      last_day(to_date('{{ var('rapportperiode') }}','YYYY-MM-DD')), - 6) -- TODO
-),
-
-tilfeller_med_flagg1
-as (
-select
-  FK_PERSON1 ,
-  TILFELLE_STARTDATO,
-  KANDIDATDATO,
-  decode(kandidatdato, null, 0, 1) as KANDIDAT_FLAGG,
-  UNNTAKDATO,
-  decode(unntakdato,null,0,1) as UNNTAK_FLAGG,
-  DIALOGMOTE_TIDSPUNKT,
-  case
-    when dialogmote_tidspunkt < to_date('2022-08-01', 'YYYY-MM-DD') then 1 -- TODO
-    else 0
-  end
-    as DIALOGMOTE_TIDLIGERE_PERIODE_FLAGG,
-   case
-    when dialogmote_tidspunkt between to_date('2022-08-01', 'YYYY-MM-DD') and to_date('2022-08-01','YYYY-MM-DD') then 1 -- TODO
-    else 0
-  end
-    as DIALOGMOTE_DENNE_PERIODEN_FLAGG,
-  ENHET_NR,
-  '202208' as periode -- TODO
- from tilfeller_passerer_26u
-),
-
-final
-as (
-  select
-  tilfeller_med_flagg1.*,
-  case
-    when kandidat_flagg -unntak_flagg -dialogmote_tidligere_periode_flagg  < 1 then 0
-    else 1
-  end
-  as Kandidat_uten_untakk_eller_dm_i_tidligere_periode_flagg
-  from tilfeller_med_flagg1
+, rapportperiode AS (
+  SELECT
+    '{{ var('rapportperiode') }}' AS periode,
+    TO_DATE('{{ var('rapportperiode') }}', 'YYYYMM') AS start_dato,
+    LAST_DAY(TO_DATE('{{ var('rapportperiode') }}', 'YYYYMM')) AS slutt_dato
+  FROM dual
 )
-select * from final
+
+, tilfeller_passerer_26u AS (
+  SELECT
+    tilfeller.*,
+    rapportperiode.periode AS periode,
+    rapportperiode.start_dato AS rapportperiode_start_dato,
+    rapportperiode.slutt_dato AS rapportperiode_slutt_dato
+  FROM tilfeller, rapportperiode
+  WHERE tilfeller.tilfelle_startdato
+    BETWEEN ADD_MONTHS(rapportperiode.start_dato, - 6)
+    AND ADD_MONTHS(rapportperiode.slutt_dato, - 6)
+)
+
+, tilfeller_med_flagg1 AS (
+  SELECT
+    fk_person1,
+    tilfelle_startdato,
+    kandidatdato,
+    DECODE(kandidatdato, NULL, 0, 1) AS kandidat_flagg,
+    unntakdato,
+    DECODE(unntakdato, NULL, 0, 1) AS unntak_flagg,
+    dialogmote_tidspunkt,
+  CASE
+    WHEN dialogmote_tidspunkt < rapportperiode_start_dato THEN 1 -- TODO
+    ELSE 0
+  END AS DIALOGMOTE_TIDLIGERE_PERIODE_FLAGG,
+  CASE
+    WHEN dialogmote_tidspunkt BETWEEN rapportperiode_start_dato AND rapportperiode_slutt_dato
+    THEN 1 -- TODO
+    ELSE 0
+  END AS DIALOGMOTE_DENNE_PERIODEN_FLAGG,
+  enhet_nr,
+  periode
+  FROM tilfeller_passerer_26u
+)
+
+, final AS (
+  SELECT tilfeller_med_flagg1.*,
+  CASE
+    WHEN kandidat_flagg -unntak_flagg -dialogmote_tidligere_periode_flagg  < 1
+    THEN 0
+    ELSE 1
+  END AS Kandidat_uten_untakk_eller_dm_i_tidligere_periode_flagg
+  FROM tilfeller_med_flagg1
+)
+
+SELECT * FROM final
