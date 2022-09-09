@@ -5,7 +5,7 @@ as (
 tilfeller_passerer_26u
 as (
   select *
-  from tilfeller where tilfelle_startdato between to_date('2022-02-24','YYYY-MM-DD') and to_date('2022-03-24','YYYY-MM-DD')
+  from tilfeller where tilfelle_startdato between to_date('2022-02-24','YYYY-MM-DD') and to_date('2022-03-24','YYYY-MM-DD') -- TODO
 ),
 
 tilfeller_med_flagg1
@@ -19,17 +19,17 @@ select
   decode(unntakdato,null,0,1) as UNNTAK_FLAGG,
   DIALOGMOTE_TIDSPUNKT,
   case
-    when dialogmote_tidspunkt < to_date('2022-08-01', 'YYYY-MM-DD') then 1
+    when dialogmote_tidspunkt < to_date('2022-08-01', 'YYYY-MM-DD') then 1 -- TODO
     else 0
   end
     as DIALOGMOTE_TIDLIGERE_PERIODE_FLAGG,
    case
-    when dialogmote_tidspunkt between to_date('2022-08-01', 'YYYY-MM-DD') and to_date('2022-08-01','YYYY-MM-DD') then 1
+    when dialogmote_tidspunkt between to_date('2022-08-01', 'YYYY-MM-DD') and to_date('2022-08-01','YYYY-MM-DD') then 1 -- TODO
     else 0
   end
     as DIALOGMOTE_DENNE_PERIODEN_FLAGG,
   ENHET_NR,
-  '202208' as periode
+  '202208' as periode -- TODO
  from tilfeller_passerer_26u
 ),
 
