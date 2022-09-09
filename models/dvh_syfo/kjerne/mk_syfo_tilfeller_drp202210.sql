@@ -2,7 +2,7 @@ with
 tilfeller_fra_kandidat as (
   select
     *
-  from  {{ ref('mk_kandidat_join_dvh_person_off_id') }}
+  from  {{ ref('mk_kandidat_join_nav_enhet') }}
 )
 ,
 tilfeller_fra_dialogmote as (
