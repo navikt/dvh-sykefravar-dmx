@@ -31,4 +31,12 @@ WITH source AS (
   FROM DUAL
 )
 
-SELECT * FROM source
+, seeds AS (
+  SELECT * FROM {{ ref('modia_dialogmote') }}
+)
+
+, final AS (
+  SELECT * FROM seeds
+)
+
+SELECT * FROM final

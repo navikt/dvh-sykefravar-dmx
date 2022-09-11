@@ -42,8 +42,17 @@ WITH source AS (
 --  FROM DUAL
 )
 
+, seed AS (
+  SELECT * FROM {{ ref('modia_kandidat') }}
+)
+
 , final AS (
-  SELECT * FROM source
+  SELECT * FROM seed
 )
 
 SELECT * FROM final
+{{
+  config(
+      persist_docs={"relation": true, "columns": true}
+    )
+}}

@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: dt_person__dvh_person_ident_off_id
+    config:
+      column_types:
+        off_id: varchar2(255)

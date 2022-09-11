@@ -32,15 +32,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
-models:
-  dmx_poc:
-    dvh_syfo:
-      +schema: dvh_syfo
-      +tags: syfo
-    syfra:
-      +tags: syfra
-      +schema: dvh_syfra
-    # Config indicated by + and applies to all files under models/example/
 tests:
   +severity: warn
   dmx_poc:
@@ -49,3 +40,5 @@ tests:
 
 vars:
   rapportperiode: "202208" #TODO Må settes av Airflow
+
+on-run-start: "ALTER SESSION SET NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24'"

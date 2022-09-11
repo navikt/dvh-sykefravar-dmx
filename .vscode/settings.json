@@ -2,7 +2,7 @@
   "files.associations": {
     "*.yaml": "jinja-yaml",
     "*.yml": "jinja-yaml",
-    "*.sql": "sql",
+    "*.sql": "jinja-sql",
     "*.md": "jinja-md",
     "**/target/compiled/**/*.sql": "oraclesql"
   },
