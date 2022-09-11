@@ -8,26 +8,26 @@ WITH kandidat AS (
 
 , kandidat_join_fk_person1 AS (
   SELECT
-    kandidat.*,
-    DECODE(dvh_person_ident_off_id.fk_person1, NULL, -1) AS fk_person1
+    kandidat.*
+    ,DECODE(
+      dvh_person_ident_off_id.fk_person1, null, -1,
+                                          dvh_person_ident_off_id.fk_person1
+    ) AS fk_person1
   FROM kandidat
   LEFT JOIN dvh_person_ident_off_id
   ON kandidat.personIdentNumber = dvh_person_ident_off_id.off_id
-  WHERE createdAt
-  BETWEEN dvh_person_ident_off_id.gyldig_fra_dato
-  AND dvh_person_ident_off_id.gyldig_til_dato
-  OR dvh_person_ident_off_id.fk_person1 IS NULL
+  WHERE
+    createdAt
+      BETWEEN dvh_person_ident_off_id.gyldig_fra_dato
+      AND dvh_person_ident_off_id.gyldig_til_dato
+  OR
+    dvh_person_ident_off_id.fk_person1 IS NULL
 )
 
 , final AS (
   SELECT
     uuid,
-    CASE
-      WHEN
-        personIdentNumber = '0101190012345'
-      THEN
-        1234
-    END AS fk_person1, -- TODO
+    fk_person1,
     createdAt,
     tilfelle_startdato,
     kandidat,

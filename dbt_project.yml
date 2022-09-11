@@ -40,5 +40,3 @@ tests:
 
 vars:
   rapportperiode: "202208" #TODO Må settes av Airflow
-
-on-run-start: "ALTER SESSION SET NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24'"

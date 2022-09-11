@@ -13,10 +13,7 @@ WITH kandidat AS (
 , kandidat_join_fk_dim_organisasjon AS (
   SELECT
     kandidat.*,
-    CASE
-      WHEN kandidat.fk_person1 = 1234
-      THEN 17311240
-    END AS fk_dim_organisasjon -- TODO
+    dim_person1.fk_dim_organisasjon AS fk_dim_organisasjon
   FROM
     kandidat
   LEFT JOIN dim_person1
