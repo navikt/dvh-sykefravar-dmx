@@ -28,6 +28,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
+models:
+  dmx_poc:
+    dvh_syfo:
+      +schema: dvh_syfo
+      +tags: syfo
+    syfra:
+      +tags: syfra
+      +schema: dvh_syfra
 
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
