@@ -1,6 +1,9 @@
-dialogmote_uuid,dialogmote_tidspunkt,status_endring_type,status_endring_tidspunkt,fk_person1,virksomhetsnr,enhet_nr,nav_ident,tilfelle_startdato,arbeidstaker,arbeidsgiver,sykmelder
-AA,2022-08-02 13:00:00,INNKALT,2022-07-02 9:00:00,1,null,1337,null,2022-02-10,true,true,true
-AA,2022-08-02 13:00:00,FERDIGSTILT,2022-08-03 14:00:00,1,null,1337,null,2022-02-10,true,true,true
+dialogmote_uuid,dialogmote_tidspunkt,status_endring_type,status_endring_tidspunkt,fk_person1,enhet_nr,tilfelle_startdato,arbeidstaker,arbeidsgiver,sykmelder
+AA,2022-08-02 13:00:00,INNKALT,2022-07-02 9:00:00,1,1337,2022-02-10,true,true,true
+AA,2022-08-02 13:00:00,FERDIGSTILT,2022-08-03 14:00:00,1,1337,2022-02-10,true,true,true
 
-BB,2022-07-30 9:00:00,INNKALT,2022-07-02 10:00:00,2,null,1337,null,2022-02-11,true,true,true
-BB,2022-07-30 9:00:00,FERDIGSTILT,2022-07-30 14:00:00,2,null,1337,null,2022-02-11,true,true,true
+BB,2022-07-30 9:00:00,INNKALT,2022-07-02 10:00:00,2,1337,2022-02-11,true,true,true
+BB,2022-07-30 9:00:00,FERDIGSTILT,2022-07-30 14:00:00,2,1337,2022-02-11,true,true,true
+
+CC,2022-09-01 10:00:00,INNKALT,2022-07-02 11:00:00,3,1337,2022-02-12,true,true,true
+CC,2022-09-01 10:00:00,FERDIGSTILT,2022-09-2 11:00:00,3,1337,2022-02-12,true,true,true
