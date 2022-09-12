@@ -1,2 +1,4 @@
 uuid,createdAt,tilfelle_startdato,personIdentNumber,kandidat,arsak
-A,2022-06-15 10:00:00,2022-02-10,0101190012345,true,STOPPUNKT
+A,2022-06-15 10:00:00,2022-02-10,0101,true,STOPPUNKT
+
+B,2022-06-15 11:00:00,2022-02-11,0202,true,STOPPUNKT
