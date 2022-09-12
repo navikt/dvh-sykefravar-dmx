@@ -45,6 +45,3 @@ tests:
   dmx_poc:
     syfra:
       +tags: syfra
-
-vars:
-  rapportperiode: "202208" #TODO Må settes av Airflow
