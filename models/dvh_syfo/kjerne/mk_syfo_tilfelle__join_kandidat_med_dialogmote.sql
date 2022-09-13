@@ -6,16 +6,13 @@ WITH kandidat AS (
   SELECT * FROM {{ ref('fk_modia__dialogmote__dummy__fix202210') }}
 )
 
-, kandidat_gruppert AS (
+, kandidat_filtrert AS (
   SELECT
-    personidentnumber
-    ,tilfellestartdato
+    *
   FROM kandidat
-  WHERE
-    kandidat = 1 -- TODO: Test om det her kan få konsekvenser
-  GROUP BY
-    personidentnumber
-    ,tilfellestartdato
+  WHERE personidentnumber NOT IN (
+    SELECT personidentnumber FROM kandidat WHERE kandidat = 0
+  )
 )
 
 , dialogmote_gruppert AS (
@@ -44,23 +41,27 @@ WITH kandidat AS (
 , tilfeller AS (
   SELECT
     DECODE(
-      kandidat_gruppert.personidentnumber, NULL, dialogmote_gruppert.person_ident_number,
-      kandidat_gruppert.personidentnumber
+      kandidat_filtrert.personidentnumber, NULL, dialogmote_gruppert.person_ident_number,
+      kandidat_filtrert.personidentnumber
     ) AS person_ident_number
     ,DECODE(
-      kandidat_gruppert.tilfellestartdato, NULL, dialogmote_gruppert.tilfelle_startdato,
-      kandidat_gruppert.tilfellestartdato
+      kandidat_filtrert.tilfellestartdato, NULL, dialogmote_gruppert.tilfelle_startdato,
+      kandidat_filtrert.tilfellestartdato
     ) AS tilfelle_startdato
+    ,kandidat_filtrert.uuid AS kandidat_uuid
+    ,kandidat_filtrert.createdAt AS kandidat_created_at
+    ,kandidat_filtrert.kandidat
+    ,kandidat_filtrert.arsak AS kandidat_arsak
     ,dialogmote_gruppert.dialogmote_uuid
     ,dialogmote_gruppert.dialogmote_tidspunkt
     ,dialogmote_gruppert.enhet_nr
     ,dialogmote_gruppert.arbeidstaker
     ,dialogmote_gruppert.arbeidsgiver
     ,dialogmote_gruppert.sykmelder
-  FROM kandidat_gruppert
+  FROM kandidat_filtrert
   FULL OUTER JOIN dialogmote_gruppert ON
-    kandidat_gruppert.personidentnumber = dialogmote_gruppert.person_ident_number AND
-    kandidat_gruppert.tilfellestartdato = dialogmote_gruppert.tilfelle_startdato
+    kandidat_filtrert.personidentnumber = dialogmote_gruppert.person_ident_number AND
+    kandidat_filtrert.tilfellestartdato = dialogmote_gruppert.tilfelle_startdato
 )
 
 , final AS (
