@@ -10,11 +10,13 @@ WITH fak_dialogmote2 AS (
     ,COUNT(tilfeller_innen_26_uker_flagg) - SUM(tilfeller_innen_26_uker_flagg) AS dialogmote2_etter_26_uker
     ,COUNT(tilfeller_innen_26_uker_flagg) AS dialogmote2_totalt
     ,fk_dim_organisasjon
+    ,fk_dim_tid__rapportperiode
   FROM
     fak_dialogmote2
   GROUP BY
     fk_dim_organisasjon
     ,nav_enhet_kode_navn
+    ,fk_dim_tid__rapportperiode
 )
 
 , final AS (
