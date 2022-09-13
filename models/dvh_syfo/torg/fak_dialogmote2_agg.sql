@@ -1,8 +1,8 @@
-WITH fak_dialogmote2 AS (
+WITH dialogmote2 AS (
   SELECT * FROM {{ ref('fak_dialogmote2') }}
 )
 
-, fak_dialogmote2_gruppert_org AS (
+, dialogmote2_gruppert_org AS (
   SELECT
     nav_enhet_kode_navn
     ,COUNT(*) AS aktuelle_for_dialogmote2
@@ -12,7 +12,7 @@ WITH fak_dialogmote2 AS (
     ,fk_dim_organisasjon
     ,fk_dim_tid__rapportperiode
   FROM
-    fak_dialogmote2
+    dialogmote2
   GROUP BY
     fk_dim_organisasjon
     ,nav_enhet_kode_navn
@@ -20,7 +20,7 @@ WITH fak_dialogmote2 AS (
 )
 
 , final AS (
-  SELECT * FROM fak_dialogmote2_gruppert_org
+  SELECT * FROM dialogmote2_gruppert_org
 )
 
 SELECT * FROM final
