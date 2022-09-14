@@ -10,32 +10,39 @@ WITH tilfeller AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 )
 
-, tilfeller_join_dim_tid AS (
+, tilfeller_join_dim_tid_for_tilfelle_startdato AS (
   SELECT
     tilfeller.*
-    ,TRUNC(ADD_MONTHS(tilfelle_startdato, + 6), 'MM') AS rapportperiode_start_dato
-    ,LAST_DAY(ADD_MONTHS(tilfelle_startdato, + 6)) AS rapportperiode_slutt_dato
-    ,TO_NUMBER(CONCAT(TO_CHAR(
-      ADD_MONTHS(tilfelle_startdato, + 6), 'YYYYMM'), '003'
-    )) AS fk_dim_tid__rapportperiode
     ,TO_NUMBER(TO_CHAR(tilfeller.tilfelle_startdato, 'YYYYMMDD'
     )) AS fk_dim_tid__tilfelle_startdato
   FROM
     tilfeller
 )
 
+, tilfeller_join_rapportperiode AS (
+  SELECT
+    tilfeller_join_dim_tid_for_tilfelle_startdato.*
+    ,TRUNC(dialogmote_tidspunkt, 'MM') AS rapportperiode_start_dato
+    ,LAST_DAY(dialogmote_tidspunkt) AS rapportperiode_slutt_dato
+    ,TO_NUMBER(
+      CONCAT(TO_CHAR(dialogmote_tidspunkt, 'YYYYMM'), '003'
+    )) AS fk_dim_tid__rapportperiode
+  FROM
+    tilfeller_join_dim_tid_for_tilfelle_startdato
+)
+
 , tilfeller_join_fk_person1 AS (
   SELECT
-    tilfeller_join_dim_tid.*
+    tilfeller_join_rapportperiode.*
     ,DECODE(
       dvh_person_ident.fk_person1, NULL, -1, dvh_person_ident.fk_person1
     ) AS fk_person1
   FROM
-    tilfeller_join_dim_tid
+    tilfeller_join_rapportperiode
   LEFT JOIN dvh_person_ident ON
-    tilfeller_join_dim_tid.person_ident_number = dvh_person_ident.off_id
+    tilfeller_join_rapportperiode.person_ident_number = dvh_person_ident.off_id
   WHERE
-    tilfeller_join_dim_tid.rapportperiode_slutt_dato BETWEEN
+    tilfeller_join_rapportperiode.rapportperiode_slutt_dato BETWEEN
       dvh_person_ident.gyldig_fra_dato AND dvh_person_ident.gyldig_til_dato OR
     dvh_person_ident.fk_person1 IS NULL
 )
