@@ -30,9 +30,11 @@ WITH tilfeller AS (
       ,'MM'
     ) AS rapportperiode_start_dato
     ,LAST_DAY(
-      DECODE(
-        dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
-        dialogmote_tidspunkt
+      TRUNC(
+        DECODE(
+          dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+          dialogmote_tidspunkt
+        )
       )
     ) AS rapportperiode_slutt_dato
     ,TO_NUMBER(
