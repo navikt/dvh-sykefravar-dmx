@@ -7,9 +7,9 @@ WITH tilfeller AS (
     tilfeller.*
     ,CASE
       WHEN dialogmote_tidspunkt IS NULL THEN NULL
-      WHEN dialogmote_tidspunkt < rapportperiode_slutt_dato THEN 1
+      WHEN dialogmote_tidspunkt < varighet_26uker_dato THEN 1
       ELSE 0
-    END AS tilfeller_innen_26_uker_flagg
+    END AS dialogmote2_innen_26_uker_flagg
   FROM tilfeller
 )
 
