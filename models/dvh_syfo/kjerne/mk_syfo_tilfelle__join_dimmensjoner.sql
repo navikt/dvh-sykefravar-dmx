@@ -22,11 +22,31 @@ WITH tilfeller AS (
 , tilfeller_join_rapportperiode AS (
   SELECT
     tilfeller_join_dim_tid_for_tilfelle_startdato.*
-    ,TRUNC(dialogmote_tidspunkt, 'MM') AS rapportperiode_start_dato
-    ,LAST_DAY(dialogmote_tidspunkt) AS rapportperiode_slutt_dato
+    ,TRUNC(
+      DECODE(
+        dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+        dialogmote_tidspunkt
+      )
+      ,'MM'
+    ) AS rapportperiode_start_dato
+    ,LAST_DAY(
+      DECODE(
+        dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+        dialogmote_tidspunkt
+      )
+    ) AS rapportperiode_slutt_dato
     ,TO_NUMBER(
-      CONCAT(TO_CHAR(dialogmote_tidspunkt, 'YYYYMM'), '003'
-    )) AS fk_dim_tid__rapportperiode
+      CONCAT(
+        TO_CHAR(
+          DECODE(
+            dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+            dialogmote_tidspunkt
+          ),
+          'YYYYMM'
+        ),
+        '003'
+      )
+    ) AS fk_dim_tid__rapportperiode
   FROM
     tilfeller_join_dim_tid_for_tilfelle_startdato
 )
