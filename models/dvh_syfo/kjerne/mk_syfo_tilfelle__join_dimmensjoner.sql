@@ -19,12 +19,29 @@ WITH tilfeller AS (
     tilfeller
 )
 
-, tilfeller_join_rapportperiode AS (
+, tilfeller_join_dim_tid_for_26uker_varighet AS (
   SELECT
     tilfeller_join_dim_tid_for_tilfelle_startdato.*
     ,TRUNC(
+      ADD_MONTHS(
+        tilfeller_join_dim_tid_for_tilfelle_startdato.tilfelle_startdato,+6
+      )
+    ) AS varighet_26uker_dato
+    ,TO_NUMBER(
+      TO_CHAR(
+        tilfeller_join_dim_tid_for_tilfelle_startdato.tilfelle_startdato, 'YYYYMMDD'
+      )
+    ) AS fk_dim_tid__varighet_26uker_dato
+  FROM
+    tilfeller_join_dim_tid_for_tilfelle_startdato
+)
+
+, tilfeller_join_rapportperiode AS (
+  SELECT
+    tilfeller_join_dim_tid_for_26uker_varighet.*
+    ,TRUNC(
       DECODE(
-        dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+        dialogmote_tidspunkt, NULL, varighet_26uker_dato,
         dialogmote_tidspunkt
       )
       ,'MM'
@@ -32,7 +49,7 @@ WITH tilfeller AS (
     ,LAST_DAY(
       TRUNC(
         DECODE(
-          dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+          dialogmote_tidspunkt, NULL, varighet_26uker_dato,
           dialogmote_tidspunkt
         )
       )
@@ -41,7 +58,7 @@ WITH tilfeller AS (
       CONCAT(
         TO_CHAR(
           DECODE(
-            dialogmote_tidspunkt, NULL, ADD_MONTHS(tilfelle_startdato,+6),
+            dialogmote_tidspunkt, NULL, varighet_26uker_dato,
             dialogmote_tidspunkt
           ),
           'YYYYMM'
@@ -50,7 +67,7 @@ WITH tilfeller AS (
       )
     ) AS fk_dim_tid__rapportperiode
   FROM
-    tilfeller_join_dim_tid_for_tilfelle_startdato
+    tilfeller_join_dim_tid_for_26uker_varighet
 )
 
 , tilfeller_join_fk_person1 AS (
