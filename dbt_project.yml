@@ -33,6 +33,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
+  +persist_docs:
+    relation: true
+    columns:  true
   dmx_poc:
     dvh_syfo:
       +schema: dvh_syfo
@@ -41,10 +44,6 @@ models:
       +tags: syfra
       +schema: dvh_syfra
     # Config indicated by + and applies to all files under models/example/
-    sykm:
-      +persist_docs:
-        relation: true
-        columns:  true
 tests:
   +severity: warn
   dmx_poc:
