@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: fak_sykm_sykefravar_tilfelle_final_agg_tid
+    description: 'Target modell for '
+    columns:
+      - name: SYKEFRAVAR_FRA_DATO
+        description: 'Fra dato for sykefravær'
+      - name: SYKEFRAVAR_TIL_DATO
+        description: 'Til dato for sykefravær'
