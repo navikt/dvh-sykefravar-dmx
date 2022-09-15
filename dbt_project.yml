@@ -45,3 +45,6 @@ tests:
   dmx_poc:
     syfra:
       +tags: syfra
+
+quoting:
+  database: true

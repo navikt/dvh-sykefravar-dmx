@@ -50,7 +50,7 @@ WITH tilfeller AS (
     ,tilfeller_join_dim_tid__tilfelle_startdato.fk_person1
     ,tilfeller_join_dim_tid__tilfelle_startdato.fk_dim_tid__tilfelle_startdato
     ,tilfeller_join_dim_tid__tilfelle_startdato.fk_dim_tid__rapportperiode
-    ,tilfeller_join_dim_tid__tilfelle_startdato.tilfeller_innen_26_uker_flagg
+    ,tilfeller_join_dim_tid__tilfelle_startdato.dialogmote2_innen_26_uker_flagg
     ,tilfeller_join_dim_tid__tilfelle_startdato.nav_enhet_kode
     ,tilfeller_join_dim_tid__tilfelle_startdato.nav_enhet_navn
     ,tilfeller_join_dim_tid__tilfelle_startdato.nav_enhet_kode_navn
