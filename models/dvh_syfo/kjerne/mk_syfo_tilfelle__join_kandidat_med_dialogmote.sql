@@ -3,9 +3,11 @@ WITH kandidat AS (
 )
 
 , dialogmote AS (
-  SELECT * FROM {{ ref('fk_modia__dialogmote__dummy__fix202210') }}
+  SELECT * FROM {{ ref('fk_modia__dialogmote__dummy__fix202210') }} dialogmote
+   WHERE dialogmote.status_endring_type = 'FERDIGSTILT'
 )
 
+/*
 , kandidat_filtrert AS (
   SELECT
     *
@@ -37,6 +39,7 @@ WITH kandidat AS (
     ,arbeidsgiver
     ,sykmelder
 )
+*/
 
 , tilfeller AS (
   SELECT
@@ -54,14 +57,17 @@ WITH kandidat AS (
     ,kandidat_filtrert.arsak AS kandidat_arsak
     ,dialogmote_gruppert.dialogmote_uuid
     ,dialogmote_gruppert.dialogmote_tidspunkt
+    ,status_endring_type
     ,dialogmote_gruppert.enhet_nr
     ,dialogmote_gruppert.arbeidstaker
     ,dialogmote_gruppert.arbeidsgiver
     ,dialogmote_gruppert.sykmelder
-  FROM kandidat_filtrert
-  FULL OUTER JOIN dialogmote_gruppert ON
+  FROM kandidat kandidat_filtrert
+  FULL OUTER JOIN dialogmote dialogmote_gruppert
+  ON
     kandidat_filtrert.personidentnumber = dialogmote_gruppert.person_ident_number AND
     kandidat_filtrert.tilfellestartdato = dialogmote_gruppert.tilfelle_startdato
+
 )
 
 , final AS (

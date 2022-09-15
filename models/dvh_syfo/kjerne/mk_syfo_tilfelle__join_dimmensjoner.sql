@@ -39,35 +39,53 @@ WITH tilfeller AS (
 , tilfeller_join_rapportperiode AS (
   SELECT
     tilfeller_join_dim_tid_for_26uker_varighet.*
-    ,TRUNC(
-      DECODE(
-        dialogmote_tidspunkt, NULL, varighet_26uker_dato,
-        dialogmote_tidspunkt
-      )
-      ,'MM'
-    ) AS rapportperiode_start_dato
-    ,LAST_DAY(
-      TRUNC(
-        DECODE(
-          dialogmote_tidspunkt, NULL, varighet_26uker_dato,
-          dialogmote_tidspunkt
-        )
-      )
-    ) AS rapportperiode_slutt_dato
+    ,CASE
+      WHEN kandidat_arsak = 'DIALOGMOTE_FERDIGSTILT'
+      THEN TRUNC(dialogmote_tidspunkt, 'MM')
+      ELSE TRUNC(varighet_26uker_dato, 'MM')
+    END AS rapportperiode_start_dato
+    ,CASE
+      WHEN kandidat_arsak = 'DIALOGMOTE_FERDIGSTILT'
+      THEN LAST_DAY(TRUNC(dialogmote_tidspunkt, 'MM'))
+      ELSE LAST_DAY(TRUNC(varighet_26uker_dato, 'MM'))
+    END AS rapportperiode_slutt_dato
     ,TO_NUMBER(
       CONCAT(
         TO_CHAR(
-          DECODE(
-            dialogmote_tidspunkt, NULL, varighet_26uker_dato,
-            dialogmote_tidspunkt
-          ),
-          'YYYYMM'
+          CASE
+            WHEN kandidat_arsak = 'DIALOGMOTE_FERDIGSTILT'
+            THEN dialogmote_tidspunkt
+            ELSE varighet_26uker_dato
+          END
+          ,'YYYYMM'
         ),
         '003'
       )
     ) AS fk_dim_tid__rapportperiode
   FROM
     tilfeller_join_dim_tid_for_26uker_varighet
+)
+
+, rapport_periode_2 AS (
+  SELECT * FROM tilfeller_join_rapportperiode
+  UNION ALL
+  SELECT
+    tilfeller_join_dim_tid_for_26uker_varighet.*
+    ,TRUNC(varighet_26uker_dato,'MM') AS rapportperiode_start_dato
+    ,LAST_DAY(
+      TRUNC(varighet_26uker_dato)
+    ) AS rapportperiode_slutt_dato
+    ,TO_NUMBER(
+      CONCAT(
+        TO_CHAR(
+          varighet_26uker_dato,
+          'YYYYMM'
+        ),
+        '003'
+      )
+    ) AS fk_dim_tid__rapportperiode
+  FROM tilfeller_join_dim_tid_for_26uker_varighet
+  WHERE TRUNC(varighet_26uker_dato, 'MM') < TRUNC(dialogmote_tidspunkt, 'MM')
 )
 
 , tilfeller_join_fk_person1 AS (
