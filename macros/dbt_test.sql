@@ -1,5 +1,5 @@
 {% macro dbt_test_source(source, table_name) %}
-  {% if target.name == "dwhr" %}
+  {% if var('mock', False) == True %}
   {{ ref("mock_"+source+"__"+table_name) }}
   {% else %}
   {{ source(source, table_name) }}
