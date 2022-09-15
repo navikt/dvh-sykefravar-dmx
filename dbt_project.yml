@@ -41,6 +41,10 @@ models:
       +tags: syfra
       +schema: dvh_syfra
     # Config indicated by + and applies to all files under models/example/
+    sykm:
+      +persist_docs:
+        relation: true
+        columns:  true
 tests:
   +severity: warn
   dmx_poc:

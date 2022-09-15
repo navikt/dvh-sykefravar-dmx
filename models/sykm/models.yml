@@ -2,9 +2,37 @@ version: 2
 
 models:
   - name: fak_sykm_sykefravar_tilfelle_final_agg_tid
-    description: 'Target modell for '
+    description: 'Target modell for IA - PIA teamet, en rad per sykefraværtilfelle'
     columns:
       - name: SYKEFRAVAR_FRA_DATO
-        description: 'Fra dato for sykefravær'
+        description: 'Fra dato for sykefraværtilfellet'
       - name: SYKEFRAVAR_TIL_DATO
-        description: 'Til dato for sykefravær'
+        description: 'Til dato for sykefraværtilfellet'
+      - name: DIAGNOSE_KORONA_FLAGG
+        description: 'Flagg som  for om det er korona eller ikke'
+      - name: LASTET_DATO
+        description: 'Lastet dato - når lastet inn i DVH ( ikke last dbt)'
+      - name: FYLKE_NAVN
+        description: 'Navn på fylket'
+      - name: KOMMUNE_NAVN
+        description: 'Navn på kommunen'
+      - name: KOMMUNE_NUMMER_ARBSTED
+        description: 'Kommunenummer arbeidsted'
+      - name: KOMMUNE_ARBSTED
+        description: 'Kommunenavn arbeidsted'
+      - name: FYLKE_ARBSTED
+        description: 'Arbeidsted for fylket'
+      - name: ICPC_HOVEDGRUPPE_BESK
+        description: 'Hovedgruppe for diagnose'
+      - name: NAERING_KODE
+        description: 'Næringskoden'
+      - name: NAERING_BESK_LANG
+        description: 'Næringsbeskrivelse lang'
+      - name: AAR
+        description: 'Årstallet for tilfellet'
+      - name: UKE
+        description: 'Uke nummer for tilfellet'
+      - name: ANT_TILFELLER
+        description: 'Vil ha verdien 1 for å kunne telle tilfeller'
+      - name: STIPULERT_TAPTE_DAGSVERK
+        description: 'Stipulert tapte dagsverk, tar ikke hensyn til stillingsprosent. Tar hensyn til helger ( 5 dager per uke)'
