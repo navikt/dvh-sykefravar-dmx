@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: fak_sykm_sykefravar_tilfelle_final_agg_tid
-    description: 'Target modell for IA - PIA teamet, en rad per sykefraværstilfelle'
+    description: 'Target modell for IA - PIA teamet, en rad per sykefraværtilfelle'
     columns:
       - name: SYKEFRAVAR_FRA_DATO
         description: 'Fra dato for sykefraværtilfellet'
