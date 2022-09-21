@@ -1,0 +1,11 @@
+Testdata
+
+A/AA/1 = kandidat etter 17 uker, kaldt inn til dm2 før 26 uker og avholdt møte i rapportperiode.
+B/BB/2 = kandidat etter 17 uker, kaldt inn til dm2 før 26 uker og avholdt møte før rapportperiode.
+C/CC/3 = kandidat etter 17 uker, kaldt inn til dm2 før 26 uker og avholdt etter rapportperiode.
+D/DD/4 = kandidat etter 17 uker, ikke kaldt inn til dm2
+E/EE/5 = ikke kandidat, kaldt inn til dm2 før 26 uker og avholdt møte i rapportperiode
+F/FF/6 = ikke kandidat, kaldt inn til dm2 før 26 uker og avholdt før rapportperiode
+G/GG/7 = ikke kandidat, kaldt inn til dm2 før 26 uker og enda ikke avholdt etter rapportperiode
+H/HH/8 = kandidat etter 17 uker med unntak, ikke kaldt inn til dm2
+I/II/9 = kandidat etter 17 uker, kaldt inn til dm2 før 26uker og avholdt møte i rapportperiode men tilfelle_startdato har blitt en tidligere dato.
