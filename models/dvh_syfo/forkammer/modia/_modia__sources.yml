@@ -6,3 +6,4 @@ sources:
     tables:
     - name: fk_isdialogmote_dm2
     - name: raw_isdialogmote
+    - name: raw_isdialogmotekandidat
