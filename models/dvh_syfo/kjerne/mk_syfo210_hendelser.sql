@@ -9,10 +9,10 @@ WITH hendelser as (
   FROM {{ ref('mk_syfo__union') }}
 )
 ,
-hendelser_m_periode as (
+hendelser_m_periode as (--TODO: fjernes hvis ikke periode skal lages her
   SELECT
-    hendelser.*,
-    decode(hendelse, 'FERDIGSTILT', to_char(dialogmote_tidspunkt, 'YYYYMM'), to_char(tilfelle_startdato1 + 26*7,'YYYYMM')) as periode
+    hendelser.*--,
+  --  decode(hendelse, 'FERDIGSTILT', to_char(dialogmote_tidspunkt, 'YYYYMM'), to_char(tilfelle_startdato1 + 26*7,'YYYYMM')) as periode
   FROM hendelser
 )
 ,

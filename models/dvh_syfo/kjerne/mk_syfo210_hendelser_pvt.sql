@@ -6,8 +6,9 @@ WITH hendelser as (
 )
 ,
 final as (
-  select * from (
-  select fk_person1, tilfelle_startdato1, periode, hendelse,hendelse_tidspunkt1
+  select * from (--TODO rett opp hvis periode ikke skal inn her
+  --select fk_person1, tilfelle_startdato1, periode, hendelse,hendelse_tidspunkt1
+  select fk_person1, tilfelle_startdato1, hendelse,hendelse_tidspunkt1
   from   hendelser
 )
 pivot (
