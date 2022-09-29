@@ -1,3 +1,7 @@
+{{config(
+    materialized='table'
+)}}
+
 WITH kandidater_base AS (
   SELECT * FROM {{ ref('base_modia__kandidater') }}
 ),
@@ -6,7 +10,18 @@ dim_off_id AS (
 ),
 final as
 (
-    SELECT kandidater_base.*, dim_off_id.fk_person1
+    SELECT
+    kandidater_uuid,
+    createdAt,
+    kandidat_flagg,
+    arsak,
+    kafka_topic,
+    kafka_partisjon,
+    kafka_offset,
+    kafka_mottatt_dato,
+    lastet_dato,
+    kildesystem,
+    dim_off_id.fk_person1 as fk_person1
     FROM kandidater_base
     LEFT JOIN dim_off_id
     ON kandidater_base.person_ident = dim_off_id.off_id
