@@ -1,24 +1,17 @@
 /************************************************'
 *I denne modellen velges kun hendelser relevante for syfo210
-*rapport_periode beregnes (= dm tidspunkt for avholdte dm og
-*passering av 26 uker for kandidathendelser)
 **************************************************/
 WITH hendelser as (
   SELECT
-    *
-  FROM {{ ref('mk_syfo__union') }}
-)
-,
-hendelser_m_periode as (--TODO: fjernes hvis ikke periode skal lages her
-  SELECT
-    hendelser.*--,
-  --  decode(hendelse, 'FERDIGSTILT', to_char(dialogmote_tidspunkt, 'YYYYMM'), to_char(tilfelle_startdato1 + 26*7,'YYYYMM')) as periode
-  FROM hendelser
+    mk_syfo__union.*,
+    ROW_NUMBER() OVER(PARTITION BY fk_person1, tilfelle_startdato1, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
+  FROM {{ ref('mk_syfo__union') }} mk_syfo__union
 )
 ,
 final as (
   SELECT
   *
-  FROM hendelser_m_periode where hendelse in ('FERDIGSTILT', 'STOPPUNKT','DIALOGMOTE_FERDIGSTILT','UNNTAK')
+  FROM hendelser where hendelse in ('FERDIGSTILT', 'STOPPUNKT','DIALOGMOTE_FERDIGSTILT','UNNTAK')
+  and row_number = 1
 )
 select * from final
