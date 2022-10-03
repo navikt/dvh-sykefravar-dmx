@@ -10,8 +10,8 @@ UNPIVOT exCLUDE NULLS(
 )),
 final as (
 select
-fk_person1,
-tilfelle_startdato1,
+person_ident,
+tilfelle_startdato,
 dialogmote_tidspunkt,
 dm_innen_26u,
 dm_etter_26u,

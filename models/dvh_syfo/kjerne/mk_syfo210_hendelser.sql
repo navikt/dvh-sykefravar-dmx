@@ -4,7 +4,7 @@
 WITH hendelser as (
   SELECT
     mk_syfo__union.*,
-    ROW_NUMBER() OVER(PARTITION BY fk_person1, tilfelle_startdato1, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
+    ROW_NUMBER() OVER(PARTITION BY person_ident, tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
   FROM {{ ref('mk_syfo__union') }} mk_syfo__union
 )
 ,
