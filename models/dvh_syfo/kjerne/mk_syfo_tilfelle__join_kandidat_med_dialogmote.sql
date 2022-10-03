@@ -3,7 +3,7 @@ WITH kandidat AS (
 )
 
 , dialogmote AS (
-  SELECT * FROM {{ ref('fk_modia__dialogmote__dummy__fix202210') }} dialogmote
+  SELECT * FROM {{ ref('fk_modia__dialogmote') }} dialogmote
    WHERE dialogmote.status_endring_type = 'FERDIGSTILT'
 )
 
