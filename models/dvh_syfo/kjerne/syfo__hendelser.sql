@@ -15,7 +15,7 @@ dim_off_id AS (
 final as
 (
     SELECT
-    person_ident,
+    dim_off_id.fk_person1,
     tilfelle_startdato,
     hendelse,
     hendelse_tidspunkt,
@@ -26,11 +26,11 @@ final as
     arbeidstaker_flagg,
     arbeidsgiver_flagg,
     sykmelder_flagg,
-    kilde_uuid,
-    dim_off_id.fk_person1 as fk_person1
+    kilde_uuid
     FROM hendelser
     LEFT JOIN dim_off_id
     ON hendelser.person_ident = dim_off_id.off_id
+    where dim_off_id.gyldig_til_dato = to_date('9999-12-31','YYYY-MM-DD')
     --where hendelser.kafka_mottatt_dato BETWEEN dim_off_id.gyldig_fra_dato AND dim_off_id.gyldig_til_dato
 )
 SELECT * FROM final
