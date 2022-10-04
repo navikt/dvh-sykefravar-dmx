@@ -6,8 +6,8 @@ WITH dialogmote AS (
   SELECT
     dialogmote.kafka_message.dialogmoteUuid as kilde_uuid,
     TO_TIMESTAMP_TZ(dialogmote.kafka_message.dialogmoteTidspunkt, 'YYYY-MM-DD HH24:MI:SS:TZH:TZM') AT TIME ZONE 'CET' AS dialogmote_tidspunkt,
-    dialogmote.kafka_message.statusEndringType as status_endring_type,
-    TO_TIMESTAMP_TZ(dialogmote.kafka_message.statusEndringTidspunkt, 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AT TIME ZONE 'CET' AS status_endring_tidspunkt,
+    dialogmote.kafka_message.statusEndringType as hendelse,
+    TO_TIMESTAMP_TZ(dialogmote.kafka_message.statusEndringTidspunkt, 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AT TIME ZONE 'CET' AS hendelse_tidspunkt,
     dialogmote.kafka_message.personIdent as person_ident,
     dialogmote.kafka_message.virksomhetsnummer as virksomhetsnr,
     dialogmote.kafka_message.enhetNr as enhet_nr,

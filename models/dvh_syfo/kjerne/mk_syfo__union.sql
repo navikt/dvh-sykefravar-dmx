@@ -7,22 +7,15 @@
 *********************************************************/
 WITH union_all AS (
   {{ dbt_utils.union_relations(
-    relations=[ref('fk_modia__kandidat'), ref('fk_modia__dialogmote')],
+    relations=[ref('fk_modia__kandidat'), ref('fk_modia__dialogmote'), ref('mk_syfo__arena_hendelse')],
     source_column_name=None
   ) }}
-)
-,
-union_all_decode_hendelse as (
-  SELECT
-    union_all.*,
-    decode(arsak, null, status_endring_type, arsak) as hendelse,
-    decode(createdAt,null,status_endring_tidspunkt, createdAt) as hendelse_tidspunkt
-  FROM union_all
 )
 ,
 final as (
     SELECT
       person_ident,
+      fk_person1,
       tilfelle_startdato,
       hendelse,
       hendelse_tidspunkt,
@@ -32,7 +25,8 @@ final as (
       arbeidstaker_flagg,
       arbeidsgiver_flagg,
       sykmelder_flagg,
-      kilde_uuid
-    FROM union_all_decode_hendelse
+      kilde_uuid,
+      kildesystem
+    FROM union_all
 )
 select * from final

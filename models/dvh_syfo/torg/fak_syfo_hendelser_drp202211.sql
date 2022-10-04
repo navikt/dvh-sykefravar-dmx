@@ -10,7 +10,7 @@ with syfo210 as (
 
 final as (
     select
-        person_ident,
+        fk_person1,
         tilfelle_startdato,
         dialogmote_tidspunkt,
         dm_innen_26u,
