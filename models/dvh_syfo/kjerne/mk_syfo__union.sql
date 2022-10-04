@@ -27,6 +27,7 @@ final as (
       hendelse,
       hendelse_tidspunkt,
       dialogmote_tidspunkt,
+      unntakarsak,
       enhet_nr,
       arbeidstaker_flagg,
       arbeidsgiver_flagg,

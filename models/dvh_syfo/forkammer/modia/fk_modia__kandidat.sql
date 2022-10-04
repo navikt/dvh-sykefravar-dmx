@@ -8,6 +8,7 @@ WITH kandidater AS (
     kandidater.kafka_message.personIdentNumber as person_ident,
     DECODE(kandidater.kafka_message.kandidat, 'true', 1, 'false', 0) AS kandidat_flagg,
     kandidater.kafka_message.arsak as arsak,
+    kandidater.kafka_message.unntakArsak as unntakarsak,
     TO_DATE(kandidater.kafka_message.tilfelleStart, 'YYYY-MM-DD') as tilfelle_startdato,
     kafka_topic,
     kafka_partisjon,

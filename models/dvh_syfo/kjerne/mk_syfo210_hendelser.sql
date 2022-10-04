@@ -3,9 +3,8 @@
 **************************************************/
 WITH hendelser as (
   SELECT
-    mk_syfo__union.*,
-    ROW_NUMBER() OVER(PARTITION BY person_ident, tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
-  FROM {{ ref('mk_syfo__union') }} mk_syfo__union
+    syfo__hendelser.*
+  FROM {{ ref('syfo__hendelser') }} syfo__hendelser
 )
 ,
 final as (
