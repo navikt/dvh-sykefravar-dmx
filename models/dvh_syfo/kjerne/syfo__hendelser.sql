@@ -3,34 +3,39 @@
 *legger paa radnummer på hendelser av samme type i samme tilfelle
 *********************************************************************/
 WITH hendelser as (
-  SELECT
-    mk_syfo__union.*,
-    ROW_NUMBER() OVER(PARTITION BY person_ident, tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
-  FROM {{ ref('mk_syfo__union') }} mk_syfo__union
+  SELECT * FROM {{ ref('mk_syfo__union') }}
 )
 ,
-dim_off_id AS (
+dvh_person_ident AS (
     SELECT * FROM {{ref('felles_dt_person__dvh_person_ident_off_id') }}
 ),
-final as
-(
+
+join_fk_person AS (
     SELECT
-    dim_off_id.fk_person1,
-    tilfelle_startdato,
-    hendelse,
-    hendelse_tidspunkt,
-    row_number,
-    dialogmote_tidspunkt,
-    unntakarsak,
-    enhet_nr,
-    arbeidstaker_flagg,
-    arbeidsgiver_flagg,
-    sykmelder_flagg,
-    kilde_uuid
+      DECODE(dvh_person_ident.fk_person1, null, hendelser.fk_person1, dvh_person_ident.fk_person1) AS fk_person1,
+      tilfelle_startdato,
+      hendelse,
+      hendelse_tidspunkt,
+      dialogmote_tidspunkt,
+      unntakarsak,
+      enhet_nr,
+      arbeidstaker_flagg,
+      arbeidsgiver_flagg,
+      sykmelder_flagg,
+      kilde_uuid,
+      kildesystem
     FROM hendelser
-    LEFT JOIN dim_off_id
-    ON hendelser.person_ident = dim_off_id.off_id
-    where dim_off_id.gyldig_til_dato = to_date('9999-12-31','YYYY-MM-DD')
-    --where hendelser.kafka_mottatt_dato BETWEEN dim_off_id.gyldig_fra_dato AND dim_off_id.gyldig_til_dato
+    LEFT JOIN dvh_person_ident
+    ON hendelser.person_ident = dvh_person_ident.off_id
+      WHERE dvh_person_ident.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+      OR dvh_person_ident.off_id IS NULL
 )
+
+, final AS (
+  SELECT
+    join_fk_person.*
+    ,ROW_NUMBER() OVER(PARTITION BY fk_person1, tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
+  FROM join_fk_person
+)
+
 SELECT * FROM final
