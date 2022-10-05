@@ -26,9 +26,9 @@ join_fk_person AS (
       kildesystem
     FROM hendelser
     LEFT JOIN dvh_person_ident
-    ON hendelser.person_ident = dvh_person_ident.off_id
-      WHERE dvh_person_ident.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
-      OR dvh_person_ident.off_id IS NULL
+    ON
+      hendelser.person_ident = dvh_person_ident.off_id
+      AND dvh_person_ident.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
 )
 
 , final AS (
