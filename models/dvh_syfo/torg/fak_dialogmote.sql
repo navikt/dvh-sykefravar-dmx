@@ -1,23 +1,25 @@
 WITH hendelser AS (
   SELECT * FROM {{ref("mk_syfo210_hendelser_pvt")}}
 )
-
-
-
-
+,dim_person1 AS (
+  SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
+)
 ,final AS (
   SELECT
-    fk_person1
+    hendelser.fk_person1
     ,tilfelle_startdato
-    ,1234 AS nav_enhet
     ,1 AS dialogmote2_innen_26_uker_flagg
     ,0 AS svar_behov
-    ,'Behandler/arbeidsgiver/Sykmeldt/tom' AS svar_behov_hvem
-    ,TO_DATE('9999-12-31', 'YYYY-MM-DD') AS behov_meldt_dato
-    ,'Behandler/arbeidsgiver/Sykmeldt/tom' AS behov_meldt_hvem
+    ,NULL AS svar_behov_hvem
+    ,NULL AS behov_meldt_dato
+    ,NULL AS behov_meldt_hvem
     ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
-    ,2 AS dialogmote_nr
-    ,0 AS unntak
+    ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
+    ,unntak AS unntak_dato
+    ,dim_person1.fk_dim_organisasjon
   FROM hendelser
+  LEFT JOIN dim_person1 ON
+    hendelser.fk_person1 = dim_person1.fk_person1
+    AND hendelser.tilfelle_startdato BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
 )
 SELECT * FROM final
