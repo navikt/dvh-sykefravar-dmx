@@ -1,3 +1,8 @@
+{{ config(
+    materialized='table'
+)}}
+
+
 WITH hendelser AS (
   SELECT * FROM {{ref("mk_syfo210_hendelser_pvt")}}
 )
@@ -21,10 +26,10 @@ WITH hendelser AS (
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
     ,dialogmote2_innen_26_uker_flagg
-    ,NULL AS svar_behov
-    ,NULL AS svar_behov_hvem
-    ,NULL AS behov_meldt_dato
-    ,NULL AS behov_meldt_hvem
+    ,' ' AS svar_behov
+    ,' ' AS svar_behov_hvem
+    ,' ' AS behov_meldt_dato
+    ,' ' AS behov_meldt_hvem
     ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
