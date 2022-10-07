@@ -17,6 +17,18 @@ WITH hendelser AS (
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,dim_person1.fk_dim_organisasjon
+    ,TO_NUMBER(
+      TO_CHAR(tilfelle_startdato, 'YYYYMMDD')
+    ) AS fk_dim_tid__tilfelle_startdato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote_tidspunkt1, 'YYYYMMDD')
+    ) AS fk_dim_tid__dialogmote2_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote_tidspunkt2, 'YYYYMMDD')
+    ) AS fk_dim_tid__dialogmote3_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(unntak, 'YYYYMMDD')
+    ) AS fk_dim_tid__unntak_dato
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1
