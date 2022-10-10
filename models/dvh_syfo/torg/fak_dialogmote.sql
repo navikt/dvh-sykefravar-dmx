@@ -4,7 +4,7 @@
 
 
 WITH hendelser AS (
-  SELECT * FROM {{ref("mk_syfo210_hendelser_pvt")}}
+  SELECT * FROM {{ref("mk_dialogmote__pivotert")}}
 )
 
 ,dim_person1 AS (
