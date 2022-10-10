@@ -2,13 +2,13 @@ WITH hendelser as (
   SELECT
     aktuelle_hendelser.*,
     decode(hendelse, 'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) as hendelse_tidspunkt1
-  FROM {{ ref('mk_syfo210_hendelser') }}  aktuelle_hendelser
+  FROM {{ ref("mk_dialogmote__min_tilfelle_startdato") }}  aktuelle_hendelser
 )
 ,
 final as (
   select * from (--TODO rett opp hvis periode ikke skal inn her
   --select fk_person1, tilfelle_startdato1, periode, hendelse,hendelse_tidspunkt1
-  select fk_person1, tilfelle_startdato, concat(hendelse, row_number) as hendelse1,hendelse_tidspunkt1
+  select fk_person1, min_tilfelle_startdato AS tilfelle_startdato, concat(hendelse, row_number) as hendelse1,hendelse_tidspunkt1
   from   hendelser
 )
 pivot (

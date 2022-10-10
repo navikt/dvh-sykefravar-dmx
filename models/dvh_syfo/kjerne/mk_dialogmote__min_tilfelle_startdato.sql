@@ -1,5 +1,5 @@
 WITH hendelser AS (
-    SELECT * FROM {{ ref("mk_syfo210_hendelser") }}
+    SELECT * FROM {{ ref("mk_dialogmote__hendelse") }}
 )
 
 ,min_tilfelle AS (
