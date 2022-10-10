@@ -1,22 +1,33 @@
 WITH hendelser as (
   SELECT
-    aktuelle_hendelser.*,
-    decode(hendelse, 'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) as hendelse_tidspunkt1
-  FROM {{ ref("mk_dialogmote__min_tilfelle_startdato") }}  aktuelle_hendelser
+    aktuelle_hendelser.*
+    ,DECODE(
+      hendelse, 'FERDIGSTILT'
+        ,dialogmote_tidspunkt
+        ,hendelse_tidspunkt
+    ) AS hendelse_tidspunkt1
+  FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
 )
-,
-final as (
-  select * from (--TODO rett opp hvis periode ikke skal inn her
-  --select fk_person1, tilfelle_startdato1, periode, hendelse,hendelse_tidspunkt1
-  select fk_person1, min_tilfelle_startdato AS tilfelle_startdato, concat(hendelse, row_number) as hendelse1,hendelse_tidspunkt1
-  from   hendelser
-)
-pivot (
-  max(hendelse_tidspunkt1)
-  for hendelse1 in (
-    'STOPPUNKT1' STOPPUNKT, 'FERDIGSTILT1' DIALOGMOTE_TIDSPUNKT1,'FERDIGSTILT2' DIALOGMOTE_TIDSPUNKT2, 'UNNTAK1' UNNTAK
+
+,final AS (
+  SELECT * FROM (
+    SELECT fk_person1
+      ,min_tilfelle_startdato AS tilfelle_startdato
+      ,CONCAT(hendelse, ROW_NUMBER) AS hendelse1
+      ,hendelse_tidspunkt1
+    FROM hendelser
   )
+  PIVOT(
+    MAX(hendelse_tidspunkt1) FOR hendelse1 IN (
+      'STOPPUNKT1' stoppunkt
+      ,'FERDIGSTILT1' dialogmote_tidspunkt1
+      ,'FERDIGSTILT2' dialogmote_tidspunkt2
+      ,'UNNTAK1' unntak
+    )
+  )
+  ORDER BY
+    fk_person1
+    ,tilfelle_startdato
 )
-order by fk_person1, tilfelle_startdato
-)
-select * from final
+
+SELECT * FROM final

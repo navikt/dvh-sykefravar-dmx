@@ -7,7 +7,7 @@
 *********************************************************/
 WITH union_all AS (
   {{ dbt_utils.union_relations(
-    relations=[ref('fk_modia__kandidat'), ref('fk_modia__dialogmote'), ref('mk_syfo__arena_hendelse')],
+    relations=[ref('fk_modia__kandidat'), ref('fk_modia__dialogmote'), ref('mk_dialogmote__omkode_arena_hendelse')],
     source_column_name=None
   ) }}
 )
