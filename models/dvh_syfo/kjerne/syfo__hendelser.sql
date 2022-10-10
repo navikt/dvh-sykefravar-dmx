@@ -34,7 +34,6 @@ join_fk_person AS (
 , final AS (
   SELECT
     join_fk_person.*
-    ,ROW_NUMBER() OVER(PARTITION BY fk_person1, tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
   FROM join_fk_person
 )
 
