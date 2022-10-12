@@ -7,7 +7,11 @@ WITH arena AS (
     fk_person1
     ,TO_DATE(TO_CHAR(fk_dim_tid_ident_dato), 'YYYYMMDD') AS tilfelle_startdato
     ,TO_DATE(TO_CHAR(fk_dim_tid_dato_hendelse), 'YYYYMMDD') AS hendelse_tidspunkt
-    ,TO_DATE(TO_CHAR(fk_dim_tid_dato_hendelse), 'YYYYMMDD') AS dialogmote_tidspunkt
+    ,
+    CASE
+      when fk_dim_sf_hendelsestype in (105,179) then
+      TO_DATE(TO_CHAR(fk_dim_tid_dato_hendelse), 'YYYYMMDD')
+    END AS dialogmote_tidspunkt
     ,ansv_kontor AS enhet_nr
     ,DECODE(fk_dim_sf_hendelsestype
       ,105 ,'FERDIGSTILT'
