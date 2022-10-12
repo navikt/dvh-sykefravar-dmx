@@ -10,6 +10,9 @@ WITH hendelser AS (
 ,dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 )
+,dim_organisasjon AS (
+  SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
+)
 
 ,flag_innen_26Uker AS (
   SELECT fk_person1, tilfelle_startdato,
@@ -33,6 +36,7 @@ WITH hendelser AS (
     ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
+    ,dim_organisasjon.nav_enhet_kode_navn 
     ,dim_person1.fk_dim_organisasjon
     ,TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
@@ -53,6 +57,8 @@ WITH hendelser AS (
   LEFT JOIN flag_innen_26Uker ON
     hendelser.fk_person1 = flag_innen_26Uker.fk_person1 AND
     hendelser.tilfelle_startdato = flag_innen_26Uker.tilfelle_startdato
+  LEFT JOIN dim_organisasjon ON
+    dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
 )
 
 SELECT * FROM final
