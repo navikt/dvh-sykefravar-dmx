@@ -36,7 +36,8 @@ WITH hendelser AS (
     ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
-    ,dim_organisasjon.nav_enhet_kode_navn 
+    ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_passerer_26uker_mnd_start_dato
+    ,dim_organisasjon.nav_enhet_kode_navn
     ,dim_person1.fk_dim_organisasjon
     ,TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
