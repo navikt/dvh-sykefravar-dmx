@@ -4,7 +4,7 @@
     "*.yml": "jinja-yaml",
     "*.sql": "jinja-sql",
     "*.md": "jinja-md",
-    "**/target/compiled/**/*.sql": "oraclesql",
+    "**/target/compiled/**/*.sql": "oraclesql"
   },
   "editor.formatOnSave": true,
   "editor.formatOnType": true,

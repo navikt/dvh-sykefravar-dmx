@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: mock_modia__kandidat
+    config:
+      column_types:
+        personIdentNumber: varchar2(255)
+  - name: mock_modia__dialogmote
+    config:
+      column_types:
+        enhet_nr: varchar2(255)

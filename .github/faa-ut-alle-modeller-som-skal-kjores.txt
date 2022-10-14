@@ -1,0 +1,7 @@
+Filer som er endret må hentes fra git og legges inn i dbt ls -s +<endret_modell_1>+ +<endret_modell_2>+
+Eks: dbt ls -s +fk_modia__kandidat+ +fk_modia__dialogmote__dummy__fix202210+
+
+Få ut siste ord i listen:
+dbt ls -s +fk_modia__kandidat+ +fk_modia__dialogmote__dummy__fix202210+ | awk 'BEGIN{FS="[ .]"}{if (NR!=1){print $NF}}'
+
+Bruk output til å bygge opp dbt build kommando: dbt build -s +<modell_1>+ +<modell_2>+ +<modell_3>+

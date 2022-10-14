@@ -29,10 +29,6 @@ quoting:
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
-
-# In this example config, we tell dbt to build all models in the example/ directory
-# as tables. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
 models:
   +persist_docs:
     relation: true
@@ -44,7 +40,11 @@ models:
     syfra:
       +tags: syfra
       +schema: dvh_syfra
-    # Config indicated by + and applies to all files under models/example/
+
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
 tests:
   +severity: warn
   dmx_poc:

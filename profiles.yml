@@ -1,6 +1,16 @@
 dmx_poc:
   target: "{{env_var('DBT_DB_TARGET')}}"
   outputs:
+    dbt_test:
+      type: oracle
+      user: dbt_test
+      pass: example
+      protocol: tcp
+      host: localhost
+      port: 1521
+      service: XEPDB1
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 4
     dwhu1:
       type: oracle
       user: "{{env_var('DBT_DB_USER')}}"

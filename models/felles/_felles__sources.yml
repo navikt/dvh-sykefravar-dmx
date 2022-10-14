@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: dt_p
+    schema: dt_p
+    tables:
+    - name: dim_organisasjon
+    - name: dim_tid

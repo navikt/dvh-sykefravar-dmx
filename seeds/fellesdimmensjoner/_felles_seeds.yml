@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: mock_dt_p__dim_organisasjon
+    config:
+      column_types:
+        nav_enhet_kode: varchar2(255)
