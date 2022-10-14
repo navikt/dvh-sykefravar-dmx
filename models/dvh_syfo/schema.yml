@@ -19,8 +19,6 @@ sources:
     description: 'Oppfølging samt diverse felles dimensjoner'
     schema: DT_P
     tables:
-      - name: FAK_SF_OPPFOLGING_D2_MND
-        description: Facta med oppfølgingsdata
       - name: DIM_TID
         description: Tidsdimensjonen
       - name: DIM_ORGANISASJON
