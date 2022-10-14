@@ -4,5 +4,5 @@ models:
   - name: fk_modia__kandidat
     description: Kandidatliste endringer
     columns:
-      - name: uuid
-        description: Unik id for endringen
+      - name: kilde_uuid
+        description: Unik id for hendelsen
