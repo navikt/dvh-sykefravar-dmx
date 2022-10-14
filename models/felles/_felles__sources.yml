@@ -6,3 +6,4 @@ sources:
     tables:
     - name: dim_organisasjon
     - name: dim_tid
+    - name: dim_varighet

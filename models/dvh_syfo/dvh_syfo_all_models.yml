@@ -2,22 +2,6 @@ version:  2
 
 models:
 
-  - name: stg_dim_person1
-    description: 'Persondimenjsons'
-    columns:
-      - name: pk_dim_person
-        tests:
-        - unique
-        - not_null
-
-  - name: stg_dim_organisasjon
-    description: Oversikt over organisasjonen
-    columns:
-      - name: ek_org_node
-        tests:
-        - unique
-        - not_null
-
   - name: fak_syfo_oppfolging_pvt
     description: sykefravær_info pivotert
     columns:

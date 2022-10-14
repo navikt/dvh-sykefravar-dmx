@@ -1,6 +1,6 @@
 
 with source_dim_varighet as (
-    select  * from {{ source('dmx_pox_oppfolging', 'DIM_VARIGHET') }}
+    select  * from {{ source('dt_p', 'dim_varighet') }}
 ),
 
 final as (

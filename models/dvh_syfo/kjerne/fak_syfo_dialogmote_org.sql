@@ -5,7 +5,7 @@ WITH fak_syfo_dialogmote_org AS (
 ),
 
 dim_org AS (
-    SELECT * FROM {{ref('stg_dim_organisasjon')}}
+    SELECT * FROM {{ref('felles_dt_p__dim_organisasjon')}}
 ),
 
 final AS (

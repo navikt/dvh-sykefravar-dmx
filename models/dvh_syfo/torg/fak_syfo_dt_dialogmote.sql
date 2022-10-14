@@ -10,7 +10,7 @@ WITH fak_syfo_dialogmote_s AS (
 ),
 
 dim_varighet AS (
-    SELECT * FROM {{ref('stg_dim_varighet')}}
+    SELECT * FROM {{ref('felles_dt_p__dim_varighet')}}
 ),
 
 final AS (
