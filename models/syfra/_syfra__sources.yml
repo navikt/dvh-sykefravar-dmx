@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: dvh_syfra
+  - name: syfra
     tags: ['syfra']
     schema: dvh_syfra
     tables:
