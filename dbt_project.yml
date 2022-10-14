@@ -24,13 +24,15 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-
 quoting:
   database: true
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
+  +persist_docs:
+    relation: true
+    columns:  true
   dmx_poc:
     dvh_syfo:
       +schema: dvh_syfo

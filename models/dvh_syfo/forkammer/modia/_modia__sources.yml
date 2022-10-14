@@ -7,3 +7,7 @@ sources:
     - name: fk_isdialogmote_dm2
     - name: raw_isdialogmote
     - name: raw_isdialogmotekandidat
+      freshness:
+        warn_after: {count: 1, period: day}
+      loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
+
