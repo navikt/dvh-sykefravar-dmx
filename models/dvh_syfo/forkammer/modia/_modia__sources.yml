@@ -4,7 +4,6 @@ sources:
   - name: modia
     schema: dvh_syfo
     tables:
-    - name: fk_isdialogmote_dm2
     - name: raw_isdialogmote
     - name: raw_isdialogmotekandidat
       freshness:
