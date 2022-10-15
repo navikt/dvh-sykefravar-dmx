@@ -64,22 +64,26 @@ if __name__ == "__main__":
 
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Prosjekt path er: {project_path}")
-   
-    try:
-        logger.debug(f"running command: {command}")
-        output = subprocess.run(
-            (
-              ["dbt", "--no-use-colors", "--log-format", "json"] +
-              command +
-              ["--profiles-dir", profiles_dir, "--project-dir", project_path]
-            ),
-            check=True, capture_output=True
-        )
-        logger.info(output.stdout.decode("utf-8"))
-        logger.debug(dbt_logg(project_path))
-    except subprocess.CalledProcessError as err:
-        raise Exception(logger.error(dbt_logg(project_path)),
-                        err.stdout.decode("utf-8"))
+
+    def run_dbt(command: List[str]):
+        try:
+            logger.debug(f"running command: {command}")
+            output = subprocess.run(
+                (
+                  ["dbt", "--no-use-colors", "--log-format", "json"] +
+                  command +
+                  ["--profiles-dir", profiles_dir, "--project-dir", project_path]
+                ),
+                check=True, capture_output=True
+            )
+            logger.info(output.stdout.decode("utf-8"))
+            logger.debug(dbt_logg(project_path))
+        except subprocess.CalledProcessError as err:
+            raise Exception(logger.error(dbt_logg(project_path)),
+                            err.stdout.decode("utf-8"))
+
+    run_dbt(["deps"])
+    run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
     write_to_xcom_push_file(filtered_logs)
