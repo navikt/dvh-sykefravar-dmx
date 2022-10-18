@@ -11,7 +11,7 @@ WITH dialogmote AS (
     dialogmote
   WHERE
     hendelse = 'FERDIGSTILT'
-    AND TRUNC(dialogmote_tidspunkt) < TRUNC(min_tilfelle_startdato) + 26*7 + 7*13
+    AND TRUNC(dialogmote_tidspunkt) < TRUNC(min_tilfelle_startdato) + 35*7
 )
 
 ,dm3 AS (
@@ -23,7 +23,7 @@ WITH dialogmote AS (
     dialogmote
   WHERE
     hendelse = 'FERDIGSTILT'
-    AND TRUNC(dialogmote_tidspunkt) > TRUNC(min_tilfelle_startdato) + 26*7 + 7*13
+    AND TRUNC(dialogmote_tidspunkt) > TRUNC(min_tilfelle_startdato) + 35*7
 )
 
 ,group_dm2 AS (
