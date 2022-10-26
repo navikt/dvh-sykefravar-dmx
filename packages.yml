@@ -4,6 +4,3 @@ packages:
 
   - package: dbt-labs/codegen
     version: 0.8.1
-
-  - package: dbt-labs/audit_helper
-    version: 0.6.0
