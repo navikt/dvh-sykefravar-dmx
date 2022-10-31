@@ -83,7 +83,7 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
     output = subprocess.run(
         (
-            ["echo", "$HTTPS_PROXY"]
+            ["printenv", "HTTPS_PROXY"]
         ),
         check=True, capture_output=True
     )
