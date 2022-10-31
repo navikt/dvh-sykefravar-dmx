@@ -83,6 +83,13 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
     output = subprocess.run(
         (
+            ["echo", "$HTTPS_PROXY"]
+        ),
+        check=True, capture_output=True
+    )
+    logger.info(output.stdout.decode("utf-8"))
+    output = subprocess.run(
+        (
             ["curl", "-k", "https://hub.getdbt.com/api/v1/index.json"]
         ),
         check=True, capture_output=True
