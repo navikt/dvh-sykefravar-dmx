@@ -83,7 +83,7 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
     output = subprocess.run(
         (
-            ["curl", "https://hub.getdbt.com/api/v1/index.json"]
+            ["curl", "-k", "https://hub.getdbt.com/api/v1/index.json"]
         ),
         check=True, capture_output=True
     )
