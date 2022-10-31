@@ -45,7 +45,7 @@ if __name__ == "__main__":
     command = os.environ["DBT_COMMAND"].split()
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
-
+    print ("-- feilsøker", os.environ)
     set_secrets_as_envs()
     vault_api.set_secrets_as_envs()
 
