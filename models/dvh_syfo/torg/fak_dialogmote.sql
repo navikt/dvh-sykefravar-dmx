@@ -10,6 +10,7 @@ WITH hendelser AS (
 ,dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 )
+
 ,dim_organisasjon AS (
   SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
 )
@@ -28,7 +29,7 @@ WITH hendelser AS (
   SELECT
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
-    ,dialogmote2_innen_26_uker_flagg
+    ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
     ,' ' AS svar_behov
     ,' ' AS svar_behov_hvem
     ,' ' AS behov_meldt_dato
