@@ -1,7 +1,7 @@
 
 with hendelser_org AS (
     SELECT * FROM {{ref('mk_dialogmote__join_fk_person1') }}
-     where HENDELSE in ('INNKALT','AVLYST','UNNTAK','FERDIGSTILT') and KILDESYSTEM = 'MODIA'
+     where HENDELSE in ('INNKALT','AVLYST','UNNTAK','FERDIGSTILT','STOPPUNKT') and KILDESYSTEM = 'MODIA'
 ),
 final  as  (
         select * from
@@ -27,7 +27,7 @@ final  as  (
             pivot (
                count(HENDELSE) as flag
             for hendelse
-            in ('INNKALT' INNKALT ,'AVLYST' AVLYST, 'UNNTAK' UNNTAK, 'FERDIGSTILT' FERDIGSTILT)
+            in ('INNKALT' INNKALT ,'AVLYST' AVLYST, 'UNNTAK' UNNTAK, 'FERDIGSTILT' FERDIGSTILT, 'STOPPUNKT' KANDIDAT)
                  )
 
      )
