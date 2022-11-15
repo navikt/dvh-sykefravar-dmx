@@ -31,7 +31,8 @@ info_minus_tid AS (
         arbeidsgiver_flagg,
         key_dmx
     )
-    pivot(COUNT(status_endring_type) for status_endring_type IN ('INNKALT' as INNKALT, 'NYTT_TID_STED' as NYTT_TID_STED, 'FERDIGSTILT' as FERDIGSTILT, 'AVLYST' as AVLYST))
+    pivot(COUNT(status_endring_type) for status_endring_type
+     IN ('INNKALT' as INNKALT, 'NYTT_TID_STED' as NYTT_TID_STED, 'FERDIGSTILT' as FERDIGSTILT, 'AVLYST' as AVLYST))
 ),
 status_tidspunkt AS (
   SELECT * FROM
