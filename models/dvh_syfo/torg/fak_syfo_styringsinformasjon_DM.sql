@@ -25,9 +25,9 @@ final  as  (
                 unntakarsak
              )
             pivot (
-               count(HENDELSE) as flag
+               count(HENDELSE) as flagg
             for hendelse
-            in ('INNKALT' INNKALT ,'AVLYST' AVLYST, 'UNNTAK' UNNTAK, 'FERDIGSTILT' FERDIGSTILT, 'STOPPUNKT' KANDIDAT)
+            in ('STOPPUNKT' KANDIDAT, 'UNNTAK' UNNTAK, 'INNKALT' INNKALT , 'FERDIGSTILT' FERDIGSTILT, 'AVLYST' AVLYST)
                  )
 
      )
