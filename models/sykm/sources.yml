@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: sykm
+  - name: fk_sensitiv
     tags: ['sykm']
     schema: fk_sensitiv
     tables:
