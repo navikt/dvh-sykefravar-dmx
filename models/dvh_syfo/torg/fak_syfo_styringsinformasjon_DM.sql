@@ -1,3 +1,7 @@
+{{ config(
+	post_hook="grant read on {{ this }} to DVH_OPPGAVE_APP"
+) }}
+
 
 with hendelser_org AS (
     SELECT * FROM {{ref('mk_dialogmote__join_fk_person1') }}
