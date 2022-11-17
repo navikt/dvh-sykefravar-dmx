@@ -1,16 +1,16 @@
 WITH tilfeller AS (
   SELECT * FROM {{ ref('dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
-  WHERE oppdatert_dato >= TO_DATE('202211', 'YYYYMM')
+  WHERE sykefravar_til_dato >= trunc(sysdate - 7)
 )
 
 ,periode AS (
   SELECT * FROM {{ ref('fk_sensitiv__sykm_periode') }}
-  WHERE sykmelding_tom >= TO_DATE('202201', 'YYYYMM')
+  WHERE sykmelding_tom >= trunc(sysdate - 160)
 )
 
 ,max_tom AS (
   select pasient_fk_person1, sykmelding_tom, gradering,
-  rank() over (partition by pasient_fk_person1 order by sykmelding_tom desc) rank
+  rank() over (partition by pasient_fk_person1 order by sykmelding_tom desc, lastet_dato desc) rank
   from periode
 )
 
