@@ -1,10 +1,10 @@
 WITH tilfeller AS (
-  SELECT * FROM {{ ref('dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
+  SELECT * FROM {{ ref('fk_dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
   WHERE sykefravar_til_dato >= trunc(sysdate - 7)
 )
 
 ,periode AS (
-  SELECT * FROM {{ ref('fk_sensitiv__sykm_periode') }}
+  SELECT * FROM {{ ref('fk_fk_sensitiv__sykm_periode') }}
   WHERE sykmelding_tom >= trunc(sysdate - 160)
 )
 
