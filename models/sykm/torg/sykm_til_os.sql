@@ -1,3 +1,7 @@
+{{ config(
+    grants={"read": "dvh_oppgave_app"}
+) }}
+
 WITH tilfeller AS (
   SELECT * FROM {{ ref('fk_dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
   WHERE sykefravar_til_dato >= trunc(sysdate - 7)
