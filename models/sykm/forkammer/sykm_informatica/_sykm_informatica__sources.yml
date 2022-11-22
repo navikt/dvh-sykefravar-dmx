@@ -10,3 +10,7 @@ sources:
     schema: dt_sensitiv
     tables:
       - name: fak_sykm_sykefravar_tilfelle
+  - name: dk_sykm_informatica
+    schema: dk_sensitiv
+    tables:
+      - name: syk_sykmelding

@@ -1,15 +1,26 @@
+-- NB! Pass på at komponentskjemaet har grant option til underliggande tabellar
 {{ config(
     grants={"read": "dvh_oppgave_app"}
 ) }}
 
 WITH tilfeller AS (
   SELECT * FROM {{ ref('fk_dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
-  WHERE sykefravar_til_dato >= trunc(sysdate - 7)
+  WHERE sykefravar_til_dato between trunc(sysdate - 14) and trunc(sysdate + 365)
 )
 
 ,periode AS (
-  SELECT * FROM {{ ref('fk_fk_sensitiv__sykm_periode') }}
-  WHERE sykmelding_tom >= trunc(sysdate - 160)
+  SELECT pasient_fk_person1,
+         sykmelding_tom,
+         gradering,
+         lastet_dato FROM {{ ref('fk_fk_sensitiv__sykm_periode') }}
+  WHERE sykmelding_tom >= trunc(sysdate - 60)
+    union
+  SELECT fk_person1 as pasient_fk_person1,
+         sykmeldt_til_dato as sykmelding_tom,
+         sykmelding_grad_prosent,
+         lastet_dato
+  FROM {{ ref('fk_dk_sensitiv__syk_sykmelding') }}
+  WHERE sykmeldt_til_dato >= trunc(sysdate - 60)
 )
 
 ,max_tom AS (
