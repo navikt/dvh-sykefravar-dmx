@@ -13,14 +13,14 @@ WITH tilfeller AS (
          sykmelding_tom,
          gradering,
          lastet_dato FROM {{ ref('fk_fk_sensitiv__sykm_periode') }}
-  WHERE sykmelding_tom >= trunc(sysdate - 60)
+  WHERE sykmelding_tom >= trunc(sysdate - 14)
     union
   SELECT fk_person1 as pasient_fk_person1,
          sykmeldt_til_dato as sykmelding_tom,
-         sykmelding_grad_prosent,
+         case when sykmelding_grad_prosent = 0 then 100 else sykmelding_grad_prosent end,
          lastet_dato
   FROM {{ ref('fk_dk_sensitiv__syk_sykmelding') }}
-  WHERE sykmeldt_til_dato >= trunc(sysdate - 60)
+  WHERE sykmeldt_til_dato >= trunc(sysdate - 14)
 )
 
 ,max_tom AS (
