@@ -31,7 +31,7 @@ WITH arena AS (
     )
     AND gyldig_flagg = 1
     AND kildesystem = 'ARENA'
-    AND fk_dim_tid_ident_dato > 20210000 and fk_dim_tid_ident_dato < 20240000 -- TODO: Filtrer bort data som er dårlige
+    AND fk_dim_tid_ident_dato > 20190000 and fk_dim_tid_ident_dato < 20240000 -- TODO: Filtrer bort data som er dårlige
 )
 
 SELECT * FROM final
