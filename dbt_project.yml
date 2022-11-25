@@ -50,3 +50,8 @@ tests:
   dmx_poc:
     syfra:
       +tags: syfra
+
+#Kjører plsql skriptet (fra analytisk plattform) som oppdaterer tilgangsroller
+#https://confluence.adeo.no/x/OkQSF (kap 4.3)
+#NB husk DMO tilganger og DAC koder
+on-run-end: "{{ oppdater_tilgangsroller() }}"
