@@ -15,6 +15,10 @@ WITH hendelser AS (
   SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
 )
 
+,dim_org AS (
+  SELECT * FROM {{ ref('felles_dt_p__dim_org') }}
+)
+
 ,flag_innen_26Uker AS (
   SELECT fk_person1, tilfelle_startdato,
     CASE
@@ -38,7 +42,12 @@ WITH hendelser AS (
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    ,dim_organisasjon.nav_enhet_kode_navn
+    ,dim_org.nav_enhet_kode_navn
+    ,dim_org.nav_niva3_besk
+    ,dim_org.nav_niva2_besk
+    ,dim_org.nav_niva1_besk
+    ,dim_org.nav_niva0_besk
+    ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
     ,TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
@@ -61,6 +70,10 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = flag_innen_26Uker.tilfelle_startdato
   LEFT JOIN dim_organisasjon ON
     dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
+  LEFT JOIN dim_org ON
+    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
+    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
+    dim_org.mapping_node_type = 'NORGENHET'
 )
 
 SELECT * FROM final
