@@ -6,6 +6,16 @@ import sys
 import logging
 from typing import List
 
+def set_secrets_as_dict_gcp() -> dict:
+  import os
+  import json
+  from google.cloud import secretmanager
+  secrets = secretmanager.SecretManagerServiceClient()
+  resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
+  secret = secrets.access_secret_version(name=resource_name)
+  secret_str = secret.payload.data.decode('UTF-8')
+  secrets = json.loads(secret_str)
+  return secrets
 
 
 def write_to_xcom_push_file(content: List[dict]):
@@ -38,18 +48,6 @@ def filter_logs(file_path: str) -> List[dict]:
 mySecret = set_secrets_as_dict_gcp()
 
 
-
-
-def set_secrets_as_dict_gcp() -> dict:
-  import os
-  import json
-  from google.cloud import secretmanager
-  secrets = secretmanager.SecretManagerServiceClient()
-  resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
-  secret = secrets.access_secret_version(name=resource_name)
-  secret_str = secret.payload.data.decode('UTF-8')
-  secrets = json.loads(secret_str)
-  return secrets
 
 
 #os.environ['DBT_ORCL_USER_PROXY'] = mySecret['DBT_ORCL_USER_PROXY']
