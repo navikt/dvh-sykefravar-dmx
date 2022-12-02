@@ -52,8 +52,14 @@ def set_secrets_as_dict_gcp() -> dict:
   return secrets
 
 
+#os.environ['DBT_ORCL_USER_PROXY'] = mySecret['DBT_ORCL_USER_PROXY']
+#os.environ['DBT_ORCL_PASS'] = mySecret['DBT_ORCL_PASS']
+#os.environ['DBT_ORCL_DB'] = mySecret['DBT_ORCL_DB']
+#os.environ['DBT_ORCL_SERVICE'] = mySecret['DBT_ORCL_SERVICE']
+#os.environ['DBT_ORCL_SCHEMA'] = mySecret['DBT_ORCL_SCHEMA']
+#os.environ['DBT_ORCL_HOST'] = mySecret['DBT_ORCL_HOST']
 
-
+os.environ.update(mySecret)
 
 
 if __name__ == "__main__":
