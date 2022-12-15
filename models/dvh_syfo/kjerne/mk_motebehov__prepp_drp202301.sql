@@ -41,6 +41,6 @@ SELECT DISTINCT
         null, null ,1
     ) AS svar_behov
     ,min_behandlet_tidspunkt AS svar_behov_dato
-    ,meld_behov_test AS meldt_behov
-    ,min_opprettet_dato AS meldt_behov_dato
+    ,meld_behov_test AS behov_meldt
+    ,min_opprettet_dato AS behov_meldt_dato
 FROM ny_cte ORDER BY fk_person1_sm, max_tilfelle
