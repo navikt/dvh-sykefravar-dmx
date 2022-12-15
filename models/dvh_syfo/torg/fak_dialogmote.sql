@@ -19,6 +19,10 @@ WITH hendelser AS (
   SELECT * FROM {{ ref('felles_dt_p__dim_org') }}
 )
 
+,motebehov AS (
+  SELECT * FROM {{ ref('mk_motebehov__prepp_drp202301') }}
+)
+
 ,flag_innen_26Uker AS (
   SELECT fk_person1, tilfelle_startdato,
     CASE
@@ -34,10 +38,10 @@ WITH hendelser AS (
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
     ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
-    ,' ' AS svar_behov
-    ,' ' AS svar_behov_hvem
-    ,' ' AS behov_meldt_dato
-    ,' ' AS behov_meldt_hvem
+    ,svar_behov
+    ,svar_behov_dato
+    ,behov_meldt
+    ,behov_meldt_dato
     ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
     ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
@@ -74,6 +78,9 @@ WITH hendelser AS (
     dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
     dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
     dim_org.mapping_node_type = 'NORGENHET'
+  LEFT JOIN motebehov ON
+    hendelser.fk_person1 = motebehov.fk_person1 AND
+    hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
 SELECT * FROM final
