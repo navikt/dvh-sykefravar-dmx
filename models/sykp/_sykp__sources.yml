@@ -9,3 +9,4 @@ sources:
         freshness:
           warn_after: {count: 1, period: hour}
         loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
+      - name: raw_vedtak
