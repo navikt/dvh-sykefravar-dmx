@@ -7,11 +7,14 @@ WITH vedtak AS (
   SELECT
     ' ' as id,
     ' ' as PASIENT_FK_PERSON1,
-    vedtak.kafka_message.aktørId as AKTOR_ID,
+    TO_NUMBER(vedtak.kafka_message.aktørId) as AKTOR_ID,
     vedtak.kafka_message.utbetalingId as UTBETALING_ID,
-    vedtak.kafka_message.fom as SOKNAD_FOM_DATO,
-    vedtak.kafka_message.tom as SOKNAD_TOM_DATO,
-    vedtak.kafka_message.inntekt as INNTEKT,
+    TO_DATE(vedtak.kafka_message.fom, 'YYYY-MM-DD') as SOKNAD_FOM_DATO,
+    TO_DATE(vedtak.kafka_message.tom, 'YYYY-MM-DD') as SOKNAD_TOM_DATO,
+    --TO_NUMBER(
+      --vedtak.kafka_message.inntekt, '999999999D999999999999', 'NLS_NUMERIC_CHARACTERS = ''.,'''
+    --) as INNTEKT,
+    vedtak.kafka_message.inntekt,
     vedtak.kafka_message.organisasjonsnummer as ORGANISASJONSNUMMER,
     vedtak.kafka_message.skjæringstidspunkt as SKJAERINGSTIDSPUNKT,
     vedtak.kafka_message.sykepengegrunnlag as SYKEPENGEGRUNNLAG,
