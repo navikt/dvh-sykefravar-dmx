@@ -20,7 +20,7 @@ WITH hendelser AS (
 )
 
 ,motebehov AS (
-  SELECT * FROM {{ ref('mk_motebehov__prepp_drp202301') }}
+  SELECT * FROM {{ ref('mk_motebehov__prepp') }}
 )
 
 ,flag_innen_26Uker AS (
