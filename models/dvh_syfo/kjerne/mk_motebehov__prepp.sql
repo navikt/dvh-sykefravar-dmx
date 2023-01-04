@@ -1,5 +1,5 @@
 WITH motebehov AS (
-    SELECT * FROM {{ ref("mk_motebehov__join_fk_person1_drp202301") }}
+    SELECT * FROM {{ ref("mk_motebehov__join_fk_person1") }}
 )
 
 ,dm AS (
