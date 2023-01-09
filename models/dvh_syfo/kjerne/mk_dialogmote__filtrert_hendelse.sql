@@ -8,7 +8,7 @@ WITH hendelser as (
 ,final as (
   SELECT
     *
-  FROM hendelser where hendelse in ('FERDIGSTILT', 'STOPPUNKT','DIALOGMOTE_FERDIGSTILT','UNNTAK')
+  FROM hendelser where hendelse in ('FERDIGSTILT', 'STOPPUNKT','UNNTAK')
 )
 
 SELECT * FROM final
