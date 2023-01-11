@@ -30,7 +30,7 @@ WITH hendelser AS (
   SELECT
     hendelser.*
     ,min_tilfelle_startdato
-    ,ROW_NUMBER() OVER(PARTITION BY group_min_tilfelle.fk_person1, min_tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt) AS row_number
+    ,ROW_NUMBER() OVER(PARTITION BY group_min_tilfelle.fk_person1, min_tilfelle_startdato, hendelse ORDER BY dialogmote_tidspunkt, hendelse_tidspunkt) AS row_number
   FROM hendelser
   LEFT JOIN group_min_tilfelle ON
     hendelser.fk_person1 = group_min_tilfelle.fk_person1 AND
