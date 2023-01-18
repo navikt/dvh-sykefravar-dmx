@@ -3,7 +3,7 @@ WITH kafka_meldinger AS (
         kafka_hash,
         kafka_message
     FROM {{ source('modia', 'raw_isdialogmotekandidat') }}
-    WHERE lastet_dato > sysdate - 1
+    WHERE lastet_dato > sysdate - 1 and dbms_lob.getLength(KAFKA_MESSAGE) > 0
 )
 
 , json_dataguide AS (
