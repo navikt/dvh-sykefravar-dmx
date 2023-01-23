@@ -42,8 +42,18 @@ WITH hendelser AS (
     ,svar_behov_dato
     ,behov_meldt
     ,behov_meldt_dato
-    ,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
-    ,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
+    --,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
+    ,CASE
+      WHEN unntak is null then dialogmote_tidspunkt1
+      WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt1
+      WHEN dialogmote_tidspunkt1 > unntak then null
+    END AS dialogmote2_avholdt_dato
+    --,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
+    ,CASE
+      WHEN unntak is null then dialogmote_tidspunkt2
+      WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
+      WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
+    END AS dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.nav_enhet_kode_navn
