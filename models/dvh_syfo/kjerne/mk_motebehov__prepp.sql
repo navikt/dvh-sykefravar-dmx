@@ -43,4 +43,8 @@ SELECT DISTINCT
     ,min_behandlet_tidspunkt AS svar_behov_dato
     ,meld_behov_test AS behov_meldt
     ,min_opprettet_dato AS behov_meldt_dato
+    ,case when fk_person1_sm = fk_person1_behov then 'Sykmeldte'
+     when fk_person1_sm != fk_person1_behov then 'Arbeidsgiver'
+     else null
+end as behov_meldt_hvem
 FROM ny_cte ORDER BY fk_person1_sm, max_tilfelle

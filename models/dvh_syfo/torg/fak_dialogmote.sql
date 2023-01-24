@@ -39,8 +39,10 @@ WITH hendelser AS (
     ,hendelser.tilfelle_startdato
     ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
     ,svar_behov
+    ,' ' AS svar_behov_hvem
     ,svar_behov_dato
     ,behov_meldt
+    ,behov_meldt_hvem
     ,behov_meldt_dato
     --,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
     ,CASE
