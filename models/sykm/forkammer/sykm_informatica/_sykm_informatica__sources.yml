@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: fk_sykm_informatica
+    schema: fk_sensitiv
+    tables:
+      - name: sykm_periode
+      - name: hist_ff_lsp_sykmelding
+  - name: dt_sykm_informatica
+    schema: dt_sensitiv
+    tables:
+      - name: fak_sykm_sykefravar_tilfelle
+  - name: dk_sykm_informatica
+    schema: dk_sensitiv
+    tables:
+      - name: syk_sykmelding
