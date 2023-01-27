@@ -38,7 +38,7 @@ WITH hendelser AS (
   from hendelser
 )
 ,flag_innen_26Uker AS (
-  SELECT fk_person1, tilfelle_startdato,
+  SELECT fk_person1, tilfelle_startdato, dialogmote2_avholdt_dato, dialogmote3_avholdt_dato,
     CASE
       WHEN dialogmote2_avholdt_dato IS NULL THEN NULL
       WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
@@ -96,4 +96,4 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
-SELECT * FROM final
+SELECT * FROM final where nav_enhet_kode_navn like '%0104%'
