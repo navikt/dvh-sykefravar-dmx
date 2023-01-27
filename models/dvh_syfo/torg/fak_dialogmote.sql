@@ -22,28 +22,9 @@ WITH hendelser AS (
 ,motebehov AS (
   SELECT * FROM {{ ref('mk_motebehov__prepp') }}
 )
-
-,flag_innen_26Uker AS (
-  SELECT fk_person1, tilfelle_startdato,
+, dm_2_3 as (
+  select fk_person1, tilfelle_startdato,
     CASE
-      WHEN dialogmote_tidspunkt1 IS NULL THEN NULL
-      WHEN dialogmote_tidspunkt1 < (tilfelle_startdato + 26*7) THEN 1
-      ELSE 0
-    END AS dialogmote2_innen_26_uker_flagg
-  FROM hendelser
-)
-
-,final AS (
-  SELECT
-    hendelser.fk_person1
-    ,hendelser.tilfelle_startdato
-    ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
-    ,svar_behov
-    ,svar_behov_dato
-    ,behov_meldt
-    ,behov_meldt_dato
-    --,dialogmote_tidspunkt1 AS dialogmote2_avholdt_dato
-    ,CASE
       WHEN unntak is null then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 > unntak then null
@@ -54,6 +35,28 @@ WITH hendelser AS (
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
       WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
     END AS dialogmote3_avholdt_dato
+  from hendelser
+)
+,flag_innen_26Uker AS (
+  SELECT fk_person1, tilfelle_startdato, dialogmote2_avholdt_dato, dialogmote3_avholdt_dato,
+    CASE
+      WHEN dialogmote2_avholdt_dato IS NULL THEN NULL
+      WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
+      ELSE 0
+    END AS dialogmote2_innen_26_uker_flagg
+  FROM dm_2_3
+)
+,final AS (
+  SELECT
+    hendelser.fk_person1
+    ,hendelser.tilfelle_startdato
+    ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
+    ,svar_behov
+    ,svar_behov_dato
+    ,behov_meldt
+    ,behov_meldt_dato
+    ,dialogmote2_avholdt_dato
+    ,dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.nav_enhet_kode_navn
@@ -67,10 +70,10 @@ WITH hendelser AS (
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
     ) AS fk_dim_tid__tilfelle_startdato
     ,TO_NUMBER(
-      TO_CHAR(dialogmote_tidspunkt1, 'YYYYMMDD')
+      TO_CHAR(dialogmote2_avholdt_dato, 'YYYYMMDD')
     ) AS fk_dim_tid__dm2_avholdt_dato
     ,TO_NUMBER(
-      TO_CHAR(dialogmote_tidspunkt2, 'YYYYMMDD')
+      TO_CHAR(dialogmote3_avholdt_dato, 'YYYYMMDD')
     ) AS fk_dim_tid__dm3_avholdt_dato
     ,TO_NUMBER(
       TO_CHAR(unntak, 'YYYYMMDD')
@@ -93,4 +96,4 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
-SELECT * FROM final
+SELECT * FROM final 
