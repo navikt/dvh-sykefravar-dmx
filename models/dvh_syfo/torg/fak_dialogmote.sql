@@ -96,4 +96,4 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
-SELECT * FROM final where nav_enhet_kode_navn like '%0104%'
+SELECT * FROM final 
