@@ -51,10 +51,9 @@ WITH hendelser AS (
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
     ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
-    ,svar_behov
-    ,svar_behov_dato
-    ,behov_meldt
     ,behov_meldt_dato
+    ,behov_sykmeldt
+    ,behov_arbeidsgiver
     ,dialogmote2_avholdt_dato
     ,dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
@@ -96,4 +95,4 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
-SELECT * FROM final 
+SELECT * FROM final
