@@ -58,11 +58,6 @@ WITH hendelser AS (
     ,dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    ,dim_org.nav_enhet_kode_navn
-    ,dim_org.nav_niva3_besk
-    ,dim_org.nav_niva2_besk
-    ,dim_org.nav_niva1_besk
-    ,dim_org.nav_niva0_besk
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
     ,TO_NUMBER(

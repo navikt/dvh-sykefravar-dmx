@@ -38,6 +38,6 @@ SELECT DISTINCT
     , behov_sykmeldt
     , behov_arbeidsgiver
     , min_opprettet_dato AS behov_meldt_dato
-FROM foerste_behov ORDER BY fk_person1_sm, max_tilfelle )--95914 --84304 tilfeller, 6487 (tilfelle startdato is null)
+FROM foerste_behov ORDER BY fk_person1_sm, max_tilfelle )
 
 select * from final
