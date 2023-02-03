@@ -61,6 +61,9 @@ WITH hendelser AS (
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
     ,TO_NUMBER(
+      TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__behov_meldt
+    ,TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
     ) AS fk_dim_tid__tilfelle_startdato
     ,TO_NUMBER(
