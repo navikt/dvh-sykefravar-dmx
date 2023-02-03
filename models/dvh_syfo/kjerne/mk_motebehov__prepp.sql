@@ -1,12 +1,18 @@
 WITH motebehov AS (
-    SELECT * FROM {{ ref("mk_motebehov__join_fk_person1") }}
+    SELECT
+    motebehov.*,
+    case when fk_person1_sm = fk_person1_behov then 1 else 0 end as behov_sykm,
+    case when fk_person1_sm != fk_person1_behov then 1 else 0 end as behov_arbeidsg
+    FROM {{ ref("mk_motebehov__join_fk_person1")}} motebehov where
+    motebehov.skjematype in  ('MELD_BEHOV', 'SVAR_BEHOV') and --ikke skjematype lik null (der hvor det allerede er kalt inn)
+    motebehov.har_motebehov = 1--bare de som har meldt at de har behov
 )
 
 ,dm AS (
-    SELECT * FROM {{ ref("mk_dialogmote__pivotert") }}
+    SELECT * FROM {{ ref("mk_dialogmote__pivotert")}}
 )
 
-,motebehov_tilfelle AS (
+,motebehov_tilfelle AS (--knytter motebehov til tilfelle, velger først alle tilfeller med startdato foer dato for motebehov, finner maks av disse
     SELECT
         motebehov.*,
         MAX(dm.TILFELLE_STARTDATO) OVER(PARTITION BY dm.fk_person1, motebehov_uuid) AS max_tilfelle
@@ -16,31 +22,22 @@ WITH motebehov AS (
         motebehov.opprettet_dato > TILFELLE_STARTDATO
 )
 
-,final AS (
+,foerste_behov AS (
     SELECT
-        MAX(HAR_MOTEBEHOV) OVER(PARTITION BY fk_person1_sm, max_tilfelle) AS meld_behov_test
+        MIN(OPPRETTET_DATO) OVER(PARTITION BY fk_person1_sm, max_tilfelle) AS min_opprettet_dato --tidspunkt for det foerste meldte behovet
+        ,MAX(behov_sykm) OVER(PARTITION BY fk_person1_sm, max_tilfelle) as behov_sykmeldt
+        ,MAX(behov_arbeidsg) OVER(PARTITION BY fk_person1_sm, max_tilfelle) as behov_arbeidsgiver
         ,motebehov_tilfelle.*
     FROM
         motebehov_tilfelle
 )
-
-,ny_cte AS (
-    SELECT
-        MIN(behandlet_tidspunkt) OVER(PARTITION BY fk_person1_sm, max_tilfelle) AS min_behandlet_tidspunkt
-        ,MIN(OPPRETTET_DATO) OVER(PARTITION BY fk_person1_sm, max_tilfelle) AS min_opprettet_dato
-        ,final.*
-    FROM
-        final
-    WHERE har_motebehov = meld_behov_test OR har_motebehov IS NULL AND meld_behov_test IS NULL
-)
-
+, final as (
 SELECT DISTINCT
     fk_person1_sm AS fk_person1
-    ,max_tilfelle AS tilfelle_startdato
-    ,DECODE(min_behandlet_tidspunkt,
-        null, null ,1
-    ) AS svar_behov
-    ,min_behandlet_tidspunkt AS svar_behov_dato
-    ,meld_behov_test AS behov_meldt
-    ,min_opprettet_dato AS behov_meldt_dato
-FROM ny_cte ORDER BY fk_person1_sm, max_tilfelle
+    , max_tilfelle AS tilfelle_startdato
+    , behov_sykmeldt
+    , behov_arbeidsgiver
+    , min_opprettet_dato AS behov_meldt_dato
+FROM foerste_behov ORDER BY fk_person1_sm, max_tilfelle )
+
+select * from final
