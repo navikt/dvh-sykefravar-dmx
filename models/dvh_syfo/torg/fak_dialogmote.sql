@@ -51,21 +51,18 @@ WITH hendelser AS (
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
     ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
-    ,svar_behov
-    ,svar_behov_dato
-    ,behov_meldt
     ,behov_meldt_dato
+    ,behov_sykmeldt
+    ,behov_arbeidsgiver
     ,dialogmote2_avholdt_dato
     ,dialogmote3_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    ,dim_org.nav_enhet_kode_navn
-    ,dim_org.nav_niva3_besk
-    ,dim_org.nav_niva2_besk
-    ,dim_org.nav_niva1_besk
-    ,dim_org.nav_niva0_besk
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
+    ,TO_NUMBER(
+      TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__behov_meldt
     ,TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
     ) AS fk_dim_tid__tilfelle_startdato
@@ -96,4 +93,4 @@ WITH hendelser AS (
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
 )
 
-SELECT * FROM final 
+SELECT * FROM final
