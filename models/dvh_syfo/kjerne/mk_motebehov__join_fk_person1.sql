@@ -1,6 +1,6 @@
 
 WITH motebehov as (
-  SELECT * FROM {{ ref("fk_modia__motebehov") }}
+  SELECT * FROM {{ ref("mk_modia__motebehov_enhet") }}
 )
 
 ,dvh_person_ident AS (

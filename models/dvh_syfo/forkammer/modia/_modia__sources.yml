@@ -11,4 +11,5 @@ sources:
       loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
     - name: fk_motebehov
     - name: fk_syfo_person_oversikt_status
+    - name: raw_syfo_person_oversikt_status
 
