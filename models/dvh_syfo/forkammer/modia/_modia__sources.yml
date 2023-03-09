@@ -10,4 +10,5 @@ sources:
         warn_after: {count: 1, period: day}
       loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
     - name: fk_motebehov
+    - name: raw_aktivitetskrav
 
