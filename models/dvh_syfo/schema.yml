@@ -14,6 +14,9 @@ sources:
       - name: ARBEIDS_PERIODE_SMALL
         description: Arbeidsperiode med unike nøklerg
       - name: raw_isdialogmote
+        description: dialogmote data - raw
+      - name: fk_syfo_person_oversikt_status
+        description: Kandidater for dialogmøte med korrekte nav -enheter
   - name: dmx_pox_oppfolging
     tags: ['syfo']
     description: 'Oppfølging samt diverse felles dimensjoner'
