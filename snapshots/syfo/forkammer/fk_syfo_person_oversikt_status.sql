@@ -14,6 +14,7 @@ SELECT
   TO_CHAR(fk_person1) || '-' || TO_CHAR(tildelt_enhet) AS id
   ,oversikt_status.*
 FROM
-  {{ ref("fk_person_oversikt_status") }} oversikt_status
+  {{ source('dmx_pox_dialogmote', 'fk_syfo_person_oversikt_status') }} oversikt_status
+
 
 {% endsnapshot %}
