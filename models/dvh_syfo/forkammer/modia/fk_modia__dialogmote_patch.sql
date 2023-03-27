@@ -16,6 +16,7 @@ with dialogmote_forkammer as
   when kilde_uuid = '4dfdc657-5879-40fc-a096-75d7562298c2' and hendelse in ('FERDIGSTILT') then TO_TIMESTAMP_TZ('2022-08-18','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra annen modia hendelse*/
   when kilde_uuid = 'a2e8cd59-9eb4-44c7-bf4a-feb1da44312f' and hendelse in ('FERDIGSTILT', 'INNKALT') then TO_TIMESTAMP_TZ('2022-01-29','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra arena oppfolging*/
   when kilde_uuid = 'd6ed14e0-a98f-44fb-a114-88448b372b16' and hendelse in ('INNKALT','NYTT_TID_STED','FERDIGSTILT') then TO_TIMESTAMP_TZ('2022-09-12','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra arena oppfolging*/
+  when kilde_UUid = '812a477c-2543-427f-8cdb-fbef59f36123' and hendelse in ('FERDIGSTILT','INNKALT') then TO_TIMESTAMP_TZ('2022-02-28','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra arena/infotrygd*/
   else tilfelle_startdato
   end
   tilfelle_startdato_patch
