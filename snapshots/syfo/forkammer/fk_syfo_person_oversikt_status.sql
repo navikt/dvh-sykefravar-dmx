@@ -12,10 +12,11 @@
 
 SELECT
    TO_CHAR(fk_person1) || '-' || TO_CHAR(tildelt_enhet) || '-'  ||  TO_CHAR(tildelt_enhet_updated_at)   AS id
-
   ,oversikt_status.*
 FROM
-  {{ ref ('fk_modia__oversikt_person_status') }} oversikt_status
+ {{ source('dmx_pox_dialogmote', 'fk_syfo_person_oversikt_status') }} oversikt_status
+ where tildelt_enhet  != 'None'
+
 
 
 
