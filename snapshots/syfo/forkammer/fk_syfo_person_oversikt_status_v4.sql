@@ -1,4 +1,4 @@
-{% snapshot fk_syfo_person_oversikt_status__snapshot_v2%}
+{% snapshot fk_syfo_person_oversikt_status__snapshot_v4%}
 
 {{
     config(
