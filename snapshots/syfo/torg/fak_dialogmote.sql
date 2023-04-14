@@ -11,7 +11,7 @@
 }}
 
 SELECT
-  TO_CHAR(fk_person1) || '-' || TO_CHAR(tilfelle_startdato) AS id
+  TO_CHAR(fk_person1) || '-' || TO_CHAR(tilfelle_startdato)  AS id
   ,dialogmote.*
 FROM
   {{ ref("fak_dialogmote") }} dialogmote
