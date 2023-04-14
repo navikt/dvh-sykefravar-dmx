@@ -10,6 +10,8 @@
     )
 }}
 
+-- dette er endring
+
 SELECT
   oversikt_status.*
 FROM
