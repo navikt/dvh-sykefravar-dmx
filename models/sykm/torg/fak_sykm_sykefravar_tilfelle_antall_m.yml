@@ -1,0 +1,21 @@
+version: 2
+
+metrics:
+  - name: antall
+    label: Antall
+    model: ref('fak_sykm_sykefravar_tilfelle_final_agg_tid_t')
+    description: "Antall tilfeller"
+
+    calculation_method: sum
+    expression: amount
+
+    timestamp: SYKEFRAVAR_FRA_DATO
+    time_grains: [week, month, year]
+
+    dimensions:
+      - fylke_navn
+
+    filters:
+      - field: status
+        operator: '='
+        value: "'completed'"
