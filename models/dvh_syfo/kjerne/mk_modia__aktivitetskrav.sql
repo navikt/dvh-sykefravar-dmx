@@ -1,9 +1,9 @@
---{% set running_mnd = '2017-01-01' %}
+ --{% set running_mnd = running_mnd_inn %}
 
 WITH aktivitetskrav as (
   SELECT * FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
- -- and LASTET_DATO < TO_DATE('{{running_mnd}}','YYYY-MM-DD')
+  and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
 ),
 final as (
   SELECT
@@ -16,8 +16,8 @@ final as (
     KAFKA_TOPIC,
     KILDE_UUID,
     KILDESYSTEM,
-    LASTET_DATO,
-    --TO_DATE(to_char(sysdate,'YYYY-MM-DD')) as LASTET_DATO2,
+    --LASTET_DATO,
+    sysdate as LASTET_DATO,
     OPPDATERT_DATO,
     SISTVURDERT,
     STATUS,
