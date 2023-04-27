@@ -55,3 +55,6 @@ tests:
 #https://confluence.adeo.no/x/OkQSF (kap 4.3)
 #NB husk DMO tilganger og DAC koder
 on-run-end: "{{ oppdater_tilgangsroller() }}"
+
+vars:
+  running_mnd: '2023-04-01'
