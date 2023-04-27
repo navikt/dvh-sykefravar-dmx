@@ -32,8 +32,8 @@ sykefravar_tilfeller as(
 
 
 final as (
-  SELECT
-    *
+  SELECT aktivitetskrav.*,sykefravar_tilfeller.siste_sykefravar_startdato
+  
   FROM aktivitetskrav
   LEFT JOIN sykefravar_tilfeller ON sykefravar_tilfeller.FK_PERSON1 = aktivitetskrav.FK_PERSON1
   where sykefravar_tilfeller.siste_sykefravar_startdato < aktivitetskrav.CREATEDAT
