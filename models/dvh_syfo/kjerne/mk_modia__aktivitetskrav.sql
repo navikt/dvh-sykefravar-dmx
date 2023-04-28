@@ -35,7 +35,7 @@ final as (
   FROM aktivitetskrav
   LEFT JOIN sykefravar_tilfeller ON sykefravar_tilfeller.FK_PERSON1 = aktivitetskrav.FK_PERSON1
   where sykefravar_tilfeller.sykefravar_fra_dato < aktivitetskrav.CREATEDAT
-  order by FK_PERSON1, sykefravar_fra_dato2
+  order by FK_PERSON1, sykefravar_fra_dato
 
 )
 
