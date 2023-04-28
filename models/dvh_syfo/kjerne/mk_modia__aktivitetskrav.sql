@@ -26,17 +26,18 @@ WITH aktivitetskrav as (
 sykefravar_tilfeller as(
   select
     FK_PERSON1,
-    sykefravar_fra_dato as siste_sykefravar_startdato
+    sykefravar_fra_dato
   from {{ ref("stg_fak_sykm_sykefravar_tilfelle") }}
 ),
 
--- noe endringer 
+-- noe endringer
 final as (
   SELECT aktivitetskrav.*,sykefravar_tilfeller.siste_sykefravar_startdato
 
   FROM aktivitetskrav
   LEFT JOIN sykefravar_tilfeller ON sykefravar_tilfeller.FK_PERSON1 = aktivitetskrav.FK_PERSON1
-  where sykefravar_tilfeller.siste_sykefravar_startdato < aktivitetskrav.CREATEDAT
+  where sykefravar_tilfeller.sykefravar_fra_dato < aktivitetskrav.CREATEDAT
+  order by FK_PERSON1, sykefravar_fra_dato
 
 )
 
