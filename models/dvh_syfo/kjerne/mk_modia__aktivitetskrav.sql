@@ -30,15 +30,23 @@ sykefravar_tilfeller as(
   from {{ ref("stg_fak_sykm_sykefravar_tilfelle") }}
 ),
 
--- noe endringer
-final as (
-  SELECT aktivitetskrav.*,sykefravar_tilfeller.siste_sykefravar_startdato
-
+sorterte_sykefravarstilfeller as (
+  SELECT
+    aktivitetskrav.*,
+    sykefravar_tilfeller.siste_sykefravar_startdato
   FROM aktivitetskrav
   LEFT JOIN sykefravar_tilfeller ON sykefravar_tilfeller.FK_PERSON1 = aktivitetskrav.FK_PERSON1
   where sykefravar_tilfeller.siste_sykefravar_startdato < aktivitetskrav.CREATEDAT
-  order by FK_PERSON1,SISTE_SYKEFRAVAR_STARTDATO,KAFKA_MOTTATT_DATO desc;
+  order by aktivitetskrav.FK_PERSON1,SISTE_SYKEFRAVAR_STARTDATO,KAFKA_MOTTATT_DATO desc
+
+),
+
+siste_sykefravars_tilfeller as (
+  SELECT
+    sorterte_sykefravarstilfeller.*,
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, SISTE_SYKEFRAVAR_STARTDATO ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+  FROM sorterte_sykefravarstilfeller
 
 )
 
-SELECT * FROM final
+SELECT * FROM siste_sykefravars_tilfeller WHERE first_rownum=1
