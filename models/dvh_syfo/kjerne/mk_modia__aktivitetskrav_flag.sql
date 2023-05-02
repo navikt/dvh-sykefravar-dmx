@@ -35,4 +35,5 @@ FROM aktivitetskrav_mk
 
 )
 
+
 SELECT * FROM sykefravar_med_flag
