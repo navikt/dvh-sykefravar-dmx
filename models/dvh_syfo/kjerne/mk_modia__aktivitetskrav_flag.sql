@@ -33,7 +33,18 @@ sykefravar_med_flag as(
   END AS ukjent_blank_flag
 FROM aktivitetskrav_mk
 
+),
+oversikt_status_scd as (
+  select *
+    FROM {{ ref("fk_modia__person_oversikt_scd") }}
+),
+
+sykefravar_med_enhet as (
+  select sykefravar_med_flag.*,oversikt_status_scd.TILDELT_ENHET
+  FROM sykefravar_med_flag
+  LEFT JOIN oversikt_status_scd  ON sykefravar_med_flag.fk_person1 = oversikt_status_scd.fk_person1
+  WHERE oversikt_status_scd.dbt_valid_to IS NULL
 )
 
 
-SELECT * FROM sykefravar_med_flag
+SELECT * FROM sykefravar_med_enhet
