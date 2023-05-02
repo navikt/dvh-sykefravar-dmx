@@ -44,7 +44,20 @@ sykefravar_med_enhet as (
   FROM sykefravar_med_flag
   LEFT JOIN oversikt_status_scd  ON sykefravar_med_flag.fk_person1 = oversikt_status_scd.fk_person1
   WHERE oversikt_status_scd.dbt_valid_to IS NULL
+),
+
+
+dim_tid as (
+  select *
+  FROM {{ ref("felles_dt_p__dim_tid") }}
+),
+
+sykefravar_med_tid as (
+  select sykefravar_med_enhet.*, dim_tid.pk_dim_tid
+  from sykefravar_med_enhet
+  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
+
 )
 
 
-SELECT * FROM sykefravar_med_enhet
+SELECT * FROM sykefravar_med_tid
