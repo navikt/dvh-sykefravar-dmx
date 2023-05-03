@@ -1,6 +1,10 @@
+{{ config(
+    materialized='table',
+
+)}}
 
 WITH aktivitetskrav_mk as (
-  SELECT a.*, to_char(last_day(LASTET_DATO), 'YYYYMMDD') as alder_dato
+  SELECT a.*, last_day(LASTET_DATO) as alder_dato
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
