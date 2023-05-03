@@ -57,7 +57,7 @@ dim_tid as (
 ),
 
 sykefravar_med_tid as (
-  select sykefravar_med_enhet.*, dim_tid.pk_dim_tid
+  select sykefravar_med_enhet.*, dim_tid.pk_dim_tid as fk_dim_tid
   from sykefravar_med_enhet
   left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
 
@@ -74,17 +74,11 @@ sykefravar_med_organisasjon as (
   left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_tid.TILDELT_ENHET
   --bør diskutere: skal vi bruke siste_sykefraværs_startdato eller sist_i_måneden_dato for å finne rett organisasjon?
   where dim_organisasjon.GYLDIG_FRA_DATO <= siste_sykefravar_startdato AND GYLDIG_TIL_DATO >= siste_sykefravar_startdato
-)
-
-/*dim_person as (
-  select *
-  from {{ ref("felles_dt_person__dim_person1")}}
 ),
 
-sykefravar_med_person as (
-  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(alder_dato, dim_person.fodt_dato)/12) as alder
-  from sykefravar_med_organisasjon
-  left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
+dim_person as (
+  select *
+  from {{ ref("felles_dt_person__dim_person1")}}
 ),
 
 dim_alder as (
@@ -93,13 +87,17 @@ dim_alder as (
   from {{ ref("felles_dt_p__dim_alder") }}
 ),
 
+sykefravar_med_person as (
+  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(alder_dato, dim_person.fodt_dato)/12) as alder
+  from sykefravar_med_organisasjon
+  left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
+),
+
 sykefravar_med_alder as (
-  select sykefravar_med_person.*, dim_alder.pk_dim_alder
+  select sykefravar_med_person.*, dim_alder.pk_dim_alder as fk_dim_alder
   from sykefravar_med_person
   left join dim_alder on dim_alder.alder = sykefravar_med_person.alder
 
 )
 
 SELECT * FROM sykefravar_med_alder
-*/
-SELECT * FROM sykefravar_med_organisasjon
