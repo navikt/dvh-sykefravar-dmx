@@ -1,7 +1,7 @@
 
 WITH aktivitetskrav_mk as (
-  SELECT *
-  FROM {{ ref("mk_modia__aktivitetskrav") }}
+  SELECT a.*, to_char(last_day(LASTET_DATO), 'YYYYMMDD') as alder_dato
+  FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
 sykefravar_med_flag as(
@@ -72,5 +72,30 @@ sykefravar_med_organisasjon as (
   where dim_organisasjon.GYLDIG_FRA_DATO <= siste_sykefravar_startdato AND GYLDIG_TIL_DATO >= siste_sykefravar_startdato
 )
 
+/*dim_person as (
+  select *
+  from {{ ref("felles_dt_person__dim_person1")}}
+),
 
+sykefravar_med_person as (
+  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(alder_dato, dim_person.fodt_dato)/12) as alder
+  from sykefravar_med_organisasjon
+  left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
+),
+
+dim_alder as (
+  select
+    *
+  from {{ ref("felles_dt_p__dim_alder") }}
+),
+
+sykefravar_med_alder as (
+  select sykefravar_med_person.*, dim_alder.pk_dim_alder
+  from sykefravar_med_person
+  left join dim_alder on dim_alder.alder = sykefravar_med_person.alder
+
+)
+
+SELECT * FROM sykefravar_med_alder
+*/
 SELECT * FROM sykefravar_med_organisasjon
