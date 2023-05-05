@@ -4,7 +4,7 @@
 )}}
 
 WITH aktivitetskrav_mk as (
-  SELECT a.*, last_day(LASTET_DATO) as alder_dato
+  SELECT a.*, last_day(LASTET_DATO) as siste_dag_i_mnd
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
@@ -92,7 +92,7 @@ dim_alder as (
 ),
 
 sykefravar_med_person as (
-  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(alder_dato, dim_person.fodt_dato)/12) as alder
+  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(siste_dag_i_mnd, dim_person.fodt_dato)/12) as alder
   from sykefravar_med_organisasjon
   left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
 ),
