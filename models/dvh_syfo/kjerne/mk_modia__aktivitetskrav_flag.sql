@@ -76,7 +76,8 @@ sykefravar_med_organisasjon as (
   from sykefravar_med_tid
   left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_tid.TILDELT_ENHET
   --bør diskutere: skal vi bruke siste_sykefraværs_startdato eller sist_i_måneden_dato for å finne rett organisasjon?
-  where dim_organisasjon.GYLDIG_FRA_DATO <= siste_sykefravar_startdato AND GYLDIG_TIL_DATO >= siste_sykefravar_startdato
+    where dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
+          DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1
 ),
 
 dim_person as (
@@ -95,12 +96,15 @@ sykefravar_med_person as (
   select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(siste_dag_i_mnd, dim_person.fodt_dato)/12) as alder
   from sykefravar_med_organisasjon
   left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
+   and DIM_PERSON.GYLDIG_FLAGG = 1
 ),
 
 sykefravar_med_alder as (
   select sykefravar_med_person.*, dim_alder.pk_dim_alder as fk_dim_alder
   from sykefravar_med_person
   left join dim_alder on dim_alder.alder = sykefravar_med_person.alder
+  where dim_alder.GYLDIG_FLAGG = 1
+
 
 )
 
