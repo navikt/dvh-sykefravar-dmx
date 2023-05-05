@@ -38,6 +38,8 @@ sykefravar_med_flag as(
 FROM aktivitetskrav_mk
 
 ),
+
+--NB! Håndtere tildelt enhet i gitt tidsintervall
 oversikt_status_scd as (
   select *
     FROM {{ ref("fk_modia__person_oversikt_scd") }}
@@ -63,6 +65,7 @@ sykefravar_med_tid as (
 
 ),
 
+--NB! Håndtere organisasjon i gitt tidsintervall
 dim_organisasjon as (
   select *
   FROM {{ ref("felles_dt_p__dim_organisasjon") }}
@@ -81,6 +84,7 @@ dim_person as (
   from {{ ref("felles_dt_person__dim_person1")}}
 ),
 
+--NB! Håndtere alder i gitt tidsintervall
 dim_alder as (
   select
     *
