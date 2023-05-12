@@ -17,7 +17,7 @@ WITH aktivitetskrav AS (
       TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.stoppunktAt'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AT TIME ZONE 'CET' AS stoppunktAt,
        TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE,'$.createdAt'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' as createdAt,
         JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.status') as status,
-        json_value(aktivitetskrav.kafka_message,'$.arsaker') as arsaker,
+        JSON_VALUE(KAFKA_MESSAGE,'$.arsaker[*]') as arsaker,
         json_value(aktivitetskrav.kafka_message,'$.updatedBy') as updatedBy,
         TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.kafka_message,'$.sistVurdert'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' AS sistVurdert,
     kafka_topic,
