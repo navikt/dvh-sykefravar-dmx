@@ -1,4 +1,3 @@
- --{% set running_mnd = running_mnd_inn %}
 
 WITH aktivitetskrav as (
   SELECT
@@ -21,6 +20,7 @@ WITH aktivitetskrav as (
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
   and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+  and LASTET_DATO > TO_DATE('{{var("running_mnd_from")}}','YYYY-MM-DD')
 ),
 
 sykefravar_tilfeller as(

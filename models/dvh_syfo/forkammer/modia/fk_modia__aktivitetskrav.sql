@@ -1,20 +1,25 @@
+{{
+  config(
+    materialized = 'table',
+  )
+}}
 
 WITH aktivitetskrav AS (
-  SELECT * FROM {{ source('modia', 'raw_aktivitetskrav') }}
+  SELECT * FROM {{ ref('fk_modia__aktivitetskrav_raw') }}
 )
 ,dvh_person_ident AS (
     SELECT * FROM {{ref('felles_dt_person__dvh_person_ident_off_id') }}
 )
 , aktivitet_dta AS (
   SELECT
-    aktivitetskrav.kafka_message.uuid as kilde_uuid,
-    TO_TIMESTAMP_TZ(aktivitetskrav.kafka_message.createdAt, 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' as createdAt,
-    aktivitetskrav.kafka_message.status as status,
-    aktivitetskrav.kafka_message.personIdent as personIdent,
-    aktivitetskrav.kafka_message.arsaker as arsaker,
-    aktivitetskrav.kafka_message.updatedBy as updatedBy,
-    TO_TIMESTAMP_TZ(aktivitetskrav.kafka_message.stoppunktAt, 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AT TIME ZONE 'CET' AS stoppunktAt,
-    TO_TIMESTAMP_TZ(aktivitetskrav.kafka_message.sistVurdert, 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' AS sistVurdert,
+      JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.uuid') AS kilde_uuid,
+      JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.personIdent') AS personIdent,
+      TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.stoppunktAt'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AT TIME ZONE 'CET' AS stoppunktAt,
+       TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE,'$.createdAt'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' as createdAt,
+        JSON_VALUE(aktivitetskrav.KAFKA_MESSAGE, '$.status') as status,
+        json_value(aktivitetskrav.kafka_message,'$.arsaker') as arsaker,
+        json_value(aktivitetskrav.kafka_message,'$.updatedBy') as updatedBy,
+        TO_TIMESTAMP_TZ(JSON_VALUE(aktivitetskrav.kafka_message,'$.sistVurdert'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') AT TIME ZONE 'CET' AS sistVurdert,
     kafka_topic,
     kafka_partisjon,
     kafka_offset,

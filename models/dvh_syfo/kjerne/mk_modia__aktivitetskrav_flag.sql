@@ -1,6 +1,5 @@
 {{ config(
     materialized='table',
-
 )}}
 
 WITH aktivitetskrav_mk as (
@@ -99,6 +98,7 @@ sykefravar_med_person as (
    and DIM_PERSON.GYLDIG_FLAGG = 1
 ),
 
+
 sykefravar_med_alder as (
   select sykefravar_med_person.*, dim_alder.pk_dim_alder as fk_dim_alder
   from sykefravar_med_person
@@ -107,5 +107,6 @@ sykefravar_med_alder as (
 
 
 )
+
 
 SELECT * FROM sykefravar_med_alder
