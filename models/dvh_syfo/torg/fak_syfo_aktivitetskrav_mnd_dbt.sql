@@ -2,9 +2,11 @@
     materialized='table'
 )}}
 
-with FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
+{% set new_key = execute('SELECT dvh_syfo.aktivitetskrav_key.NEXTVAL FROM DUAL')[0][0] %}
+
+WITH FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
   select
-    PK_FAK_SYFO_AKTIVITETSKRAV_MND, --opprette surrogatnøkkel
+    {{new_key}} as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
     FK_PERSON1, --lik
     FK_DIM_TID_SF_START_DATO, --lik
     FK_DIM_ALDER, -- lik
