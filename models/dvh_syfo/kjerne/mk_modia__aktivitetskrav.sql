@@ -16,7 +16,8 @@ WITH aktivitetskrav as (
     SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
-    UPDATEDBY
+    UPDATEDBY,
+    TO_CHAR(TO_DATE('2023-04-01','YYYY-MM-DD'), 'YYYYMM') as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
   and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
