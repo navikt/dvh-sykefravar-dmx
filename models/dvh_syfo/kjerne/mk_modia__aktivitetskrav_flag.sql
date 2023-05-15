@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table',
+    materialized='table'
 )}}
 
 WITH aktivitetskrav_mk as (
@@ -7,7 +7,7 @@ WITH aktivitetskrav_mk as (
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
-sykefravar_med_flag as(
+sykefravar_med_flag as (
   select aktivitetskrav_mk.*,
    CASE
     WHEN ARSAKER = 'FRISKMELDT' THEN 1
@@ -92,21 +92,32 @@ dim_alder as (
 ),
 
 sykefravar_med_person as (
-  select sykefravar_med_organisasjon.*, dim_person.fk_dim_geografi_bosted, TRUNC(MONTHS_BETWEEN(siste_dag_i_mnd, dim_person.fodt_dato)/12) as alder
+  select
+    sykefravar_med_organisasjon.*,
+    dim_person.fk_dim_geografi_bosted,
+    TRUNC(MONTHS_BETWEEN(siste_dag_i_mnd, dim_person.fodt_dato)/12) as alder
   from sykefravar_med_organisasjon
   left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
    and DIM_PERSON.GYLDIG_FLAGG = 1
 ),
 
-
 sykefravar_med_alder as (
-  select sykefravar_med_person.*, dim_alder.pk_dim_alder as fk_dim_alder
+  select
+    sykefravar_med_person.*,
+    dim_alder.pk_dim_alder as fk_dim_alder
   from sykefravar_med_person
   left join dim_alder on dim_alder.alder = sykefravar_med_person.alder
   where dim_alder.GYLDIG_FLAGG = 1
+),
 
-
+aatte_uker_flagg as (
+  select
+      sykefravar_med_alder.*,
+      CASE WHEN TRUNC(SISTVURDERT, 'DD') - TRUNC(SISTE_SYKEFRAVAR_STARTDATO, 'DD') <= 56 AND STATUS = 'UNNTAK' THEN 1 ELSE 0 END as UNNTAK_FOER_8_UKER_FLAGG,
+      CASE WHEN TRUNC(SISTVURDERT, 'DD') - TRUNC(SISTE_SYKEFRAVAR_STARTDATO, 'DD') <= 56 AND STATUS = 'UNNTAK' THEN 0 ELSE 1 END as UNNTAK_ETTER_8_UKER_FLAGG
+  from sykefravar_med_alder
 )
 
 
-SELECT * FROM sykefravar_med_alder
+SELECT * FROM aatte_uker_flagg
+
