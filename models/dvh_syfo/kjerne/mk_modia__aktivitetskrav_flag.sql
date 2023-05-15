@@ -1,7 +1,3 @@
-{{ config(
-    materialized='table'
-)}}
-
 WITH aktivitetskrav_mk as (
   SELECT a.*, last_day(LASTET_DATO) as siste_dag_i_mnd
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
