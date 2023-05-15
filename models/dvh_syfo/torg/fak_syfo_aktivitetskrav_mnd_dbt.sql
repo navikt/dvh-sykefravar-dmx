@@ -2,11 +2,13 @@
     materialized='table'
 )}}
 
-{% set new_key = execute('SELECT dvh_syfo.aktivitetskrav_key.NEXTVAL FROM DUAL')[0][0] %}
+--{% set sequence_key %}
+--  {{ dbt_utils.generate_sequence() }}
+--{% endset %}
 
 WITH FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
   select
-    {{new_key}} as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
+  --  {{ sequence_key }} AS mysequence_key,
     FK_PERSON1, --lik
     FK_DIM_TID_SF_START_DATO, --lik
     FK_DIM_ALDER, -- lik
@@ -26,3 +28,5 @@ WITH FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
 )
 
 select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
+
+
