@@ -1,4 +1,8 @@
 version:  2
 
-
-
+models:
+  - name: fak_syfo_aktivitetskrav_mnd_dbt
+    description: final table to BO
+    config:
+      meta:
+        surrogate_key: true
