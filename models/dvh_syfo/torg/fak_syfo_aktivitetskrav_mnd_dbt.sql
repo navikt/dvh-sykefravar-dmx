@@ -2,13 +2,13 @@
     materialized='table'
 )}}
 
---{% set sequence_key %}
---  {{ dbt_utils.generate_sequence() }}
---{% endset %}
+{% set sequence_key %}
+  {{ dbt_utils.generate_series(100000) }}
+{% endset %}
 
 WITH FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
   select
-  --  {{ sequence_key }} AS mysequence_key,
+    {{sequence_key}} AS mysequence_key,
     FK_PERSON1, --lik
     FK_DIM_TID_SF_START_DATO, --lik
     FK_DIM_ALDER, -- lik
