@@ -1,0 +1,31 @@
+{{ config(
+    materialized='table',
+    post_hook ="UPDATE {{this}} t SET t.PK_FAK_SYFO_AKTIVITETSKRAV_MND =
+     FAK_SYFO_AKTIVITETSKRAV_MND_DBT_SEQ.nextval"
+)}}
+
+with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
+  select
+  {{ dbt_utils.generate_surrogate_key( ['FK_PERSON1','KILDE_UUID'] )}} as PK_FAK_SYFO_AKTIVITETSKRAV_MND_SURR,
+    999999 as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
+    FK_PERSON1,
+    FK_DIM_TID_SF_START_DATO,
+    FK_DIM_ALDER,
+    PK_DIM_ORGANISASJON as FK_DIM_ORGANISASJON,
+    FK_DIM_TID_SF_START_DATO as FK_DIM_TID_UNNTAK, --?
+    FK_DIM_GEOGRAFI_BOSTED,
+    PERIODE,
+    UNNTAK_FOER_8_UKER_FLAGG,
+    UNNTAK_ETTER_8_UKER_FLAGG,
+    MEDISINSKE_GRUNNER_FLAGG,
+    tilrettelegging_ikke_mulig_flagg as TILRETTELEGG_IKKE_MULIG_FLAGG,
+    SJOMENN_UTENRIKS_FLAGG,
+    OPPDATERT_DATO,
+    LASTET_DATO,
+    KILDESYSTEM
+  from {{ ref('mk_modia__aktivitetskrav_flagg')}}
+)
+
+select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
+
+
