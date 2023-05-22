@@ -1,12 +1,13 @@
 {{ config(
     materialized='table',
-    
+
 )}}
 
 
---WITH FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
+
+FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
   select
-    {{ increment_sequence() }} AS PK_FAK_SYFO_AKTIVITETSKRAV_MND,
+    (select sequence_column from {{ ref('syfo_sequence') }}) as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
     FK_PERSON1,
     FK_DIM_TID_SF_START_DATO,
     FK_DIM_ALDER,
@@ -23,8 +24,8 @@
     LASTET_DATO,
     KILDESYSTEM
   from {{ ref('mk_modia__aktivitetskrav_flagg')}}
---)
+)
 
---select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
+select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
 
 
