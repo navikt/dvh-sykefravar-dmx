@@ -1,6 +1,6 @@
 with numbered_rows as (
-  select fk_person1,FK_DIM_ALDER,
-    row_number() OVER (partition  BY FK_person1 ORDER BY FK_PERSON1) as sequence_value
+  select fk_person1, FK_DIM_TID_SF_START_DATO,
+    row_number() OVER (partition by fk_person1, FK_DIM_TID_SF_START_DATO ORDER BY fk_person1, FK_DIM_TID_SF_START_DATO) as sequence_value
   from {{ ref('mk_modia__aktivitetskrav_flagg') }}
 )
 select

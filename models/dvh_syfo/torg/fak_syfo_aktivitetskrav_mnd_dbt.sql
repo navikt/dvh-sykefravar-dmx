@@ -5,7 +5,7 @@
 
 
 
-FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
+with FAK_SYFO_AKTIVITETSKRAV_MND_DBT as (
   select
     (select sequence_column from {{ ref('syfo_sequence') }}) as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
     FK_PERSON1,
