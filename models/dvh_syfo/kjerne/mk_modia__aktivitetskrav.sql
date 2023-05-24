@@ -17,11 +17,11 @@ WITH aktivitetskrav as (
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    TO_CHAR(TO_DATE('2023-04-01','YYYY-MM-DD'), 'YYYYMM') as PERIODE
+    TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
   and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
-  and LASTET_DATO > TO_DATE('{{var("running_mnd_from")}}','YYYY-MM-DD')
+  and LASTET_DATO > TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
 ),
 
 sykefravar_tilfeller as(

@@ -35,17 +35,19 @@ FROM aktivitetskrav_mk
 ),
 
 oversikt_status_scd as (
-  select *
-    FROM {{ ref("fk_modia__person_oversikt_scd") }}
+  select FK_PERSON1, TILDELT_ENHET, DBT_VALID_TO, DBT_VALID_FROM,
+                rank() over (partition by fk_person1 order by DBT_VALID_TO DESC NULLS FIRST) as rank
+  from {{ ref("fk_modia__person_oversikt_scd") }}
+  where DBT_VALID_TO is null or
+          TO_CHAR(DBT_VALID_TO, 'YYYYMM') = TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM')
 ),
 
 sykefravar_med_enhet as (
   select sykefravar_med_flagg.*,oversikt_status_scd.TILDELT_ENHET
-  FROM sykefravar_med_flagg
+  from sykefravar_med_flagg
   LEFT JOIN oversikt_status_scd  ON sykefravar_med_flagg.fk_person1 = oversikt_status_scd.fk_person1
-  WHERE oversikt_status_scd.dbt_valid_to IS NULL
+  where oversikt_status_scd.rank = 1
 ),
-
 
 dim_tid as (
   select *
