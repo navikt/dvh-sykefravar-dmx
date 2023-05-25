@@ -61,7 +61,6 @@ sykefravar_med_tid as (
 
 ),
 
---NB! Håndtere organisasjon i gitt tidsintervall
 dim_organisasjon as (
   select *
   FROM {{ ref("felles_dt_p__dim_organisasjon") }}
@@ -71,7 +70,6 @@ sykefravar_med_organisasjon as (
   select sykefravar_med_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
   from sykefravar_med_tid
   left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_tid.TILDELT_ENHET
-  --bør diskutere: skal vi bruke siste_sykefraværs_startdato eller sist_i_måneden_dato for å finne rett organisasjon?
     where dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
           DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1
 ),
@@ -91,7 +89,6 @@ sykefravar_med_person as (
    and DIM_PERSON.GYLDIG_FLAGG = 1
 ),
 
---NB! Håndtere alder i gitt tidsintervall
 dim_alder as (
   select
     *
