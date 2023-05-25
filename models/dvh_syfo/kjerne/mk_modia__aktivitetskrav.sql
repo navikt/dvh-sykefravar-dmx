@@ -10,18 +10,21 @@ WITH aktivitetskrav as (
     KAFKA_TOPIC,
     KILDE_UUID,
     KILDESYSTEM,
-    --LASTET_DATO,
-    sysdate as LASTET_DATO,
+    LASTET_DATO,
+    --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
     SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE
+    TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE,
+    TO_CHAR(TO_DATE(SISTVURDERT,'YYYY-MM-DD'), 'YYYYMM') as SISTVURDERT_PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
-  and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
-  and LASTET_DATO > TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+  --and LASTET_DATO < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+  and SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+  --and LASTET_DATO > TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+  and SISTVURDERT > TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
 ),
 
 sykefravar_tilfeller as(
@@ -42,10 +45,11 @@ sorterte_sykefravarstilfeller as (
 
 ),
 
+
 siste_sykefravars_tilfeller as (
   SELECT
     sorterte_sykefravarstilfeller.*,
-    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, SISTE_SYKEFRAVAR_STARTDATO ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, SISTE_SYKEFRAVAR_STARTDATO, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
   FROM sorterte_sykefravarstilfeller
 
 )

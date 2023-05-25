@@ -81,13 +81,6 @@ dim_person as (
   from {{ ref("felles_dt_person__dim_person1")}}
 ),
 
---NB! Håndtere alder i gitt tidsintervall
-dim_alder as (
-  select
-    *
-  from {{ ref("felles_dt_p__dim_alder") }}
-),
-
 sykefravar_med_person as (
   select
     sykefravar_med_organisasjon.*,
@@ -96,6 +89,13 @@ sykefravar_med_person as (
   from sykefravar_med_organisasjon
   left join dim_person on dim_person.fk_person1 = sykefravar_med_organisasjon.fk_person1
    and DIM_PERSON.GYLDIG_FLAGG = 1
+),
+
+--NB! Håndtere alder i gitt tidsintervall
+dim_alder as (
+  select
+    *
+  from {{ ref("felles_dt_p__dim_alder") }}
 ),
 
 sykefravar_med_alder as (
