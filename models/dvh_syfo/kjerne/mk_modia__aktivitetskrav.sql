@@ -16,9 +16,8 @@ WITH aktivitetskrav as (
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE,
-    TO_CHAR(SISTVURDERT, 'YYYYMM') as SISTVURDERT_PERIODE
-    -- final, bør funke for kjøring over flere måneder. riktig periode blir satt siden vi henter ut data i where clause basert på sistvurdert: TO_CHAR(SISTVURDERT, 'YYYYMM') as PERIODE
+    --TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE,
+    TO_CHAR(SISTVURDERT, 'YYYYMM') as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
   and SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD') --tidl. LASTET_DATO
@@ -46,7 +45,7 @@ sorterte_sykefravarstilfeller as (
 siste_sykefravars_tilfeller as (
   SELECT
     sorterte_sykefravarstilfeller.*,
-    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, SISTE_SYKEFRAVAR_STARTDATO, SISTVURDERT_PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, SISTE_SYKEFRAVAR_STARTDATO, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
   FROM sorterte_sykefravarstilfeller
 
 )
