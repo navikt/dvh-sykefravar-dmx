@@ -19,8 +19,8 @@ WITH aktivitetskrav as (
     --TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE,
     TO_CHAR(SISTVURDERT, 'YYYYMM') as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
-  where status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK')
-  and SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD') --tidl. LASTET_DATO
+  where --status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK') and
+   SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD') --tidl. LASTET_DATO
   and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD') --tidl. LASTET_DATO
 ),
 
