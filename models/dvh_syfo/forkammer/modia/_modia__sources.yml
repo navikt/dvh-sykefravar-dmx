@@ -10,7 +10,7 @@ sources:
         warn_after: {count: 1, period: day}
       loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
     - name: fk_motebehov
-    - name: raw_aktivitetskrav_patch
+    - name: raw_aktivitetskrav_dag
     - name: FK_SYFO_PERSON_OVERSIKT_STATUS__SNAPSHOT_V4
     - name: aktivitetskrav_key
 

@@ -1,6 +1,13 @@
+/* Et sykefraværstilfelle kan ha flere årsaker. Spesielt for 'AVVENT'.*/
+/* For å få med vurderingar og unntak gjort innenfor en månad, kan vi bruke feltet SISTVURDERT,
+som vil inneholde datoen for når vurderingen/hendelsen skjedde.
+For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT. */
+
 WITH aktivitetskrav as (
   SELECT
     ARSAKER,
+    ARSAKER1,
+    ARSAKER2,
     CREATEDAT,
     FK_PERSON1,
     KAFKA_MOTTATT_DATO,
@@ -12,17 +19,23 @@ WITH aktivitetskrav as (
     LASTET_DATO,
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
-    SISTVURDERT,
+    --SISTVURDERT,
+    CASE WHEN STATUS IN ('NY', 'AVVENT') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    --TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') as PERIODE,
     TO_CHAR(SISTVURDERT, 'YYYYMM') as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
-  where --status in ('OPPFYLT','IKKE_OPPFYLT','UNNTAK') and
-   SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD') --tidl. LASTET_DATO
-  and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD') --tidl. LASTET_DATO
+  where (
+   SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+  and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+  ) OR
+    (
+      STATUS in ('NY', 'AVVENT') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+      and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+    )
 ),
+
 
 sykefravar_tilfeller as(
   select
