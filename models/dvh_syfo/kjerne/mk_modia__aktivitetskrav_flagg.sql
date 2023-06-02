@@ -36,10 +36,12 @@ FROM aktivitetskrav_mk
 
 oversikt_status_scd as (
   select FK_PERSON1, TILDELT_ENHET, DBT_VALID_TO, DBT_VALID_FROM,
-                rank() over (partition by fk_person1 order by DBT_VALID_TO DESC NULLS FIRST) as rank
+                ROW_NUMBER() over (partition by fk_person1 order by DBT_VALID_TO DESC NULLS last) as rank
   from {{ ref("fk_modia__person_oversikt_scd") }}
   where DBT_VALID_TO is null or
-          TO_CHAR(DBT_VALID_TO, 'YYYYMM') = TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM')
+          ( TO_CHAR(DBT_VALID_TO, 'YYYYMM') >= TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') or
+            TO_CHAR(DBT_VALID_TO, 'YYYYMM') <= TO_CHAR(TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD'), 'YYYYMM'))
+
 ),
 
 sykefravar_med_enhet as (
