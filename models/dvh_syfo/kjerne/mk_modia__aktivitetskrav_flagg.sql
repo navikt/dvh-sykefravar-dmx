@@ -80,15 +80,22 @@ sykefravar_med_tid as (
 
 ),
 
+sykefravar_med_stoppunkt_tid as (
+  select sykefravar_med_tid.*, dim_tid.pk_dim_tid as FK_DIM_PASSERT_8_UKER
+  from sykefravar_med_tid
+  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_tid.STOPPUNKTAT, 'YYYYMMDD'))
+
+),
+
 dim_organisasjon as (
   select *
   FROM {{ ref("felles_dt_p__dim_organisasjon") }}
 ),
 
 sykefravar_med_organisasjon as (
-  select sykefravar_med_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
-  from sykefravar_med_tid
-  left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_tid.TILDELT_ENHET
+  select sykefravar_med_stoppunkt_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
+  from sykefravar_med_stoppunkt_tid
+  left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_stoppunkt_tid.TILDELT_ENHET
     where dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
           DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1
 ),

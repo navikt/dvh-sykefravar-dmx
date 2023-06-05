@@ -20,7 +20,8 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     SJOMENN_UTENRIKS_FLAGG,
     OPPDATERT_DATO,
     LASTET_DATO,
-    KILDESYSTEM
+    KILDESYSTEM,
+    FK_DIM_PASSERT_8_UKER
 
   from {{ ref('fak_syfo_aktivitetskrav_mnd_dbt_surr')}}
 )
