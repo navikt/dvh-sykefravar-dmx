@@ -34,21 +34,38 @@ FROM aktivitetskrav_mk
 
 ),
 
+/* Rank for å hente ut nyeste record. Både NULL (gjeldende) og siste dato i en periode får rank 1.
+    Max for å hente siste gjeldende dato for når record var gyldig. Brukes for å filtrere ut riktig record siden.
+*/
 oversikt_status_scd as (
-  select FK_PERSON1, TILDELT_ENHET, DBT_VALID_TO, DBT_VALID_FROM,
-                ROW_NUMBER() over (partition by fk_person1 order by DBT_VALID_TO DESC NULLS last) as rank
+  select
+    FK_PERSON1 as FK_PERSON1_SCD,
+    TILDELT_ENHET,
+    DBT_VALID_TO,
+    DBT_VALID_FROM,
+    rank() over (partition by FK_PERSON1, TO_CHAR(DBT_VALID_TO, 'YYYYMM') order by DBT_VALID_TO DESC NULLS last) as rank_dbt_valid_to_periode,
+    max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode
   from {{ ref("fk_modia__person_oversikt_scd") }}
-  where DBT_VALID_TO is null or
-          ( TO_CHAR(DBT_VALID_TO, 'YYYYMM') >= TO_CHAR(TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD'), 'YYYYMM') or
-            TO_CHAR(DBT_VALID_TO, 'YYYYMM') <= TO_CHAR(TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD'), 'YYYYMM'))
-
 ),
 
+/* Case løser modellering over flere måneder, og sørger for at det for en gitt periode hentes riktig tildelt enhet.
+    Uten denne hentes record fra første måned og siste måned. */
 sykefravar_med_enhet as (
-  select sykefravar_med_flagg.*,oversikt_status_scd.TILDELT_ENHET
+  select
+    sykefravar_med_flagg.*,
+    oversikt_status_scd.*,
+    case
+      when sykefravar_med_flagg.PERIODE <= TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM')
+        and sykefravar_med_flagg.PERIODE = TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM') then 1
+      when sykefravar_med_flagg.PERIODE >= TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM')
+        and TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM') is NULL then 1
+      else 0
+      end as valid_flag
   from sykefravar_med_flagg
-  LEFT JOIN oversikt_status_scd  ON sykefravar_med_flagg.fk_person1 = oversikt_status_scd.fk_person1
-  where oversikt_status_scd.rank = 1
+    LEFT JOIN oversikt_status_scd ON sykefravar_med_flagg.fk_person1 = oversikt_status_scd.fk_person1_scd
+  where oversikt_status_scd.rank_dbt_valid_to_periode = 1
+    and oversikt_status_scd.DBT_VALID_FROM = oversikt_status_scd.max_dbt_valid_from_periode
+
 ),
 
 dim_tid as (
