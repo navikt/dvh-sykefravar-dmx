@@ -1,7 +1,8 @@
 /* Et sykefraværstilfelle kan ha flere årsaker. Spesielt for 'AVVENT'.*/
 /* For å få med vurderingar og unntak gjort innenfor en månad, kan vi bruke feltet SISTVURDERT,
 som vil inneholde datoen for når vurderingen/hendelsen skjedde.
-For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT. */
+For statusene NY, AVVENT og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
+AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 
 WITH aktivitetskrav as (
   SELECT
