@@ -1,7 +1,5 @@
 {{ config(
-    materialized='table',
-    post_hook ="UPDATE {{this}} t SET t.PK_FAK_SYFO_AKTIVITETSKRAV_MND =
-     FAK_SYFO_AKTIVITETSKRAV_MND_DBT_SEQ.nextval"
+    materialized='table'
 )}}
 
 with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
