@@ -44,25 +44,31 @@ sykefravar_tilfeller as(
   from {{ ref("stg_fak_sykm_sykefravar_tilfelle") }}
 ),
 
-/* WHERE clause sier at startdato for sykefraværstilfelle er tidligere enn dato for satt aktivitetskrav. */
-sorterte_sykefravarstilfeller as (
+sorterte_aktivitetskrav as (
   SELECT
     aktivitetskrav.*,
     sykefravar_tilfeller.sykefravar_fra_dato
   FROM aktivitetskrav
   LEFT JOIN sykefravar_tilfeller ON sykefravar_tilfeller.FK_PERSON1 = aktivitetskrav.FK_PERSON1
-  where sykefravar_tilfeller.sykefravar_fra_dato < aktivitetskrav.CREATEDAT
   order by aktivitetskrav.FK_PERSON1,sykefravar_fra_dato,KAFKA_MOTTATT_DATO desc
-
 ),
 
-/* Henter siste (latest) status fra sykefraværstilfelle med row-funksjon. */
+/* Sykefravær 'under behandling' vil ikke finnes, selv om aktivitetskravet gjør det. Setter derfor sykefraværstart basert på frist 56 dager. */
+inkludere_aktivitetskrav_uten_sykefravar_treff as (
+  select
+    sorterte_aktivitetskrav.*,
+    case when sykefravar_fra_dato is null then to_date(stoppunktat-56) else sykefravar_fra_dato end as sykefravar_start
+  from sorterte_aktivitetskrav
+),
+
+/* Henter siste (latest) status fra sykefraværstilfelle med row-funksjon.
+WHERE clause sier at startdato for sykefraværstilfelle er tidligere enn dato for satt aktivitetskrav.*/
 siste_sykefravars_tilfeller as (
   SELECT
-    sorterte_sykefravarstilfeller.*, sorterte_sykefravarstilfeller.sykefravar_fra_dato as siste_sykefravar_startdato,
-    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, sykefravar_fra_dato, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
-  FROM sorterte_sykefravarstilfeller
-
+    inkludere_aktivitetskrav_uten_sykefravar_treff.*, inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start as siste_sykefravar_startdato,
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, sykefravar_start, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+  FROM inkludere_aktivitetskrav_uten_sykefravar_treff
+  where inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.CREATEDAT
 )
 
 SELECT * FROM siste_sykefravars_tilfeller WHERE first_rownum=1
