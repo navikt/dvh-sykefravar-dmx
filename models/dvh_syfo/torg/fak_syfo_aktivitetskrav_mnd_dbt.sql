@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table',
+    materialized='table'
 )}}
 
 with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
