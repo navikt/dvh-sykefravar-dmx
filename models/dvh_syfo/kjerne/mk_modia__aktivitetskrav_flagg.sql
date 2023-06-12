@@ -142,3 +142,6 @@ aatte_uker_flagg as (
 SELECT * FROM aatte_uker_flagg
 
 --TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
+
+--TODO
+-- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!
