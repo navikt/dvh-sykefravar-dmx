@@ -21,18 +21,18 @@ WITH aktivitetskrav as (
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
     --SISTVURDERT,
-    CASE WHEN STATUS IN ('NY', 'AVVENT') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    CASE WHEN STATUS IN ('NY', 'AVVENT') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where (
    SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
   and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
   ) OR
     (
-      STATUS in ('NY', 'AVVENT') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+      STATUS in ('NY', 'AUTOMATISK_OPPFYLT') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
       and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
     )
 ),
@@ -66,9 +66,14 @@ WHERE clause sier at startdato for sykefraværstilfelle er tidligere enn dato fo
 siste_sykefravars_tilfeller as (
   SELECT
     inkludere_aktivitetskrav_uten_sykefravar_treff.*, inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start as siste_sykefravar_startdato,
-    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, sykefravar_start, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, PERIODE ORDER BY sykefravar_start desc, KAFKA_MOTTATT_DATO desc) AS rangerte_rader
   FROM inkludere_aktivitetskrav_uten_sykefravar_treff
-  where inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.CREATEDAT
+  where inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.CREATEDAT and
+   inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.stoppunktat
 )
 
-SELECT * FROM siste_sykefravars_tilfeller WHERE first_rownum=1
+SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1
+
+--TODO
+-- TEST: sjekk om det finnes noen med sykefravar_start >= createdad og stoppunkt (se om vi fanger de opp i siste CTE)
+-- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!

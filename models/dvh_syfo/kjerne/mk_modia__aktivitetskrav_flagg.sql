@@ -141,3 +141,4 @@ aatte_uker_flagg as (
 
 SELECT * FROM aatte_uker_flagg
 
+--TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
