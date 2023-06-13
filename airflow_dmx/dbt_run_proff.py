@@ -126,6 +126,8 @@ if __name__ == "__main__":
 
     run_dbt(["deps"])
     if len(dict_str)> 0:
+      print ("--vars er --")
+      print(dict_str)
       run_dbt_vars(command)
     else:
       run_dbt(command)
