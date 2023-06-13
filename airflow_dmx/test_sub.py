@@ -23,7 +23,7 @@ if __name__ == "__main__":
   print ("start - kjøring")
 
   # Hent environment variable
-  dict_str = os.environ.get("MY_VARS")
+  dict_str = os.environ["MY_VARS"]
 
   print (" ---disctionary - string ---")
   print (dict_str)
