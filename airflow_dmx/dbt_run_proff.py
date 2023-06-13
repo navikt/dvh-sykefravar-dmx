@@ -112,7 +112,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "json"] +
+                  ["dbt", "--no-use-colors", "--log-format", "text"] +
                   command +
                   ["--vars", dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
@@ -124,13 +124,12 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
-  
+    run_dbt(["deps"])
     if len(dict_str)> 0:
       print ("--vars er --")
       print(dict_str)
       run_dbt_vars(command)
     else:
-      run_dbt(["deps"])
       run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
