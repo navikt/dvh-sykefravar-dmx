@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print (" command er ", command)
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
-
+    dict_str = os.environ["TASK_VARS"]
 
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
@@ -88,12 +88,15 @@ if __name__ == "__main__":
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Prosjekt path er: {project_path}")
 
+    # legger inn vars som en mulighet
+    # Hent environment variable
+
     def run_dbt(command: List[str]):
         try:
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "json"] +
+                  ["dbt", "--no-use-colors", "--log-format", "text"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
@@ -104,9 +107,30 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
+    def run_dbt_vars(command: List[str]):
+        try:
+            logger.debug(f"running command: {command}")
+            output = subprocess.run(
+                (
+                  ["dbt", "--no-use-colors", "--log-format", "text"] +
+                  command +
+                  ["--vars", dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
+                ),
+                check=True, capture_output=True
+            )
+            logger.info(output.stdout.decode("utf-8"))
+            logger.debug(dbt_logg(project_path))
+        except subprocess.CalledProcessError as err:
+            raise Exception(logger.error(dbt_logg(project_path)),
+                            err.stdout.decode("utf-8"))
 
     run_dbt(["deps"])
-    run_dbt(command)
+    if len(dict_str)> 0:
+      print ("--vars er --")
+      print(dict_str)
+      run_dbt_vars(command)
+    else:
+      run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
     write_to_xcom_push_file(filtered_logs)
