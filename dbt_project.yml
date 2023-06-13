@@ -26,6 +26,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 quoting:
   database: true
+  identifier: false
+  schema: false
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -40,6 +42,7 @@ models:
     syfra:
       +tags: syfra
       +schema: dvh_syfra
+
 
 
 # In this example config, we tell dbt to build all models in the example/ directory
