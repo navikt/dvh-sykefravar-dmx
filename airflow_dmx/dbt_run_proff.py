@@ -96,7 +96,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "json"] +
+                  ["dbt", "--no-use-colors", "--log-format", "text"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
