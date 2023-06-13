@@ -124,12 +124,13 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
-    run_dbt(["deps"])
+  
     if len(dict_str)> 0:
       print ("--vars er --")
       print(dict_str)
       run_dbt_vars(command)
     else:
+      run_dbt(["deps"])
       run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
