@@ -1,7 +1,7 @@
 /* Et sykefraværstilfelle kan ha flere årsaker. Spesielt for 'AVVENT'.*/
 /* For å få med vurderingar og unntak gjort innenfor en månad, kan vi bruke feltet SISTVURDERT,
 som vil inneholde datoen for når vurderingen/hendelsen skjedde.
-For statusene NY, AVVENT og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
+For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
 AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 
 WITH aktivitetskrav as (
@@ -20,19 +20,18 @@ WITH aktivitetskrav as (
     LASTET_DATO,
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
-    --SISTVURDERT,
-    CASE WHEN STATUS IN ('NY', 'AVVENT') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
+    CASE WHEN STATUS IN ('NY') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    CASE WHEN STATUS IN ('NY', 'AVVENT') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
+    CASE WHEN STATUS IN ('NY') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where (
    SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
   and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
   ) OR
     (
-      STATUS in ('NY', 'AVVENT') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+      STATUS in ('NY') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
       and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
     )
 ),
@@ -66,9 +65,10 @@ WHERE clause sier at startdato for sykefraværstilfelle er tidligere enn dato fo
 siste_sykefravars_tilfeller as (
   SELECT
     inkludere_aktivitetskrav_uten_sykefravar_treff.*, inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start as siste_sykefravar_startdato,
-    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, sykefravar_start, PERIODE ORDER BY KAFKA_MOTTATT_DATO desc) AS first_rownum
+    ROW_NUMBER() OVER (PARTITION BY FK_PERSON1, PERIODE ORDER BY sykefravar_start desc, KAFKA_MOTTATT_DATO desc) AS rangerte_rader
   FROM inkludere_aktivitetskrav_uten_sykefravar_treff
-  where inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.CREATEDAT
+  where inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.CREATEDAT and
+   inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.stoppunktat
 )
 
-SELECT * FROM siste_sykefravars_tilfeller WHERE first_rownum=1
+SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1

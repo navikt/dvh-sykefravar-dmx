@@ -26,8 +26,20 @@ sykefravar_med_flagg as (
     ELSE 0
   END AS medisinske_grunner_flagg,
   CASE
+    WHEN ARSAKER = 'ANNET' OR ARSAKER1= 'ANNET' OR ARSAKER2 = 'ANNET' THEN 1
+    ELSE 0
+  END AS annet_flagg,
+  CASE
+    WHEN ARSAKER = 'INFORMASJON_BEHANDLER' OR ARSAKER1= 'INFORMASJON_BEHANDLER' OR ARSAKER2 = 'INFORMASJON_BEHANDLER' THEN 1
+    ELSE 0
+  END AS informasjon_behandler_flagg,
+  CASE
+    WHEN ARSAKER = 'OPPFOLGINGSPLAN_ARBEIDSGIVER' OR ARSAKER1= 'OPPFOLGINGSPLAN_ARBEIDSGIVER' OR ARSAKER2 = 'OPPFOLGINGSPLAN_ARBEIDSGIVER' THEN 1
+    ELSE 0
+  END AS oppfolgingsplan_arbeidsgiver_flagg,
+  CASE
     WHEN ARSAKER NOT IN
-    ('FRISKMELDT', 'GRADERT', 'MEDISINSKE_GRUNNER','SJOMENN_UTENRIKS','TILRETTELEGGING_IKKE_MULIG') THEN 1
+    ('FRISKMELDT', 'GRADERT', 'MEDISINSKE_GRUNNER','SJOMENN_UTENRIKS','TILRETTELEGGING_IKKE_MULIG', 'ANNET', 'INFORMASJON_BEHANDLER', 'OPPFOLGINGSPLAN_ARBEIDSGIVER') THEN 1
     ELSE 0
   END AS ukjent_blank_flagg
 FROM aktivitetskrav_mk
@@ -141,3 +153,7 @@ aatte_uker_flagg as (
 
 SELECT * FROM aatte_uker_flagg
 
+--TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
+
+--TODO
+-- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!
