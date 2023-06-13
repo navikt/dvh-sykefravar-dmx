@@ -28,3 +28,6 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
 select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
 
 
+--NVL (null, -1) der det gjelder
+
+-- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!

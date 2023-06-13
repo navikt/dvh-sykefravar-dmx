@@ -3,7 +3,7 @@ WITH aktivitetskrav_mk as (
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
-sykefravar_med_flagg as (
+aktivitetskrav_med_flagg as (
   select aktivitetskrav_mk.*,
    CASE
     WHEN ARSAKER = 'FRISKMELDT' OR ARSAKER1= 'FRISKMELDT' OR ARSAKER2 = 'FRISKMELDT'  THEN 1
@@ -46,38 +46,53 @@ FROM aktivitetskrav_mk
 
 ),
 
-/* Rank for å hente ut nyeste record. Både NULL (gjeldende) og siste dato i en periode får rank 1.
-    Max for å hente siste gjeldende dato for når record var gyldig. Brukes for å filtrere ut riktig record siden.
+/* Max for å hente siste gjeldende dato for når record var gyldig innenfor en periode (måned).
+Brukes for å filtrere ut riktig record siden.
 */
 oversikt_status_scd as (
   select
     FK_PERSON1 as FK_PERSON1_SCD,
     TILDELT_ENHET,
-    DBT_VALID_TO,
     DBT_VALID_FROM,
-    rank() over (partition by FK_PERSON1, TO_CHAR(DBT_VALID_TO, 'YYYYMM') order by DBT_VALID_TO DESC NULLS last) as rank_dbt_valid_to_periode,
+    DBT_VALID_TO,
     max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode
   from {{ ref("fk_modia__person_oversikt_scd") }}
+  order by DBT_VALID_TO desc
 ),
 
 /* Case løser modellering over flere måneder, og sørger for at det for en gitt periode hentes riktig tildelt enhet.
     Uten denne hentes record fra første måned og siste måned. */
-sykefravar_med_enhet as (
+aktivitetskrav_med_tildelt_enhet as (
   select
-    sykefravar_med_flagg.*,
-    oversikt_status_scd.*,
-    case
-      when sykefravar_med_flagg.PERIODE <= TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM')
-        and sykefravar_med_flagg.PERIODE = TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM') then 1
-      when sykefravar_med_flagg.PERIODE >= TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM')
-        and TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM') is NULL then 1
-      else 0
-      end as valid_flag
-  from sykefravar_med_flagg
-    LEFT JOIN oversikt_status_scd ON sykefravar_med_flagg.fk_person1 = oversikt_status_scd.fk_person1_scd
-  where oversikt_status_scd.rank_dbt_valid_to_periode = 1
-    and oversikt_status_scd.DBT_VALID_FROM = oversikt_status_scd.max_dbt_valid_from_periode
+    aktivitetskrav_med_flagg.*,
+    oversikt_status_scd.*
+  from aktivitetskrav_med_flagg
+    LEFT JOIN oversikt_status_scd ON aktivitetskrav_med_flagg.fk_person1 = oversikt_status_scd.fk_person1_scd
+),
 
+aktivitetskrav_sett_gyldig_enhet_flagg as (
+  select
+    aktivitetskrav_med_tildelt_enhet.*,
+    case
+      when PERIODE <= TO_CHAR(DBT_VALID_TO, 'YYYYMM')
+        and PERIODE = TO_CHAR(max_dbt_valid_from_periode, 'YYYYMM')
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then 1
+      when PERIODE >= TO_CHAR(max_dbt_valid_from_periode, 'YYYYMM')
+        and TO_CHAR(DBT_VALID_TO, 'YYYYMM') is NULL
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then 1
+      when TILDELT_ENHET is null
+        then 1
+        else 0
+      end as valid_flag
+  from aktivitetskrav_med_tildelt_enhet
+),
+
+aktivitetskrav_gyldig_enhet as (
+  select *
+  from aktivitetskrav_sett_gyldig_enhet_flagg
+  where valid_flag = 1
 ),
 
 dim_tid as (
@@ -86,9 +101,9 @@ dim_tid as (
 ),
 
 sykefravar_med_tid as (
-  select sykefravar_med_enhet.*, dim_tid.pk_dim_tid as FK_DIM_TID_SF_START_DATO
-  from sykefravar_med_enhet
-  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
+  select aktivitetskrav_gyldig_enhet.*, dim_tid.pk_dim_tid as FK_DIM_TID_SF_START_DATO
+  from aktivitetskrav_gyldig_enhet
+  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(aktivitetskrav_gyldig_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
 
 ),
 
@@ -150,10 +165,6 @@ aatte_uker_flagg as (
   from sykefravar_med_alder
 )
 
-
 SELECT * FROM aatte_uker_flagg
 
 --TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
-
---TODO
--- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!
