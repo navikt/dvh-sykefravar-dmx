@@ -48,14 +48,17 @@ FROM aktivitetskrav_mk
 
 /* Max for å hente siste gjeldende dato for når record var gyldig innenfor en periode (måned).
 Brukes for å filtrere ut riktig record siden.
+Min for å passe på at vi ikke mister aktivitetskrav med periode tidligere enn vi har data på
+i person_oversikt_scd.
 */
-oversikt_status_scd as (
+person_oversikt_scd as (
   select
     FK_PERSON1 as FK_PERSON1_SCD,
     TILDELT_ENHET,
     DBT_VALID_FROM,
     DBT_VALID_TO,
-    max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode
+    max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode,
+    TO_CHAR(min(DBT_VALID_FROM) over (partition by FK_PERSON1), 'YYYYMM') as min_periode_scd
   from {{ ref("fk_modia__person_oversikt_scd") }}
   order by DBT_VALID_TO desc
 ),
@@ -65,9 +68,9 @@ oversikt_status_scd as (
 aktivitetskrav_med_tildelt_enhet as (
   select
     aktivitetskrav_med_flagg.*,
-    oversikt_status_scd.*
+    person_oversikt_scd.*
   from aktivitetskrav_med_flagg
-    LEFT JOIN oversikt_status_scd ON aktivitetskrav_med_flagg.fk_person1 = oversikt_status_scd.fk_person1_scd
+    LEFT JOIN person_oversikt_scd ON aktivitetskrav_med_flagg.fk_person1 = person_oversikt_scd.fk_person1_scd
 ),
 
 aktivitetskrav_sett_gyldig_enhet_flagg as (
@@ -84,7 +87,9 @@ aktivitetskrav_sett_gyldig_enhet_flagg as (
         then 1
       when TILDELT_ENHET is null
         then 1
-        else 0
+      when PERIODE < min_periode_scd
+        then 1
+      else 0
       end as valid_flag
   from aktivitetskrav_med_tildelt_enhet
 ),
