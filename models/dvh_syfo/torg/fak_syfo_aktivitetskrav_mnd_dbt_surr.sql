@@ -21,7 +21,10 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     OPPDATERT_DATO,
     LASTET_DATO,
     KILDESYSTEM,
-    FK_DIM_PASSERT_8_UKER
+    FK_DIM_PASSERT_8_UKER,
+    annet_flagg,
+    informasjon_behandler_flagg,
+    oppfolgingsplan_arbeidsgiver_flagg
   from {{ ref('mk_modia__aktivitetskrav_flagg')}}
 )
 

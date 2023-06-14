@@ -21,10 +21,10 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     OPPDATERT_DATO,
     LASTET_DATO,
     KILDESYSTEM,
-    FK_DIM_PASSERT_8_UKER--,
-    --informasjons_behandler_flagg ++
-    -- oppfolgingsplan_arbeidsgiver
-    -- annet_flagg
+    FK_DIM_PASSERT_8_UKER,
+    annet_flagg,
+    informasjon_behandler_flagg,
+    oppfolgingsplan_arbeidsgiver_flagg
 
   from {{ ref('fak_syfo_aktivitetskrav_mnd_dbt_surr')}}
 )
