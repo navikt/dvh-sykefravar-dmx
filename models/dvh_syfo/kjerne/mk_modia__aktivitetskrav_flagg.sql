@@ -128,8 +128,8 @@ sykefravar_med_organisasjon as (
   select sykefravar_med_stoppunkt_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
   from sykefravar_med_stoppunkt_tid
   left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_stoppunkt_tid.TILDELT_ENHET
-    where dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
-          DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1
+    where (dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
+          DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1) or dim_organisasjon.PK_DIM_ORGANISASJON is null
 ),
 
 dim_person as (
