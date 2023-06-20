@@ -89,7 +89,8 @@ aktivitetskrav_sett_gyldig_enhet_flagg as (
       when TILDELT_ENHET is null
         then 1
       when PERIODE < min_periode_scd
-        then 1
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then row_number() over (partition by FK_PERSON1, PERIODE ORDER BY DBT_VALID_TO nulls first)
       else 0
       end as valid_flag
   from aktivitetskrav_med_tildelt_enhet
