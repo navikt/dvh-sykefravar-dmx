@@ -25,10 +25,7 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     avvent_annet_flagg,
     avvent_informasjon_beh_flagg,
     avvent_oppfolgplan_arbgv_flagg
-
   from {{ ref('fak_syfo_aktivitetskrav_mnd_dbt_surr')}}
 )
 
 select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
-
-

@@ -73,7 +73,7 @@ aktivitetskrav_med_tildelt_enhet as (
     LEFT JOIN person_oversikt_scd ON aktivitetskrav_med_flagg.fk_person1 = person_oversikt_scd.fk_person1_scd
 ),
 
-aktivitetskrav_sett_gyldig_enhet_flagg as (
+aktivitetskrav_sett_gyldig_enhet_flagg_steg_1 as (
   select
     aktivitetskrav_med_tildelt_enhet.*,
     case
@@ -96,10 +96,16 @@ aktivitetskrav_sett_gyldig_enhet_flagg as (
   from aktivitetskrav_med_tildelt_enhet
 ),
 
+aktivitetskrav_sett_gyldig_enhet_flagg_steg_2 as (
+  select aktivitetskrav_sett_gyldig_enhet_flagg_steg_1.*,  row_number() over (partition by FK_PERSON1, PERIODE ORDER BY DBT_VALID_TO nulls first) as valid_flag_2
+  from aktivitetskrav_sett_gyldig_enhet_flagg_steg_1
+  where valid_flag = 1
+),
+
 aktivitetskrav_gyldig_enhet as (
   select *
-  from aktivitetskrav_sett_gyldig_enhet_flagg
-  where valid_flag = 1
+  from aktivitetskrav_sett_gyldig_enhet_flagg_steg_2
+  where valid_flag_2 = 1
 ),
 
 dim_tid as (
@@ -179,5 +185,3 @@ aatte_uker_flagg as (
 )
 
 SELECT * FROM aatte_uker_flagg
-
---TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
