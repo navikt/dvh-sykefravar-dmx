@@ -29,5 +29,3 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
 )
 
 select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
-
--- Tester autentisering
