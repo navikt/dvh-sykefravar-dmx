@@ -21,7 +21,7 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     OPPDATERT_DATO,
     LASTET_DATO,
     KILDESYSTEM,
-    FK_DIM_PASSERT_8_UKER,
+    FK_DIM_TID_PASSERT_8_UKER,
     avvent_annet_flagg,
     avvent_informasjon_beh_flagg,
     avvent_oppfolgplan_arbgv_flagg

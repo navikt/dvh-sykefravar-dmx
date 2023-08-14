@@ -121,7 +121,7 @@ sykefravar_med_tid as (
 ),
 
 sykefravar_med_stoppunkt_tid as (
-  select sykefravar_med_tid.*, dim_tid.pk_dim_tid as FK_DIM_PASSERT_8_UKER
+  select sykefravar_med_tid.*, dim_tid.pk_dim_tid as FK_DIM_TID_PASSERT_8_UKER
   from sykefravar_med_tid
   left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_tid.STOPPUNKTAT, 'YYYYMMDD'))
 
