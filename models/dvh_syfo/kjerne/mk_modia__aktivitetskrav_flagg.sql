@@ -3,7 +3,7 @@ WITH aktivitetskrav_mk as (
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
-sykefravar_med_flagg as (
+aktivitetskrav_med_flagg as (
   select aktivitetskrav_mk.*,
    CASE
     WHEN ARSAKER = 'FRISKMELDT' OR ARSAKER1= 'FRISKMELDT' OR ARSAKER2 = 'FRISKMELDT'  THEN 1
@@ -28,15 +28,15 @@ sykefravar_med_flagg as (
   CASE
     WHEN ARSAKER = 'ANNET' OR ARSAKER1= 'ANNET' OR ARSAKER2 = 'ANNET' THEN 1
     ELSE 0
-  END AS annet_flagg,
+  END AS avvent_annet_flagg,
   CASE
     WHEN ARSAKER = 'INFORMASJON_BEHANDLER' OR ARSAKER1= 'INFORMASJON_BEHANDLER' OR ARSAKER2 = 'INFORMASJON_BEHANDLER' THEN 1
     ELSE 0
-  END AS informasjon_behandler_flagg,
+  END AS avvent_informasjon_beh_flagg,
   CASE
     WHEN ARSAKER = 'OPPFOLGINGSPLAN_ARBEIDSGIVER' OR ARSAKER1= 'OPPFOLGINGSPLAN_ARBEIDSGIVER' OR ARSAKER2 = 'OPPFOLGINGSPLAN_ARBEIDSGIVER' THEN 1
     ELSE 0
-  END AS oppfolgingsplan_arbeidsgiver_flagg,
+  END AS avvent_oppfolgplan_arbgv_flagg,
   CASE
     WHEN ARSAKER NOT IN
     ('FRISKMELDT', 'GRADERT', 'MEDISINSKE_GRUNNER','SJOMENN_UTENRIKS','TILRETTELEGGING_IKKE_MULIG', 'ANNET', 'INFORMASJON_BEHANDLER', 'OPPFOLGINGSPLAN_ARBEIDSGIVER') THEN 1
@@ -46,38 +46,66 @@ FROM aktivitetskrav_mk
 
 ),
 
-/* Rank for å hente ut nyeste record. Både NULL (gjeldende) og siste dato i en periode får rank 1.
-    Max for å hente siste gjeldende dato for når record var gyldig. Brukes for å filtrere ut riktig record siden.
+/* Max for å hente siste gjeldende dato for når record var gyldig innenfor en periode (måned).
+Brukes for å filtrere ut riktig record siden.
+Min for å passe på at vi ikke mister aktivitetskrav med periode tidligere enn vi har data på
+i person_oversikt_scd.
 */
-oversikt_status_scd as (
+person_oversikt_scd as (
   select
     FK_PERSON1 as FK_PERSON1_SCD,
     TILDELT_ENHET,
-    DBT_VALID_TO,
     DBT_VALID_FROM,
-    rank() over (partition by FK_PERSON1, TO_CHAR(DBT_VALID_TO, 'YYYYMM') order by DBT_VALID_TO DESC NULLS last) as rank_dbt_valid_to_periode,
-    max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode
+    DBT_VALID_TO,
+    max(DBT_VALID_FROM) over(partition by FK_PERSON1, TO_CHAR(DBT_VALID_FROM, 'YYYYMM') ) as max_dbt_valid_from_periode,
+    TO_CHAR(min(DBT_VALID_FROM) over (partition by FK_PERSON1), 'YYYYMM') as min_periode_scd
   from {{ ref("fk_modia__person_oversikt_scd") }}
+  order by DBT_VALID_TO desc
 ),
 
 /* Case løser modellering over flere måneder, og sørger for at det for en gitt periode hentes riktig tildelt enhet.
     Uten denne hentes record fra første måned og siste måned. */
-sykefravar_med_enhet as (
+aktivitetskrav_med_tildelt_enhet as (
   select
-    sykefravar_med_flagg.*,
-    oversikt_status_scd.*,
+    aktivitetskrav_med_flagg.*,
+    person_oversikt_scd.*
+  from aktivitetskrav_med_flagg
+    LEFT JOIN person_oversikt_scd ON aktivitetskrav_med_flagg.fk_person1 = person_oversikt_scd.fk_person1_scd
+),
+
+aktivitetskrav_sett_gyldig_enhet_flagg_steg_1 as (
+  select
+    aktivitetskrav_med_tildelt_enhet.*,
     case
-      when sykefravar_med_flagg.PERIODE <= TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM')
-        and sykefravar_med_flagg.PERIODE = TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM') then 1
-      when sykefravar_med_flagg.PERIODE >= TO_CHAR(oversikt_status_scd.max_dbt_valid_from_periode, 'YYYYMM')
-        and TO_CHAR(oversikt_status_scd.DBT_VALID_TO, 'YYYYMM') is NULL then 1
+      when PERIODE <= TO_CHAR(DBT_VALID_TO, 'YYYYMM')
+        and PERIODE = TO_CHAR(max_dbt_valid_from_periode, 'YYYYMM')
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then 1
+      when PERIODE >= TO_CHAR(max_dbt_valid_from_periode, 'YYYYMM')
+        and (TO_CHAR(DBT_VALID_TO, 'YYYYMM') is NULL
+          or PERIODE <= TO_CHAR(DBT_VALID_TO, 'YYYYMM'))
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then 1
+      when TILDELT_ENHET is null
+        then 1
+      when PERIODE < min_periode_scd
+        and DBT_VALID_FROM = max_dbt_valid_from_periode
+        then row_number() over (partition by FK_PERSON1, PERIODE ORDER BY DBT_VALID_TO nulls first)
       else 0
       end as valid_flag
-  from sykefravar_med_flagg
-    LEFT JOIN oversikt_status_scd ON sykefravar_med_flagg.fk_person1 = oversikt_status_scd.fk_person1_scd
-  where oversikt_status_scd.rank_dbt_valid_to_periode = 1
-    and oversikt_status_scd.DBT_VALID_FROM = oversikt_status_scd.max_dbt_valid_from_periode
+  from aktivitetskrav_med_tildelt_enhet
+),
 
+aktivitetskrav_sett_gyldig_enhet_flagg_steg_2 as (
+  select aktivitetskrav_sett_gyldig_enhet_flagg_steg_1.*,  row_number() over (partition by FK_PERSON1, PERIODE ORDER BY DBT_VALID_TO nulls first) as valid_flag_2
+  from aktivitetskrav_sett_gyldig_enhet_flagg_steg_1
+  where valid_flag = 1
+),
+
+aktivitetskrav_gyldig_enhet as (
+  select *
+  from aktivitetskrav_sett_gyldig_enhet_flagg_steg_2
+  where valid_flag_2 = 1
 ),
 
 dim_tid as (
@@ -86,17 +114,23 @@ dim_tid as (
 ),
 
 sykefravar_med_tid as (
-  select sykefravar_med_enhet.*, dim_tid.pk_dim_tid as FK_DIM_TID_SF_START_DATO
-  from sykefravar_med_enhet
-  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
+  select aktivitetskrav_gyldig_enhet.*, dim_tid.pk_dim_tid as FK_DIM_TID_SF_START_DATO
+  from aktivitetskrav_gyldig_enhet
+  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(aktivitetskrav_gyldig_enhet.siste_sykefravar_startdato, 'YYYYMMDD'))
 
 ),
 
 sykefravar_med_stoppunkt_tid as (
-  select sykefravar_med_tid.*, dim_tid.pk_dim_tid as FK_DIM_PASSERT_8_UKER
+  select sykefravar_med_tid.*, dim_tid.pk_dim_tid as FK_DIM_TID_PASSERT_8_UKER
   from sykefravar_med_tid
   left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_tid.STOPPUNKTAT, 'YYYYMMDD'))
 
+),
+
+sykefravar_med_status_tid as (
+  select sykefravar_med_stoppunkt_tid.*, dim_tid.pk_dim_tid as FK_DIM_TID_STATUS
+  from sykefravar_med_stoppunkt_tid
+  left join dim_tid on dim_tid.pk_dim_tid = to_number(to_char(sykefravar_med_stoppunkt_tid.SISTVURDERT, 'YYYYMMDD'))
 ),
 
 dim_organisasjon as (
@@ -105,11 +139,11 @@ dim_organisasjon as (
 ),
 
 sykefravar_med_organisasjon as (
-  select sykefravar_med_stoppunkt_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
-  from sykefravar_med_stoppunkt_tid
-  left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_stoppunkt_tid.TILDELT_ENHET
-    where dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
-          DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1
+  select sykefravar_med_status_tid.*, dim_organisasjon.PK_DIM_ORGANISASJON, dim_organisasjon.GYLDIG_FRA_DATO, dim_organisasjon.GYLDIG_TIL_DATO
+  from sykefravar_med_status_tid
+  left join dim_organisasjon on dim_organisasjon.NAV_ENHET_KODE = sykefravar_med_status_tid.TILDELT_ENHET
+    where (dim_organisasjon.GYLDIG_FRA_DATO <= SISTVURDERT AND GYLDIG_TIL_DATO >= SISTVURDERT and
+          DIM_NIVAA = 6 and dim_organisasjon.GYLDIG_FLAGG = 1) or dim_organisasjon.PK_DIM_ORGANISASJON is null
 ),
 
 dim_person as (
@@ -150,10 +184,4 @@ aatte_uker_flagg as (
   from sykefravar_med_alder
 )
 
-
 SELECT * FROM aatte_uker_flagg
-
---TODO sjekk at stoppunktat stemmer ca overens med aatte uker flagg
-
---TODO
--- TEST: sjekk om om jeg har noen rader hvor tildelt enhet er null (sett denne til -1 ALLE STEDER MED NULL). Hvis jeg ikke har det, er det feil. SKal mangle noen tildelte enheter!

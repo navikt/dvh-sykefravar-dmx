@@ -7,9 +7,9 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     999999 as PK_FAK_SYFO_AKTIVITETSKRAV_MND,
     FK_PERSON1,
     FK_DIM_TID_SF_START_DATO,
+    FK_DIM_TID_STATUS,
     FK_DIM_ALDER,
     PK_DIM_ORGANISASJON as FK_DIM_ORGANISASJON,
-    FK_DIM_TID_SF_START_DATO as FK_DIM_TID_UNNTAK, --?
     FK_DIM_GEOGRAFI_BOSTED,
     PERIODE,
     STATUS,
@@ -21,10 +21,11 @@ with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
     OPPDATERT_DATO,
     LASTET_DATO,
     KILDESYSTEM,
-    FK_DIM_PASSERT_8_UKER
+    FK_DIM_TID_PASSERT_8_UKER,
+    avvent_annet_flagg,
+    avvent_informasjon_beh_flagg,
+    avvent_oppfolgplan_arbgv_flagg
   from {{ ref('mk_modia__aktivitetskrav_flagg')}}
 )
 
 select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
-
-

@@ -52,11 +52,14 @@ sorterte_aktivitetskrav as (
   order by aktivitetskrav.FK_PERSON1,sykefravar_fra_dato,KAFKA_MOTTATT_DATO desc
 ),
 
-/* Sykefravær 'under behandling' vil ikke finnes, selv om aktivitetskravet gjør det. Setter derfor sykefraværstart basert på frist 56 dager. */
+/* Sykefravær 'under behandling' vil ikke finnes, selv om aktivitetskravet gjør det.
+Ønsker også få med aktivitetskravene som av en eller annen grunn har et sykefraværstart etter aktivitetskravet startet og stoppet.
+Setter derfor sykefraværstart basert på frist 56 dager.
+*/
 inkludere_aktivitetskrav_uten_sykefravar_treff as (
   select
     sorterte_aktivitetskrav.*,
-    case when sykefravar_fra_dato is null then to_date(stoppunktat-56) else sykefravar_fra_dato end as sykefravar_start
+    case when (sykefravar_fra_dato is null) or (sykefravar_fra_dato > CREATEDAT) or (sykefravar_fra_dato > stoppunktat) then to_date(stoppunktat-56) else sykefravar_fra_dato end as sykefravar_start
   from sorterte_aktivitetskrav
 ),
 
