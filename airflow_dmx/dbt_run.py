@@ -58,7 +58,7 @@ mySecret = set_secrets_as_dict_gcp()
 #os.environ['DBT_ORCL_HOST'] = mySecret['DBT_ORCL_HOST']
 
 os.environ.update(mySecret)
-os.environ['DBT_ORCL_DB'] = ""
+
 print ("database ", os.environ['DBT_ORCL_DB'] )
 print ("service  ", os.environ['DBT_ORCL_SERVICE'] )
 print ("host  ", os.environ['DBT_ORCL_HOST'] )
