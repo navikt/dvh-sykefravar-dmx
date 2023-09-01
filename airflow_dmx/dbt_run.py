@@ -59,6 +59,10 @@ mySecret = set_secrets_as_dict_gcp()
 
 os.environ.update(mySecret)
 
+print ("database ", os.environ['DBT_ORCL_DB'] )
+print ("service  ", os.environ['DBT_ORCL_SERVICE'] )
+print ("host  ", os.environ['DBT_ORCL_HOST'] )
+
 
 if __name__ == "__main__":
     logger = logging.getLogger(__name__)
