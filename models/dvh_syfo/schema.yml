@@ -41,7 +41,7 @@ sources:
   - name: dmx_poc_sykefravar
     tags: ['syfo']
     description: 'henter fra diverse sykefraværsfakta'
-    schema: DT_SENSITIV
+    schema: DVH_SYKM
     tables:
       - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
         description: 'Sykefraværstilfeller'

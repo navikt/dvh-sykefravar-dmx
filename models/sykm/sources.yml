@@ -1,9 +1,9 @@
 version: 2
 
 sources:
-  - name: fk_sensitiv
+  - name: dvh_sykm
     tags: ['sykm']
-    schema: fk_sensitiv
+    schema: dvh_sykm
     tables:
       - name: sykm_sykmelding
         freshness:
