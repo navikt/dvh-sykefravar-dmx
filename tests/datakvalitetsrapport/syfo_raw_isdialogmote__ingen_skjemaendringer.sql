@@ -3,7 +3,7 @@ WITH kafka_meldinger AS (
         kafka_hash,
         kafka_message
     FROM {{ source('dmx_pox_dialogmote', 'raw_isdialogmote') }}
-    WHERE lastet_dato > sysdate - 1
+    WHERE lastet_dato > sysdate - 1 and kafka_message is not null
 )
 
 , json_dataguide AS (
