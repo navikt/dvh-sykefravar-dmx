@@ -68,6 +68,7 @@ if __name__ == "__main__":
     profiles_dir = str(sys.path[0])
     command = os.environ["DBT_COMMAND"].split()
     print (" command er ", command)
+    logger.info(f"Command er: {command}")
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
     dict_str = os.environ["TASK_VARS"]
