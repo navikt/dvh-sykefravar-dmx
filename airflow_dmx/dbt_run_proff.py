@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print (" command er ", command)
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
-    dict_str = '' #os.environ["TASK_VARS"]
+    dict_str = os.environ["TASK_VARS"]
 
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
@@ -123,7 +123,6 @@ if __name__ == "__main__":
             logger.info(output.stdout.decode("utf-8"))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
-            logger.error(err.output.decode("utf-8"))
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
