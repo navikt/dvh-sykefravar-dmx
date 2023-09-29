@@ -20,7 +20,7 @@ def set_secrets_as_dict_gcp() -> dict:
 
 def write_to_xcom_push_file(content: List[dict]):
     with open('/airflow/xcom/return.json', 'w') as xcom_file:
-        json.dump(content, xcom_file)
+        json.dump(json.loads(content), xcom_file)
 
 
 def filter_logs(file_path: str) -> List[dict]:
