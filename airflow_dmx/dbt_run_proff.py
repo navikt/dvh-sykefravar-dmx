@@ -70,7 +70,7 @@ if __name__ == "__main__":
     print (" command er ", command)
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
-    dict_str = '{}' #os.environ["TASK_VARS"]
+    dict_str = '' #os.environ["TASK_VARS"]
 
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
