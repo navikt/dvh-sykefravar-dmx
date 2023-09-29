@@ -123,8 +123,10 @@ if __name__ == "__main__":
             logger.info(output.stdout.decode("utf-8"))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
+            err.output
+            logger.error(err.output)
             raise Exception(logger.error(dbt_logg(project_path)),
-                            err.stdout.decode("utf-8"), err.cmd, err.output)
+                            err.stdout.decode("utf-8"))
 
     run_dbt(["deps"])
     if len(dict_str)> 0:
