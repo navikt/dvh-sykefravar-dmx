@@ -27,6 +27,8 @@ def filter_logs(file_path: str) -> List[dict]:
     logs = []
     with open(file_path) as logfile:
       for log in logfile:
+        logger.info(type(log))
+        logger.info(type(logfile))
         logs.append(json.loads(log))
 
     dbt_codes = [
