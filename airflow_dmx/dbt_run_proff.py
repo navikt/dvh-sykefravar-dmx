@@ -137,4 +137,5 @@ if __name__ == "__main__":
       run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
-    write_to_xcom_push_file(filtered_logs)
+    #kommenterer ut for å fjerne feil i airflow
+    #write_to_xcom_push_file(filtered_logs)
