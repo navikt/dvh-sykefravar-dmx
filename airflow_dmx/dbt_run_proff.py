@@ -29,7 +29,7 @@ def filter_logs(file_path: str) -> List[dict]:
       for log in logfile:
         logger.info(type(log))
         logger.info(type(logfile))
-        logs.append(json.loads(log.decode("utf-8")))
+        logs.append(json.loads(log.encode("utf-8")))
 
     dbt_codes = [
       'Q009', #PASS
