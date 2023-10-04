@@ -29,7 +29,7 @@ def filter_logs(file_path: str) -> List[dict]:
       for log in logfile:
         logger.info(type(log))
         logger.info(type(logfile))
-        logs.append(json.loads(log))
+        logs.append(json.loads(log.decode("utf-8")))
 
     dbt_codes = [
       'Q009', #PASS
@@ -138,4 +138,4 @@ if __name__ == "__main__":
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
     #kommenterer ut for å fjerne feil i airflow
-    #write_to_xcom_push_file(filtered_logs)
+    write_to_xcom_push_file(filtered_logs)
