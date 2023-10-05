@@ -30,9 +30,11 @@ def filter_logs(file_path: str) -> List[dict]:
         logger.info(type(log))
         logger.info(f"Dette er loggen: {log}")
         logger.info(type(logfile))
-        logs.append(json.loads(log))
-        logger.info("Prøver printe logs")
-        logger.info(logs)
+        try:
+          logs.append(json.loads(log))
+        except json.decoder.JSONDecodeError:
+           return ""
+
 
     dbt_codes = [
       'Q009', #PASS
@@ -140,5 +142,4 @@ if __name__ == "__main__":
       run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")
-    #kommenterer ut for å fjerne feil i airflow
     write_to_xcom_push_file(filtered_logs)
