@@ -34,6 +34,7 @@ def filter_logs(file_path: str) -> List[dict]:
           logs.append(json.loads(log))
         except json.decoder.JSONDecodeError:
            return ""
+    logger.info(f"Dette er loggene: {logs}")
 
 
     dbt_codes = [
@@ -53,8 +54,6 @@ def filter_logs(file_path: str) -> List[dict]:
 
 
 mySecret = set_secrets_as_dict_gcp()
-
-
 
 
 #os.environ['DBT_ORCL_USER_PROXY'] = mySecret['DBT_ORCL_USER_PROXY']
@@ -105,7 +104,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "text"] +
+                  ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
