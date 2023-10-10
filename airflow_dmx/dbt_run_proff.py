@@ -130,7 +130,8 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
-    #run_dbt(["deps"])
+    run_dbt(["deps"])
+    logger.info("HER PRINTES NESTE BOLK")
     if len(dict_str)> 0:
       run_dbt_vars(command)
     else:
