@@ -87,12 +87,12 @@ if __name__ == "__main__":
     os.environ['DBT_ORCL_USER_PROXY'] = f"{os.environ['DBT_ORCL_USER']}" + (f"[{schema}]" if schema else '')
     os.environ['DBT_ORCL_SCHEMA'] = (schema if schema else os.environ['DBT_ORCL_USER_PROXY'])
 
-    logger.info(f"bruker: {os.environ['DBT_ORCL_USER_PROXY']}")
+    logger.info(f"User is: {os.environ['DBT_ORCL_USER_PROXY']}")
 
-    logger.info(f"Command er: {os.environ['DBT_COMMAND']}")
+    logger.info(f"Command is: {os.environ['DBT_COMMAND']}")
 
     project_path = os.path.dirname(os.getcwd())
-    logger.info(f"Prosjekt path er: {project_path}")
+    logger.info(f"Project path is: {project_path}")
 
     # legger inn vars som en mulighet
     # Hent environment variable
@@ -130,7 +130,7 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
-    run_dbt(["deps"])
+    #run_dbt(["deps"])
     if len(dict_str)> 0:
       run_dbt_vars(command)
     else:
