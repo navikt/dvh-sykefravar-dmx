@@ -27,9 +27,6 @@ def filter_logs(file_path: str) -> List[dict]:
     logs = []
     with open(file_path) as logfile:
       for log in logfile:
-        logger.info(type(log))
-        logger.info(f"Dette er loggen: {log}")
-        logger.info(type(logfile))
         try:
           logs.append(json.loads(log))
         except json.decoder.JSONDecodeError:
@@ -104,7 +101,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "text"] +
+                  ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
@@ -134,8 +131,6 @@ if __name__ == "__main__":
 
     run_dbt(["deps"])
     if len(dict_str)> 0:
-      print ("--vars er --")
-      print(dict_str)
       run_dbt_vars(command)
     else:
       run_dbt(command)
