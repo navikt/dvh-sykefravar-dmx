@@ -27,7 +27,7 @@ def filter_logs(file_path: str) -> List[dict]:
     logs = []
     with open(file_path) as logfile:
       for log in logfile:
-         logger.info(f"FIRST CHARS:  {log[0:2]}")
+         logger.info(f"FIRST CHARS:{log[0:2]}")
          if log.startswith("{"):
             logs.append(json.loads(log))
         #try:
