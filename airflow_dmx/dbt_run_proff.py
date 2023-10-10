@@ -27,6 +27,7 @@ def filter_logs(file_path: str) -> List[dict]:
     logs = []
     with open(file_path) as logfile:
       for log in logfile:
+         logger.info(f"FIRST CHARS:  {log[0:2]}")
          if log.startswith("{"):
             logs.append(json.loads(log))
         #try:
@@ -118,7 +119,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "text"] +
+                  ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
                   ["--vars", dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
