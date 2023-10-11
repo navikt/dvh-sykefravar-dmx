@@ -29,7 +29,6 @@ def filter_logs(file_path: str) -> List[dict]:
          if log.startswith("{"):
             logs.append(json.loads(log))
 
-
     dbt_codes = [
       'Q009', #PASS
       'Q010', #WARN
@@ -117,6 +116,7 @@ if __name__ == "__main__":
 
     run_dbt(["deps"])
     if len(command_vars_dict_str)> 0:
+      logger.info(f"Variables are: {command_vars_dict_str}")
       run_dbt_vars(command)
     else:
       run_dbt(command)
