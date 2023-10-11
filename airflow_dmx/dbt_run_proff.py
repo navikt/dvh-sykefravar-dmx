@@ -76,10 +76,12 @@ if __name__ == "__main__":
     def dbt_logg(my_path) -> str:
       with open(my_path + "/logs/dbt.log") as log: return log.read()
 
-
+    logger.info("===========PRINTING INFO ABOUT RUN===========")
     logger.info(f"User is: {os.environ['DBT_ORCL_USER_PROXY']}")
     logger.info(f"Project path is: {project_path}")
     logger.info(f"Command is: {os.environ['DBT_COMMAND']}")
+    if len(command_vars)> 0:
+       logger.info(f"Variables are: {command_vars}")
 
 
     def run_dbt(command: List[str]):
@@ -118,9 +120,8 @@ if __name__ == "__main__":
 
     run_dbt(["deps"])
     if len(command_vars)> 0:
-      logger.info(f"Variables are: {command_vars}")
       command = command + ["--vars", command_vars]
-      logger.info(f"Test concat: {command}")
+
       run_dbt(command)
     else:
       run_dbt(command)
