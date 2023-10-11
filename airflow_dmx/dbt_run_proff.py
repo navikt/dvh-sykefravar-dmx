@@ -97,7 +97,7 @@ if __name__ == "__main__":
             )
 
             #logger.info(output.stdout.decode("utf-8"))
-            logger.info(output.stdout.decode("utf-8").split(',')['msg'])
+            logger.info(output.stdout.decode("utf-8").split(','))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
