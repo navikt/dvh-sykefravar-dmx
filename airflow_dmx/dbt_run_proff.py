@@ -27,13 +27,8 @@ def filter_logs(file_path: str) -> List[dict]:
     logs = []
     with open(file_path) as logfile:
       for log in logfile:
-         logger.info(f"FIRST CHARS: {log[0:50]}")
          if log.startswith("{"):
             logs.append(json.loads(log))
-        #try:
-         # logs.append(json.loads(log))
-        #except json.decoder.JSONDecodeError:
-         #  return ""
 
 
     dbt_codes = [
@@ -103,7 +98,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "text"] +
+                  ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
@@ -132,7 +127,6 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
 
     run_dbt(["deps"])
-    logger.info("HER PRINTES NESTE BOLK")
     if len(dict_str)> 0:
       run_dbt_vars(command)
     else:
