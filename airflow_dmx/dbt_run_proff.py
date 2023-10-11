@@ -8,18 +8,18 @@ from typing import List
 from google.cloud import secretmanager
 
 
+KNADA_TEAM_SECRET = os.environ['KNADA_TEAM_SECRET']
+
+#DBT_BASE_COMMAND = ["dbt", "--no-use-colors", "--log-format", "json"]
+
 def set_secrets_as_dict_gcp() -> dict:
   secrets = secretmanager.SecretManagerServiceClient()
-  resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
+  resource_name = f"{KNADA_TEAM_SECRET}/versions/latest"
   secret = secrets.access_secret_version(name=resource_name)
   secret_str = secret.payload.data.decode('UTF-8')
   secrets = json.loads(secret_str)
+
   return secrets
-
-
-def write_to_xcom_push_file(content: List[dict]):
-    with open('/airflow/xcom/return.json', 'w') as xcom_file:
-        json.dump(content, xcom_file)
 
 
 def filter_logs(file_path: str) -> List[dict]:
@@ -45,22 +45,30 @@ def filter_logs(file_path: str) -> List[dict]:
     return filtered_logs
 
 
-mySecret = set_secrets_as_dict_gcp()
-
-os.environ.update(mySecret)
+def write_to_xcom_push_file(content: List[dict]):
+    with open('/airflow/xcom/return.json', 'w') as xcom_file:
+        json.dump(content, xcom_file)
 
 
 if __name__ == "__main__":
+    mySecret = set_secrets_as_dict_gcp()
+    os.environ.update(mySecret)
     logger = logging.getLogger(__name__)
     stream_handler = logging.StreamHandler(sys.stdout)
+    profiles_dir = str(sys.path[0])
+    project_path = os.path.dirname(os.getcwd())
     os.environ["TZ"] = "Europe/Oslo"
     time.tzset()
-    profiles_dir = str(sys.path[0])
-    command = os.environ["DBT_COMMAND"].split()
-    log_level = os.environ["LOG_LEVEL"]
-    schema = os.environ["DB_SCHEMA"]
-    command_vars_dict_str = os.environ["DBT_COMMAND_VARS"]
 
+    schema = os.environ["DB_SCHEMA"]
+    command = os.environ["DBT_COMMAND"].split()
+    command_vars = os.environ["DBT_COMMAND_VARS"]
+
+    # setter miljø og korrekt skjema med riktig proxy
+    os.environ['DBT_ORCL_USER_PROXY'] = f"{os.environ['DBT_ORCL_USER']}" + (f"[{schema}]" if schema else '')
+    os.environ['DBT_ORCL_SCHEMA'] = (schema if schema else os.environ['DBT_ORCL_USER_PROXY'])
+
+    log_level = os.environ["LOG_LEVEL"]
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
     logger.addHandler(stream_handler)
@@ -68,15 +76,9 @@ if __name__ == "__main__":
     def dbt_logg(my_path) -> str:
       with open(my_path + "/logs/dbt.log") as log: return log.read()
 
-    # setter miljø og korrekt skjema med riktig proxy
-    os.environ['DBT_ORCL_USER_PROXY'] = f"{os.environ['DBT_ORCL_USER']}" + (f"[{schema}]" if schema else '')
-    os.environ['DBT_ORCL_SCHEMA'] = (schema if schema else os.environ['DBT_ORCL_USER_PROXY'])
 
     logger.info(f"User is: {os.environ['DBT_ORCL_USER_PROXY']}")
-
-    project_path = os.path.dirname(os.getcwd())
     logger.info(f"Project path is: {project_path}")
-
     logger.info(f"Command is: {os.environ['DBT_COMMAND']}")
 
 
@@ -85,7 +87,7 @@ if __name__ == "__main__":
             logger.debug(f"running command: {command}")
             output = subprocess.run(
                 (
-                  ["dbt", "--no-use-colors", "--log-format", "json"] +
+                 ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
                   ["--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
@@ -104,7 +106,7 @@ if __name__ == "__main__":
                 (
                   ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
-                  ["--vars", command_vars_dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
+                  ["--vars", command_vars, "--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
                 check=True, capture_output=True
             )
@@ -115,9 +117,11 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
 
     run_dbt(["deps"])
-    if len(command_vars_dict_str)> 0:
-      logger.info(f"Variables are: {command_vars_dict_str}")
-      run_dbt_vars(command)
+    if len(command_vars)> 0:
+      logger.info(f"Variables are: {command_vars}")
+      command = command + ["--vars", command_vars]
+      logger.info(f"Test concat: {command}")
+      run_dbt(command)
     else:
       run_dbt(command)
 
