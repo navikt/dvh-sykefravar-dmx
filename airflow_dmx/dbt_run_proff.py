@@ -95,7 +95,9 @@ if __name__ == "__main__":
                 ),
                 check=True, capture_output=True
             )
-            logger.info(output.stdout.decode("utf-8")['msg'])
+
+            logger.info(type(output.stdout.decode("utf-8")))
+            logger.info(json.loads(output.stdout.decode("utf-8")))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
