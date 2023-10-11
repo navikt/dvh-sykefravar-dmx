@@ -5,11 +5,10 @@ import json
 import sys
 import logging
 from typing import List
+from google.cloud import secretmanager
+
 
 def set_secrets_as_dict_gcp() -> dict:
-  import os
-  import json
-  from google.cloud import secretmanager
   secrets = secretmanager.SecretManagerServiceClient()
   resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
   secret = secrets.access_secret_version(name=resource_name)
@@ -49,14 +48,6 @@ def filter_logs(file_path: str) -> List[dict]:
 
 mySecret = set_secrets_as_dict_gcp()
 
-
-#os.environ['DBT_ORCL_USER_PROXY'] = mySecret['DBT_ORCL_USER_PROXY']
-#os.environ['DBT_ORCL_PASS'] = mySecret['DBT_ORCL_PASS']
-#os.environ['DBT_ORCL_DB'] = mySecret['DBT_ORCL_DB']
-#os.environ['DBT_ORCL_SERVICE'] = mySecret['DBT_ORCL_SERVICE']
-#os.environ['DBT_ORCL_SCHEMA'] = mySecret['DBT_ORCL_SCHEMA']
-#os.environ['DBT_ORCL_HOST'] = mySecret['DBT_ORCL_HOST']
-
 os.environ.update(mySecret)
 
 
@@ -67,10 +58,9 @@ if __name__ == "__main__":
     time.tzset()
     profiles_dir = str(sys.path[0])
     command = os.environ["DBT_COMMAND"].split()
-    print (" command er ", command)
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
-    dict_str = os.environ["TASK_VARS"]
+    command_vars_dict_str = os.environ["DBT_COMMAND_VARS"]
 
     if not log_level: log_level = 'INFO'
     logger.setLevel(log_level)
@@ -85,13 +75,11 @@ if __name__ == "__main__":
 
     logger.info(f"User is: {os.environ['DBT_ORCL_USER_PROXY']}")
 
-    logger.info(f"Command is: {os.environ['DBT_COMMAND']}")
-
     project_path = os.path.dirname(os.getcwd())
     logger.info(f"Project path is: {project_path}")
 
-    # legger inn vars som en mulighet
-    # Hent environment variable
+    logger.info(f"Command is: {os.environ['DBT_COMMAND']}")
+
 
     def run_dbt(command: List[str]):
         try:
@@ -109,6 +97,7 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
+
     def run_dbt_vars(command: List[str]):
         try:
             logger.debug(f"running command: {command}")
@@ -116,7 +105,7 @@ if __name__ == "__main__":
                 (
                   ["dbt", "--no-use-colors", "--log-format", "json"] +
                   command +
-                  ["--vars", dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
+                  ["--vars", command_vars_dict_str, "--profiles-dir", profiles_dir, "--project-dir", project_path]
                 ),
                 check=True, capture_output=True
             )
@@ -127,7 +116,7 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
 
     run_dbt(["deps"])
-    if len(dict_str)> 0:
+    if len(command_vars_dict_str)> 0:
       run_dbt_vars(command)
     else:
       run_dbt(command)
