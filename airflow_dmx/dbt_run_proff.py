@@ -101,27 +101,9 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
-    def run_dbt_vars(command: List[str]):
-        try:
-            logger.debug(f"running command: {command}")
-            output = subprocess.run(
-                (
-                  ["dbt", "--no-use-colors", "--log-format", "json"] +
-                  command +
-                  ["--vars", command_vars, "--profiles-dir", profiles_dir, "--project-dir", project_path]
-                ),
-                check=True, capture_output=True
-            )
-            logger.info(output.stdout.decode("utf-8"))
-            logger.debug(dbt_logg(project_path))
-        except subprocess.CalledProcessError as err:
-            raise Exception(logger.error(dbt_logg(project_path)),
-                            err.stdout.decode("utf-8"))
-
     run_dbt(["deps"])
     if len(command_vars)> 0:
       command = command + ["--vars", command_vars]
-
       run_dbt(command)
     else:
       run_dbt(command)
