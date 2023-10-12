@@ -98,8 +98,12 @@ if __name__ == "__main__":
 
             #logger.info(output.stdout.decode("utf-8"))
             stdout = output.stdout.decode("utf-8")
-            json_data = json.loads(stdout)
-            logger.info(json_data)
+            json_objects = [chunk + '}' for chunk in stdout.split('}') if chunk.strip()]
+            decoded_data = []
+            for obj in json_objects:
+              decoded_data.append(json.loads(obj))
+            for obj in decoded_data:
+              logger.info(f"LOG: {obj['msg']}")
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
