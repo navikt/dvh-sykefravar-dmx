@@ -97,8 +97,9 @@ if __name__ == "__main__":
             )
 
             #logger.info(output.stdout.decode("utf-8"))
-            logging_lines = json.loads(output.stdout.decode("utf-8"))
-            logger.info(logging_lines['msg'])
+            stdout = output.stdout.decode("utf-8")
+            json_data = json.loads(stdout)
+            logger.info(json_data)
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
