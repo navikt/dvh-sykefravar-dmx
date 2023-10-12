@@ -97,7 +97,7 @@ if __name__ == "__main__":
             #Logger kun timestamp og message for lesbarhet (tilsvarende [--log-format text])
             #logger.info(output.stdout.decode("utf-8")
             stdout = output.stdout.decode("utf-8")
-            log_lines = [line for line in stdout.split('\n')]
+            log_lines = [line.strip() for line in stdout.split('\n') if line.strip()]
             airflow_logs = []
             for log in log_lines:
               airflow_logs.append(json.loads(log))
