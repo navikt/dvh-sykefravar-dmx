@@ -96,10 +96,11 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
 
-            #logger.info(output.stdout.decode("utf-8"))
+            logger.info(output.stdout.decode("utf-8"))
             stdout = output.stdout.decode("utf-8")
             # Split the string into individual JSON objects based on '}' characters
             json_objects = [chunk.strip() for chunk in stdout.split(',') if chunk.strip()]
+            logger.info(json_objects)
             decoded_data = []
             for obj in json_objects:
               decoded_data.append(json.loads(obj))
