@@ -10,8 +10,6 @@ from google.cloud import secretmanager
 
 KNADA_TEAM_SECRET = os.environ['KNADA_TEAM_SECRET']
 
-#DBT_BASE_COMMAND = ["dbt", "--no-use-colors", "--log-format", "json"]
-
 def set_secrets_as_dict_gcp() -> dict:
   secrets = secretmanager.SecretManagerServiceClient()
   resource_name = f"{KNADA_TEAM_SECRET}/versions/latest"
@@ -96,16 +94,17 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
 
-            #logger.info(output.stdout.decode("utf-8"))
+            #Logger kun timestamp og message for lesbarhet (tilsvarende [--log-format text])
+            #logger.info(output.stdout.decode("utf-8")
             stdout = output.stdout.decode("utf-8")
-            # Split the logs into individual JSON objects based on '\n'
-            json_objects = [chunk.strip() for chunk in stdout.split('\n') if chunk.strip()]
-            decoded_data = []
-            for obj in json_objects:
-              decoded_data.append(json.loads(obj))
-            for obj in decoded_data:
-              logger.info(f"{obj['ts']} {obj['msg']}")
+            log_lines = [line for line in stdout.split('\n')]
+            airflow_logs = []
+            for log in log_lines:
+              airflow_logs.append(json.loads(log))
+            for log in airflow_logs:
+              logger.info(f"{log['ts']} {log['msg']}")
             logger.debug(dbt_logg(project_path))
+
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
