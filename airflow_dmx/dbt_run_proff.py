@@ -96,16 +96,15 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
 
-            logger.info(output.stdout.decode("utf-8"))
+            #logger.info(output.stdout.decode("utf-8"))
             stdout = output.stdout.decode("utf-8")
-            # Split the string into individual JSON objects based on '}' characters
+            # Split the logs into individual JSON objects based on '\n'
             json_objects = [chunk.strip() for chunk in stdout.split('\n') if chunk.strip()]
-            logger.info(json_objects)
             decoded_data = []
             for obj in json_objects:
               decoded_data.append(json.loads(obj))
             for obj in decoded_data:
-              logger.info(f"LOG: {obj['msg']}")
+              logger.info(f"{obj['ts']} {obj['msg']}")
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
             raise Exception(logger.error(dbt_logg(project_path)),
