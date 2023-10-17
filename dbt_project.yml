@@ -26,6 +26,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 quoting:
   database: true
+  identifier: false
+  schema: false
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -42,6 +44,7 @@ models:
       +schema: dvh_syfra
 
 
+
 # In this example config, we tell dbt to build all models in the example/ directory
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
@@ -55,3 +58,8 @@ tests:
 #https://confluence.adeo.no/x/OkQSF (kap 4.3)
 #NB husk DMO tilganger og DAC koder
 on-run-end: "{{ oppdater_tilgangsroller() }}"
+
+
+vars:
+  running_mnd: '2023-09-01'
+  last_mnd_start: '2023-08-01'
