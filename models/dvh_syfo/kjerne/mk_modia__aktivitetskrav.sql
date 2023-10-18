@@ -17,7 +17,7 @@ WITH aktivitetskrav as (
     KAFKA_TOPIC,
     KILDE_UUID,
     KILDESYSTEM,
-    LASTET_DATO,
+    LASTET_DATO, -- Kafka
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
     CASE WHEN STATUS IN ('NY') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
