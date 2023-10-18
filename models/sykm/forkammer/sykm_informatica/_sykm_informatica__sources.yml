@@ -6,10 +6,11 @@ sources:
     tables:
       - name: sykm_periode
       - name: hist_ff_lsp_sykmelding
-  - name: dt_sykm_informatica
-    schema: dt_sensitiv
+  - name: dvh_sykm
+    schema: dvh_sykm
     tables:
       - name: fak_sykm_sykefravar_tilfelle
+      - name: sykm_periode
   - name: dk_sykm_informatica
     schema: dk_sensitiv
     tables:
