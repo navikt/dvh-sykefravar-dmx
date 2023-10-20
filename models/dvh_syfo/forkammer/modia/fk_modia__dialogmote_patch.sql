@@ -20,6 +20,7 @@ with dialogmote_forkammer as
   when kilde_uuid = '3b5e4b16-3576-49c4-ba44-2393848e3fc5' and hendelse in ('INNKALT','NYTT_TID_STED','FERDIGSTILT') then TO_TIMESTAMP_TZ('2022-08-12','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra infotrygd/arena, fant ikke noe i sykm*/
   when kilde_uuid = '1662ee9f-5186-4c5b-a43b-bd0c926d8d19' and hendelse in ('FERDIGSTILT') then to_timestamp_tz('2022-09-14','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra annen dialogmote hendelse*/
   when kilde_uuid = '7352a6f3-d7e2-4676-a2fe-de0c55f59f68' and hendelse in ('FERDIGSTILT','INNKALT') then  to_timestamp_tz('2023-01-23','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra sf_oppfolging*/
+  when kilde_uuid = '7574b760-cef4-44a7-9c21-463055fd6a36' and hendelse in ('FERDIGSTILT','INNKALT') then  to_timestamp_tz('2023-10-09','YYYY-MM-DD') at TIME ZONE 'CET' /*hentet fra sf_oppfolging og sykm_sykmelding*/
   else tilfelle_startdato
   end
   tilfelle_startdato_patch
