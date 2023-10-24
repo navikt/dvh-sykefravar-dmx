@@ -4,6 +4,13 @@ som vil inneholde datoen for når vurderingen/hendelsen skjedde.
 For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
 AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 
+{{
+  config(
+    materialized='incremental'
+  )
+}}
+
+
 WITH aktivitetskrav as (
   SELECT
     ARSAKER,
@@ -26,14 +33,18 @@ WITH aktivitetskrav as (
     UPDATEDBY,
     CASE WHEN STATUS IN ('NY') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
-  where (
-   SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
-  and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
-  ) OR
-    (
-      STATUS in ('NY') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
-      and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
-    )
+
+  {% if is_incremental() %}
+    where (
+        SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+        and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+      ) OR
+      (
+        STATUS in ('NY') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+        and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
+      )
+  {% endif %}
+  
 ),
 
 sykefravar_tilfeller as(
