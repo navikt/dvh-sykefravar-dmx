@@ -6,7 +6,8 @@ AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 
 {{
   config(
-    materialized='incremental'
+    materialized='incremental',
+    incrmental_strategy = 'merge'
   )
 }}
 
@@ -44,7 +45,7 @@ WITH aktivitetskrav as (
         and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
       )
   {% endif %}
-  
+
 ),
 
 sykefravar_tilfeller as(
