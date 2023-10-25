@@ -36,6 +36,7 @@ WITH aktivitetskrav as (
   FROM {{ ref("fk_modia__aktivitetskrav") }}
 
   {% if is_incremental() %}
+    {{ log ("is_incremental = True", info=True)}}
     where (
         SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
         and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
