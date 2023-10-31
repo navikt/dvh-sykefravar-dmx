@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table',
+    materialized='view',
     post_hook= ["grant READ ON dvh_syfo.fak_dialogmote to DVH_SYK_DBT"]
 )}}
 
