@@ -33,7 +33,7 @@ def filter_logs(file_path: str) -> List[dict]:
     filtered_logs = [log for log in logs if log['code'] in dbt_codes]
 
     return filtered_logs
-  
+
 def set_secrets_as_dict_gcp() -> dict:
   import os
   import json
@@ -95,6 +95,7 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
+    run_dbt(["compile"])
     run_dbt(["deps"])
     run_dbt(command)
 
