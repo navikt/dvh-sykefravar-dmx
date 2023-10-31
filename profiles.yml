@@ -46,7 +46,7 @@ dmx_poc:
       user: "{{env_var('DBT_DB_USER')}}"
       pass: "{{env_var('DBT_DB_PASS')}}"
       protocol: tcp
-      host: dm08-scan.adeo.no
+      host: dm09-scan.adeo.no
       port: 1521
       service: dwh_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
