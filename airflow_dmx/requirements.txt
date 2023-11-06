@@ -1,3 +1,1 @@
-google-cloud
-google-cloud-storage
-google-cloud-secret-manager
+logging
