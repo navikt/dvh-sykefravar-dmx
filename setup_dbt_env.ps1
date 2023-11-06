@@ -11,7 +11,7 @@ if ($env:DBT_DB_TARGET) {
 
 $target = Read-Host -Prompt "Target db"
 $target = $target.ToUpper()
-$schema = "dvh_syfo"
+$schema = Read-Host -Prompt "Proxy schema"
 $creds = Get-Credential
 
 $username = $creds.Username
@@ -29,6 +29,6 @@ $env:DBT_PROFILES_DIR = Get-Location
 
 
 # midlertidig fiks for thin client fra utviklerimage
-Remove-Item -Path Env:https_proxy
+# Remove-Item -Path Env:https_proxy
 $env:ORA_PYTHON_DRIVER_TYPE = "thin"
 echo "ORA_PYTHON_DRIVER_TYPE: $env:ORA_PYTHON_DRIVER_TYPE"
