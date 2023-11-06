@@ -1,6 +1,4 @@
 
-./.dbtenv/Scripts/activate.ps1
-
 if ($env:DBT_DB_TARGET) {
   echo "Current setup: $env:DBT_DB_SCHEMA ($env:DBT_DB_TARGET)"
   $changeProfile = Read-Host -Prompt "Rerun setup? (y/n)"
@@ -13,7 +11,7 @@ if ($env:DBT_DB_TARGET) {
 
 $target = Read-Host -Prompt "Target db"
 $target = $target.ToUpper()
-$schema = "dvh_arb_person"
+$schema = "dvh_syfo"
 $creds = Get-Credential
 
 $username = $creds.Username

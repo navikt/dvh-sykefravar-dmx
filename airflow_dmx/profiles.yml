@@ -1,14 +1,46 @@
 dmx_poc:
-  target: dev
+  target: "{{env_var('DBT_DB_TARGET')}}"
   outputs:
-    dev:
+    U:
       type: oracle
-      host: "{{env_var('DBT_ORCL_HOST')}}"
-      user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
-      protocol: "tcp"
-      pass: "{{env_var('DBT_ORCL_PASS')}}"
-      database: "{{env_var('DBT_ORCL_DB')}}"
+      user: "{{env_var('DBT_ENV_SECRET_USER')}}"
+      pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
       port: 1521
-      service: "{{env_var('DBT_ORCL_SERVICE')}}"
-      schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
-      threads: 4
+      service: dwhu1
+      database: dwhu1
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 10
+    R:
+      type: oracle
+      user: "{{env_var('DBT_ENV_SECRET_USER')}}"
+      pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
+      port: 1521
+      service: dwhr
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 10
+    Q:
+      type: oracle
+      user: "{{env_var('DBT_ENV_SECRET_USER')}}"
+      pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
+      protocol: tcp
+      host: dm07-scan.adeo.no
+      port: 1521
+      service: dwhq0
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 10
+    P:
+      type: oracle
+      user: "{{env_var('DBT_ENV_SECRET_USER')}}"
+      pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
+      protocol: tcp
+      host: dm09-scan.adeo.no
+      port: 1521
+      service: dwh_ha
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
+      threads: 10
+config:
+  send_anonymous_usage_stats: False
