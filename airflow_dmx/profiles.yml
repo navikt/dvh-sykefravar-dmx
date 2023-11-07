@@ -40,6 +40,7 @@ dmx_poc:
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
       host: dm09-scan.adeo.no
+      database: dwh
       port: 1521
       service: dwh_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
