@@ -17,7 +17,7 @@ def set_secrets_as_dict_gcp() -> dict:
   secrets = json.loads(secret_str)
   return secrets
 
-
+#tester om jeg må oppdatere token
 def write_to_xcom_push_file(content: List[dict]):
     with open('/airflow/xcom/return.json', 'w') as xcom_file:
         json.dump(content, xcom_file)
