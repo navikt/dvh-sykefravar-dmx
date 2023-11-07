@@ -17,7 +17,7 @@ dmx_poc:
       user: "{{env_var('DBT_ENV_SECRET_USER')}}"
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
-      host: dm07-scan.adeo.no
+      database: dm07-scan.adeo.no
       port: 1521
       service: dwhr
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
@@ -28,6 +28,7 @@ dmx_poc:
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
       host: dm07-scan.adeo.no
+      database:
       port: 1521
       service: dwhq0
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
@@ -38,6 +39,7 @@ dmx_poc:
       pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
       host: dm09-scan.adeo.no
+      database: dwh
       port: 1521
       service: dwh_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
