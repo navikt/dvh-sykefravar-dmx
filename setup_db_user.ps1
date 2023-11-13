@@ -29,6 +29,6 @@ $env:DBT_PROFILES_DIR = Get-Location
 
 
 # midlertidig fiks for thin client fra utviklerimage
-# Remove-Item -Path Env:https_proxy
+Remove-Item -Path Env:https_proxy
 $env:ORA_PYTHON_DRIVER_TYPE = "thin"
 echo "ORA_PYTHON_DRIVER_TYPE: $env:ORA_PYTHON_DRIVER_TYPE"
