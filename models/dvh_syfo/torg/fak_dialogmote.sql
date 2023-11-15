@@ -23,29 +23,62 @@ WITH hendelser AS (
 ,motebehov AS (
   SELECT * FROM {{ ref('mk_motebehov__prepp') }}
 )
-, dm_2_3 as (
+,dm_2_7 as (
+-- copilot er benyttet til å analysere og utvide spørring med flere dialogmøter basert på eksisterende kode
+/*
+Sjekker om unntaksdato er satt for hver dialogmotetidspunkt 1 til 7
+Hvis unntaksdato er NULL               => dialogmote_tidspunkt
+Hvis dialogmøtetidspunkt < unntaksdato => dialogmote_tidspunkt
+Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dialogmøte
+*/
   select fk_person1, tilfelle_startdato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 > unntak then null
-    END AS dialogmote2_avholdt_dato
-    --,dialogmote_tidspunkt2 AS dialogmote3_avholdt_dato
-    ,CASE
+    END AS dialogmote2_avholdt_dato,
+    CASE
       WHEN unntak is null then dialogmote_tidspunkt2
-      WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
-      WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
-    END AS dialogmote3_avholdt_dato
+      WHEN dialogmote_tidspunkt2 < unntak then dialogmote_tidspunkt2
+      WHEN dialogmote_tidspunkt2 > unntak then dialogmote_tidspunkt1
+    END AS dialogmote3_avholdt_dato,
+    CASE
+      WHEN unntak is null then dialogmote_tidspunkt3
+      WHEN dialogmote_tidspunkt3 < unntak then dialogmote_tidspunkt3
+      WHEN dialogmote_tidspunkt3 > unntak then dialogmote_tidspunkt2
+    END AS dialogmote4_avholdt_dato,
+    CASE
+      WHEN unntak is null then dialogmote_tidspunkt4
+      WHEN dialogmote_tidspunkt4 < unntak then dialogmote_tidspunkt4
+      WHEN dialogmote_tidspunkt4 > unntak then dialogmote_tidspunkt3
+    END AS dialogmote5_avholdt_dato,
+    CASE
+      WHEN unntak is null then dialogmote_tidspunkt5
+      WHEN dialogmote_tidspunkt5 < unntak then dialogmote_tidspunkt5
+      WHEN dialogmote_tidspunkt5 > unntak then dialogmote_tidspunkt4
+    END AS dialogmote6_avholdt_dato,
+    CASE
+      WHEN unntak is null then dialogmote_tidspunkt6
+      WHEN dialogmote_tidspunkt6 < unntak then dialogmote_tidspunkt6
+      WHEN dialogmote_tidspunkt6 > unntak then dialogmote_tidspunkt5
+    END AS dialogmote7_avholdt_dato
   from hendelser
 )
 ,flag_innen_26Uker AS (
-  SELECT fk_person1, tilfelle_startdato, dialogmote2_avholdt_dato, dialogmote3_avholdt_dato,
+  SELECT fk_person1,
+         tilfelle_startdato,
+         dialogmote2_avholdt_dato,
+         dialogmote3_avholdt_dato,
+         dialogmote4_avholdt_dato,
+         dialogmote5_avholdt_dato,
+         dialogmote6_avholdt_dato,
+         dialogmote7_avholdt_dato,
     CASE
       WHEN dialogmote2_avholdt_dato IS NULL THEN NULL
       WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
       ELSE 0
     END AS dialogmote2_innen_26_uker_flagg
-  FROM dm_2_3
+  FROM dm_2_7
 )
 ,final AS (
   SELECT
@@ -57,6 +90,10 @@ WITH hendelser AS (
     ,behov_arbeidsgiver
     ,dialogmote2_avholdt_dato
     ,dialogmote3_avholdt_dato
+    ,dialogmote4_avholdt_dato
+    ,dialogmote5_avholdt_dato
+    ,dialogmote6_avholdt_dato
+    ,dialogmote7_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.ek_dim_org
@@ -73,6 +110,18 @@ WITH hendelser AS (
     ,TO_NUMBER(
       TO_CHAR(dialogmote3_avholdt_dato, 'YYYYMMDD')
     ) AS fk_dim_tid__dm3_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote4_avholdt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__dm4_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote5_avholdt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__dm5_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote6_avholdt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__dm6_avholdt_dato
+    ,TO_NUMBER(
+      TO_CHAR(dialogmote7_avholdt_dato, 'YYYYMMDD')
+    ) AS fk_dim_tid__dm7_avholdt_dato
     ,TO_NUMBER(
       TO_CHAR(unntak, 'YYYYMMDD')
     ) AS fk_dim_tid__unntak_dato
