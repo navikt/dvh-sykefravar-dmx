@@ -7,3 +7,4 @@ airflow_dmx/.user.yml
 .DS_Store
 .venv/
 .dbtenv
+.vscode
