@@ -56,5 +56,16 @@ dmx_poc:
       service: dwh_ha
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
       threads: 10
+    DEV:
+      type: oracle
+      host: "{{env_var('DBT_ORCL_HOST')}}"
+      user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
+      protocol: "tcp"
+      pass: "{{env_var('DBT_ORCL_PASS')}}"
+      database: "{{env_var('DBT_ORCL_DB')}}"
+      port: 1521
+      service: "{{env_var('DBT_ORCL_SERVICE')}}"
+      schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
+      threads: 10
 config:
   send_anonymous_usage_stats: False
