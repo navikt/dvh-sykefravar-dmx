@@ -61,7 +61,7 @@ dmx_poc:
       user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
       pass: "{{env_var('DBT_ORCL_PASS')}}"
       protocol: "tcp"
-      host: "{{env_var('DBT_ORCL_HOST')}}"
+      host: dm07-scan.adeo.no
       database: "{{env_var('DBT_ORCL_DB')}}"
       port: 1521
       service: dwhr
