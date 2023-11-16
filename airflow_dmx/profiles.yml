@@ -64,7 +64,7 @@ dmx_poc:
       pass: "{{env_var('DBT_ORCL_PASS')}}"
       database: "{{env_var('DBT_ORCL_DB')}}"
       port: 1521
-      service: "{{env_var('DBT_ORCL_SERVICE')}}"
+      service: dwhr
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
       threads: 10
 config:
