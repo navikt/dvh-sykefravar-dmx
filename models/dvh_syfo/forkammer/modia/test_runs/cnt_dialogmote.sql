@@ -1,1 +1,1 @@
-SELECT count(*) as cnt_dialogmote FROM {{ ref('fk_modia__dialogmote')}}
+SELECT kilde_uuid, lastet_dato, sysdate FROM {{ ref('fk_modia__dialogmote')}} limit 10
