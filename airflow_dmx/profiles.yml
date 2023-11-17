@@ -1,26 +1,15 @@
 dmx_poc:
-  target: "{{env_var('DBT_DB_TARGET')}}"
+  target: dynamically #"{{env_var('DBT_DB_TARGET')}}"
   outputs:
-    PROD:
+    dynamically:
       type: oracle
       user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
       pass: "{{env_var('DBT_ORCL_PASS')}}"
       protocol: tcp
-      host: dm09-scan.adeo.no
+      host: "{{env_var('DBT_ORCL_HOST')}}"
       database: "{{env_var('DBT_ORCL_DB')}}"
       port: 1521
-      service: dwh_ha
-      schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
-      threads: 10
-    DEV:
-      type: oracle
-      user: "{{env_var('DBT_ORCL_USER_PROXY')}}"
-      pass: "{{env_var('DBT_ORCL_PASS')}}"
-      protocol: "tcp"
-      host: dm07-scan.adeo.no
-      database: "{{env_var('DBT_ORCL_DB')}}"
-      port: 1521
-      service: dwhr
+      service: "{{env_var('DBT_ORCL_SERVICE')}}"
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
       threads: 10
 config:
