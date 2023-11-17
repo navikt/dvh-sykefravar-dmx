@@ -1,5 +1,5 @@
 dmx_poc:
-  target: dynamically #"{{env_var('DBT_DB_TARGET')}}"
+  target: dynamically
   outputs:
     dynamically:
       type: oracle
