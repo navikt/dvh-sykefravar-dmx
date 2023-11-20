@@ -39,28 +39,28 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     END AS dialogmote2_avholdt_dato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt2
-      WHEN dialogmote_tidspunkt2 < unntak then dialogmote_tidspunkt2
-      WHEN dialogmote_tidspunkt2 > unntak then dialogmote_tidspunkt1
+      WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
+      WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
     END AS dialogmote3_avholdt_dato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt3
-      WHEN dialogmote_tidspunkt3 < unntak then dialogmote_tidspunkt3
-      WHEN dialogmote_tidspunkt3 > unntak then dialogmote_tidspunkt2
+      WHEN dialogmote_tidspunkt2 < unntak then dialogmote_tidspunkt3
+      WHEN dialogmote_tidspunkt2 > unntak then dialogmote_tidspunkt2
     END AS dialogmote4_avholdt_dato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt4
-      WHEN dialogmote_tidspunkt4 < unntak then dialogmote_tidspunkt4
-      WHEN dialogmote_tidspunkt4 > unntak then dialogmote_tidspunkt3
+      WHEN dialogmote_tidspunkt3 < unntak then dialogmote_tidspunkt4
+      WHEN dialogmote_tidspunkt3 > unntak then dialogmote_tidspunkt3
     END AS dialogmote5_avholdt_dato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt5
-      WHEN dialogmote_tidspunkt5 < unntak then dialogmote_tidspunkt5
-      WHEN dialogmote_tidspunkt5 > unntak then dialogmote_tidspunkt4
+      WHEN dialogmote_tidspunkt4 < unntak then dialogmote_tidspunkt5
+      WHEN dialogmote_tidspunkt4 > unntak then dialogmote_tidspunkt4
     END AS dialogmote6_avholdt_dato,
     CASE
       WHEN unntak is null then dialogmote_tidspunkt6
-      WHEN dialogmote_tidspunkt6 < unntak then dialogmote_tidspunkt6
-      WHEN dialogmote_tidspunkt6 > unntak then dialogmote_tidspunkt5
+      WHEN dialogmote_tidspunkt5 < unntak then dialogmote_tidspunkt6
+      WHEN dialogmote_tidspunkt5 > unntak then dialogmote_tidspunkt5
     END AS dialogmote7_avholdt_dato
   from hendelser
 )
