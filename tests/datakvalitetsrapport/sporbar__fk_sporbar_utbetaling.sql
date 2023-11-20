@@ -1,0 +1,1 @@
+{{ lest_fk_sporbar_utbetaling(source('sykp', 'fk_sporbar_utbetaling')) }}
