@@ -2,8 +2,11 @@
 templater = dbt
 dialect = oracle
 
-[sqlfluff:rules]
+[sqlfluff:indentation]
 tab_space_size = 2
+
+[sqlfluff:rules]
+# The tab_space_size setting has been moved to the [sqlfluff:indentation] section
 
 [sqlfluff:rules:L010]
 # Keywords
