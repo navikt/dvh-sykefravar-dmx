@@ -1,6 +1,6 @@
 
 
-with source_fk_sporbar_utbetaling_kafka_offsett as (
+with source_fk_sporbar_utbetaling_kafka_offset as (
   SELECT
             kafka_topic,
             kafka_partisjon,
