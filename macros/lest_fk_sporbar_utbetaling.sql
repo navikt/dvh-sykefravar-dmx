@@ -21,6 +21,6 @@ FROM
             kafka_mottatt_dato > sysdate - 14
     )
 WHERE
-    neste - kafka_offset > 2
+    neste - kafka_offset > 1
 
 {% endmacro %}
