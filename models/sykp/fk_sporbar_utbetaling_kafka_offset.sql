@@ -1,5 +1,3 @@
-
-
 with source_fk_sporbar_utbetaling_kafka_offset as (
   SELECT
             kafka_topic,
@@ -23,7 +21,7 @@ final as (
             kafka_partisjon,
             kafka_offset,
             kafka_mottatt_dato
-  from source_fk_sporbar_utbetaling_kafka_offsett
+  from source_fk_sporbar_utbetaling_kafka_offset
 )
 
 select * from final
