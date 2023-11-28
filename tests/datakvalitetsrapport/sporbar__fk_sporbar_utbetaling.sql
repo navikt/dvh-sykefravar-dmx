@@ -1,0 +1,1 @@
+{{ lest_fk_sporbar_utbetaling('fk_sporbar_utbetaling_kafka_offset') }}
