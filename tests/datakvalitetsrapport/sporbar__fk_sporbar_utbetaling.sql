@@ -1,1 +1,1 @@
-{{ lest_fk_sporbar_utbetaling( {{ ref('fk_sporbar_utbetaling_kafka_offset') }} )}}
+{{ lest_fk_sporbar_utbetaling( ref('fk_sporbar_utbetaling_kafka_offset') ) }}
