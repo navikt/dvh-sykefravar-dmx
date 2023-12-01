@@ -1,6 +1,9 @@
-{{
-  config ( post_hook="grant READ ON {{ this }} to DVH_SYK_DBT,DVH_SYFO" )
-}}
+
+{{ config(
+    materialized='table',
+    post_hook= ["grant READ ON {{this}} to DVH_SYK_DBT"]
+)}}
+
 
 with source_fk_sporbar_utbetaling_kafka_offset as (
   SELECT
