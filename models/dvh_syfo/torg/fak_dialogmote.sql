@@ -33,31 +33,36 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
 */
   select fk_person1, tilfelle_startdato,
     CASE
+      WHEN (dialogmote_tidspunkt1 > unntak) or (extract(day from (dialogmote_tidspunkt1 - tilfelle_startdato))) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt1
-      WHEN dialogmote_tidspunkt1 > unntak then null
     END AS dialogmote2_avholdt_dato,
     CASE
+      WHEN extract(day from (dialogmote_tidspunkt2 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt2
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
       WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
     END AS dialogmote3_avholdt_dato,
     CASE
+      WHEN extract(day from (dialogmote_tidspunkt3 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt3
       WHEN dialogmote_tidspunkt2 < unntak then dialogmote_tidspunkt3
       WHEN dialogmote_tidspunkt2 > unntak then dialogmote_tidspunkt2
     END AS dialogmote4_avholdt_dato,
     CASE
+      WHEN extract(day from (dialogmote_tidspunkt4 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt4
       WHEN dialogmote_tidspunkt3 < unntak then dialogmote_tidspunkt4
       WHEN dialogmote_tidspunkt3 > unntak then dialogmote_tidspunkt3
     END AS dialogmote5_avholdt_dato,
     CASE
+      WHEN extract(day from (dialogmote_tidspunkt5 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt5
       WHEN dialogmote_tidspunkt4 < unntak then dialogmote_tidspunkt5
       WHEN dialogmote_tidspunkt4 > unntak then dialogmote_tidspunkt4
     END AS dialogmote6_avholdt_dato,
     CASE
+      WHEN extract(day from (dialogmote_tidspunkt6 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt6
       WHEN dialogmote_tidspunkt5 < unntak then dialogmote_tidspunkt6
       WHEN dialogmote_tidspunkt5 > unntak then dialogmote_tidspunkt5
