@@ -27,10 +27,21 @@ sources:
         description: Næringer
       - name: FAK_SF_HENDELSE_DAG
         description: Arena fakta per dag
-      - name: DIM_GEOGRAFI
-        description: Geografi
       - name: DIM_DIAGNOSE
         description: 'Diagnoser hovedkategori'
+      - name: AGG_SYK_SMP_SM_VAR_EGEN_MND
+        description: 'egen..'
+      - name: DIM_SYKMELDER
+        description:  'Sykmelder'
+      - name: DIM_SYK_LK_SYKMELDER_FNR
+        description: "fødselsnummer"
+      - name: DIM_SYK_SMP_FLAGG
+        description: 'flagg til sykmelder'
+      - name: DIM_VERSJON
+        description: 'versjon'
+      - name: DIM_GEOGRAFI
+        description: ' geografi'
+
   - name: dmx_poc_person
     tags: ['syfo']
     description: 'henter fra DT_PERSON'

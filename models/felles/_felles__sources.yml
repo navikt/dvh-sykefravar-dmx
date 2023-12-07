@@ -9,5 +9,8 @@ sources:
     - name: dim_varighet
     - name: dim_org
     - name: dim_alder
+    - name: dim_geografi
+    - name: dim_kjonn
+    - name: dim_naering
 
 # Oppdatere fra fellesskjema til riktig komponentskjema på sikt (eks. dt_kodeverk)
