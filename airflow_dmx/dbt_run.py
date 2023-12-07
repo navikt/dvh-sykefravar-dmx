@@ -20,6 +20,7 @@ def filter_logs(file_path: str) -> List[dict]:
         logs.append(json.loads(log))
 
     dbt_codes = [
+      'Q007', #PASS
       'Q009', #PASS
       'Q010', #WARN
       #'Q011', #RUN not of interest
