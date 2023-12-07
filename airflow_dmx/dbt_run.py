@@ -22,7 +22,7 @@ def filter_logs(file_path: str) -> List[dict]:
     dbt_codes = [
       'Q009', #PASS
       'Q010', #WARN
-      'Q011', #FAIL
+      #'Q011', #PASS not of interest
       'Q019', #Freshness WARN
       'Q018', #Freshness PASS
       'Q020', #Freshness PASS
