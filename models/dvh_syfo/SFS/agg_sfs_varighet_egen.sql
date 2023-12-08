@@ -25,21 +25,21 @@ dim_versjon as (
 final_all as (
   select
     substr(to_char(fk_dim_tid_periode),1,6) as aarmnd,
-    dim_geo.bydel_navn ,
-    dim_geo.kommune_navn,
-    dim_geo.fylke_navn,
-    dim_sykm_fnr.fodsel_nr,
+    dim_geo.bydel_navn AS SYKM_BYDEL_NAVN,
+    dim_geo.kommune_navn AS SYKM_KOMMUNE_NAVN,
+    dim_geo.fylke_navn AS SYKM_FYLKE_NAVN,
+    dim_sykm_fnr.fodsel_nr AS sykm_FODSEL_NR,
     dim_sykemeld.sykm_hovedgruppe_kode,
     dim_sykemeld.sykm_undergruppe_kode,
     dim_sykemeld.sykmelder_sammenl_type_kode,
-    dim_kjonn.kjonn_kode,
-    alder_gruppe7_besk,
+    dim_kjonn.kjonn_kode AS PASIENT_KJONN_KODE,
+    alder_gruppe7_besk AS PASIENT_GRUPPE7_BESK,
     hovedgruppe_smp_besk,
 	  undergruppe_smp_besk,
 	  varighet_gruppe9_besk,
-    dim_naering.gruppe6_besk_lang,
+    dim_naering.gruppe6_besk_lang AS NAERING_GRUPPE_BESK_LANG,
     antall_sykmeldinger,
-    dim_syk_flagg.element_flagg,
+    dim_syk_flagg.element_flagg AS GRADERT_FLAGG,
     antall_dager
   from AGG_SFS_VARIGHET_EGEN
   left join dim_geo ON
