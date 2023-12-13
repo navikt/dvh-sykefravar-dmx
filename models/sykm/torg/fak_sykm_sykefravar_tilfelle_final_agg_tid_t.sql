@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table'
+    materialized='view'
 ) }}
 
 WITH fak_sykm_sykefravar_tilfelle_tid_1 AS (

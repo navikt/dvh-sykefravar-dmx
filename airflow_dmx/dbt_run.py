@@ -6,16 +6,6 @@ import sys
 import logging
 from typing import List
 
-def set_secrets_as_dict_gcp() -> dict:
-  import os
-  import json
-  from google.cloud import secretmanager
-  secrets = secretmanager.SecretManagerServiceClient()
-  resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
-  secret = secrets.access_secret_version(name=resource_name)
-  secret_str = secret.payload.data.decode('UTF-8')
-  secrets = json.loads(secret_str)
-  return secrets
 
 #tester om jeg må oppdatere token
 def write_to_xcom_push_file(content: List[dict]):
@@ -30,9 +20,11 @@ def filter_logs(file_path: str) -> List[dict]:
         logs.append(json.loads(log))
 
     dbt_codes = [
+      'Q007', #PASS
       'Q009', #PASS
       'Q010', #WARN
-      'Q011', #FAIL
+      #'Q011', #RUN not of interest
+      'Q018', #Freshness PASS
       'Q019', #Freshness WARN
       'Q020', #Freshness PASS
       'Z021', #Info about warning in tests
@@ -40,22 +32,26 @@ def filter_logs(file_path: str) -> List[dict]:
       'E040', #Total runtime
     ]
 
-    filtered_logs = [log for log in logs if log['code'] in dbt_codes]
+    filtered_logs = []
+    for log in logs:
+       if log.get("info") and log["info"]["code"] in dbt_codes:
+          filtered_logs.append(log["info"])
 
     return filtered_logs
 
+def set_secrets_as_dict_gcp() -> dict:
+  import os
+  import json
+  from google.cloud import secretmanager
+  secrets = secretmanager.SecretManagerServiceClient()
+  resource_name = f"{os.environ['KNADA_TEAM_SECRET']}/versions/latest"
+  secret = secrets.access_secret_version(name=resource_name)
+  secret_str = secret.payload.data.decode('UTF-8')
+  secrets = json.loads(secret_str)
+  return secrets
 
 mySecret = set_secrets_as_dict_gcp()
 
-
-
-
-#os.environ['DBT_ORCL_USER_PROXY'] = mySecret['DBT_ORCL_USER_PROXY']
-#os.environ['DBT_ORCL_PASS'] = mySecret['DBT_ORCL_PASS']
-#os.environ['DBT_ORCL_DB'] = mySecret['DBT_ORCL_DB']
-#os.environ['DBT_ORCL_SERVICE'] = mySecret['DBT_ORCL_SERVICE']
-#os.environ['DBT_ORCL_SCHEMA'] = mySecret['DBT_ORCL_SCHEMA']
-#os.environ['DBT_ORCL_HOST'] = mySecret['DBT_ORCL_HOST']
 
 os.environ.update(mySecret)
 
@@ -104,7 +100,9 @@ if __name__ == "__main__":
             raise Exception(logger.error(dbt_logg(project_path)),
                             err.stdout.decode("utf-8"))
 
+
     run_dbt(["deps"])
+    run_dbt(["compile"])
     run_dbt(command)
 
     filtered_logs = filter_logs(f"{project_path}/logs/dbt.log")

@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fk_sporbar_utbetaling_kafka_offset
+    description: "union between fk_sporbar_utbetaling and fk_sporbar_annullering to find gaps in kafka offset sequence"
+    columns:
+      - name: kafka_topic
+        description: "The Kafka topic"
+      - name: kafka_partisjon
+        description: "The Kafka partition"
+      - name: kafka_offset
+        description: "The Kafka offset"
+      - name: kafka_mottatt_dato
+        description: "The date the Kafka message was received"
