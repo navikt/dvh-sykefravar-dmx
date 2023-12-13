@@ -63,6 +63,7 @@ if __name__ == "__main__":
     time.tzset()
     profiles_dir = str(sys.path[0])
     command = os.environ["DBT_COMMAND"].split()
+    command_vars = os.environ["DBT_COMMAND_VARS"]
     log_level = os.environ["LOG_LEVEL"]
     schema = os.environ["DB_SCHEMA"]
 
@@ -102,6 +103,13 @@ if __name__ == "__main__":
 
 
     run_dbt(["deps"])
+
+    if len(command_vars)> 0:
+      command = command + ["--vars", command_vars]
+      run_dbt(command)
+    else:
+      run_dbt(command)
+      
     run_dbt(["compile"])
     run_dbt(command)
 
