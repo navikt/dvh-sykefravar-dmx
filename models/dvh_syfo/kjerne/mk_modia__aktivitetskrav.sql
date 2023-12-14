@@ -4,7 +4,12 @@ som vil inneholde datoen for når vurderingen/hendelsen skjedde.
 For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
 AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 
-
+{{
+  config(
+    materialized='incremental',
+    incremental_strategy = 'merge'
+  )
+}}
 
 
 WITH aktivitetskrav as (
@@ -30,8 +35,8 @@ WITH aktivitetskrav as (
     CASE WHEN STATUS IN ('NY') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
 
-  {#% if is_incremental() %#}
-    {#{ log ("is_incremental = True", info=True)}#}
+  {% if is_incremental() %}
+    {{ log ("is_incremental = True", info=True)}}
     where (
         SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
         and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
@@ -40,7 +45,7 @@ WITH aktivitetskrav as (
         STATUS in ('NY') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
         and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
       )
-  {#% endif %#}
+  {% endif %}
 
 ),
 
