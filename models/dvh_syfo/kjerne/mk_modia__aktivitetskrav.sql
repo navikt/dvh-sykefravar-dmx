@@ -20,18 +20,18 @@ WITH aktivitetskrav as (
     LASTET_DATO, -- Kafka
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
-    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
   where (
    SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
   and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
   ) OR
     (
-      STATUS in ('NY', 'AUTOMATISK_OPPFYLT') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+      STATUS in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
       and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
     )
 ),
