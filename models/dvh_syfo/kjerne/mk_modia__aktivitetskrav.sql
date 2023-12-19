@@ -96,3 +96,4 @@ SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1
 -- mk_aktivitetskrav__arsaker_flagg
 -- mk_aktivitetskrav__ekstra_kolonner /__andre_flagg / __gyldige_rader / __beriket
 -- mk_aktivitetskrav__surr_key ? Hvor bør denne logikken ligge? Det er et view, må den ligge i torg?
+-- bytte ut sistvurdert/createdat med 'hendelse_dato'
