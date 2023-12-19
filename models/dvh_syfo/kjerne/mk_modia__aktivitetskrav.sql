@@ -7,7 +7,8 @@ AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
 {{
   config(
     materialized='incremental',
-    incremental_strategy = 'merge'
+    incremental_strategy = 'merge',
+    unique_key = ['FK_PERSON1, PERIODE']
   )
 }}
 
@@ -88,3 +89,10 @@ siste_sykefravars_tilfeller as (
 )
 
 SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1
+
+-- mappe for aktivitetskrav
+-- lage mk_aktivitetskrav__inkr for å sette filter
+-- omdøpe logikken her til mk_aktivitetskrav__siste_sykefrav_tilfelle_i_periode
+-- mk_aktivitetskrav__arsaker_flagg
+-- mk_aktivitetskrav__ekstra_kolonner /__andre_flagg / __gyldige_rader / __beriket
+-- mk_aktivitetskrav__surr_key ? Hvor bør denne logikken ligge? Det er et view, må den ligge i torg?
