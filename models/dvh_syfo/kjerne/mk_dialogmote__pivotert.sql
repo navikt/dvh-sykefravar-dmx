@@ -12,7 +12,7 @@ WITH hendelser as (
 ,final AS (
   SELECT * FROM (
     SELECT fk_person1
-      ,min_tilfelle_startdato AS tilfelle_startdato
+      ,tilfelle_startdato AS tilfelle_startdato
       ,CONCAT(hendelse, ROW_NUMBER) AS hendelse1
       ,hendelse_tidspunkt1
     FROM hendelser
