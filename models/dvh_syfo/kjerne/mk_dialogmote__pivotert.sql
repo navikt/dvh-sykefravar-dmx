@@ -12,7 +12,7 @@ WITH hendelser as (
 ,final AS (
   SELECT * FROM (
     SELECT fk_person1
-      ,min_tilfelle_startdato AS tilfelle_startdato
+      ,tilfelle_startdato AS tilfelle_startdato
       ,CONCAT(hendelse, ROW_NUMBER) AS hendelse1
       ,hendelse_tidspunkt1
     FROM hendelser
@@ -22,6 +22,10 @@ WITH hendelser as (
       'STOPPUNKT1' stoppunkt
       ,'FERDIGSTILT1' dialogmote_tidspunkt1
       ,'FERDIGSTILT2' dialogmote_tidspunkt2
+      ,'FERDIGSTILT3' dialogmote_tidspunkt3
+      ,'FERDIGSTILT4' dialogmote_tidspunkt4
+      ,'FERDIGSTILT5' dialogmote_tidspunkt5
+      ,'FERDIGSTILT6' dialogmote_tidspunkt6
       ,'UNNTAK1' unntak
     )
   )
