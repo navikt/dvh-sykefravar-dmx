@@ -15,13 +15,13 @@ dmx_poc:
     R:
       type: oracle
       user: "{{env_var('DBT_ENV_SECRET_USER')}}"
-      pass: OklHMOeUEvKM14
+      pass: "{{env_var('DBT_ENV_SECRET_PASS')}}"
       protocol: tcp
       host: dm07-scan.adeo.no
       database: dwhpr
       port: 1521
       service: dwhr
-      schema: dvh_syfo
+      schema: "{{env_var('DBT_DB_SCHEMA')}}"
       threads: 10
     Q:
       type: oracle
