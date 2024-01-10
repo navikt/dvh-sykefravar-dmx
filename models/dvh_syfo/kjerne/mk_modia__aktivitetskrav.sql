@@ -1,16 +1,17 @@
 /* Et sykefraværstilfelle kan ha flere årsaker. Spesielt for 'AVVENT'.*/
 /* For å få med vurderingar og unntak gjort innenfor en månad, kan vi bruke feltet SISTVURDERT,
 som vil inneholde datoen for når vurderingen/hendelsen skjedde.
-For statusene NY og AUTOMATISK_OPPFYLT er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
-AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.*/
+For statusene NY, AUTOMATISK_OPPFYLT og NY_VURDERING er ikke SISTVURDERT utfylt, så de må vi plukke ut ved å bruke CREATEDAT.
+AUTOMATISK_OPPFYLT ekskluderes da person ikke vurderes.
+Status LUKKET ikke håndtert. Havner som null i periode ved telling */
 
-{{
+/*{{
   config(
     materialized='incremental',
     incremental_strategy = 'merge',
     unique_key = ['FK_PERSON1, PERIODE']
   )
-}}
+}} */
 
 
 WITH aktivitetskrav as (
@@ -29,21 +30,20 @@ WITH aktivitetskrav as (
     LASTET_DATO, -- Kafka
     --sysdate as SYSDATE_DBT,
     OPPDATERT_DATO,
-    CASE WHEN STATUS IN ('NY') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and SISTVURDERT is null then CREATEDAT else SISTVURDERT END as SISTVURDERT,
     STATUS,
     STOPPUNKTAT,
     UPDATEDBY,
-    CASE WHEN STATUS IN ('NY') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
+    CASE WHEN STATUS IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') then TO_CHAR(CREATEDAT, 'YYYYMM') else TO_CHAR(SISTVURDERT, 'YYYYMM') END as PERIODE
   FROM {{ ref("fk_modia__aktivitetskrav") }}
 
   {% if is_incremental() %}
-    {{ log ("is_incremental = True", info=True)}}
     where (
         SISTVURDERT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
         and SISTVURDERT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
       ) OR
       (
-        STATUS in ('NY') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
+        STATUS in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and CREATEDAT < TO_DATE('{{var("running_mnd")}}','YYYY-MM-DD')
         and CREATEDAT >= TO_DATE('{{var("last_mnd_start")}}','YYYY-MM-DD')
       )
   {% endif %}
@@ -88,7 +88,7 @@ siste_sykefravars_tilfeller as (
    inkludere_aktivitetskrav_uten_sykefravar_treff.sykefravar_start < inkludere_aktivitetskrav_uten_sykefravar_treff.stoppunktat
 )
 
-SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1
+SELECT * FROM siste_sykefravars_tilfeller WHERE rangerte_rader=1 AND STATUS != 'AUTOMATISK_OPPFYLT'
 
 -- mappe for aktivitetskrav
 -- lage mk_aktivitetskrav__inkr for å sette filter
