@@ -4,30 +4,35 @@
      FAK_SYFO_AKTIVITETSKRAV_MND_DBT_SEQ.nextval"
 )}}
 
-with FAK_SYFO_AKTIVITETSKRAV_MND_DBT AS (
+with fak_syfo_aktivitetskrav_mnd AS (
+  select * from {{ ref('_fak_syfo_aktivitetskrav_mnd_dbt_key') }}
+),
+
+final as (
   select
-    PK_FAK_SYFO_AKTIVITETSKRAV_MND,
-    FK_PERSON1,
-    FK_DIM_TID_SF_START_DATO,
-    FK_DIM_TID_STATUS,
-    FK_DIM_ALDER,
-    NVL(FK_DIM_ORGANISASJON, -1) as FK_DIM_ORGANISASJON,
-    NVL(FK_DIM_GEOGRAFI_BOSTED, -1) as FK_DIM_GEOGRAFI_BOSTED,
-    TO_NUMBER(PERIODE) AS PERIODE,
-    STATUS,
-    UNNTAK_FOER_8_UKER_FLAGG,
-    UNNTAK_ETTER_8_UKER_FLAGG,
-    MEDISINSKE_GRUNNER_FLAGG,
-    TILRETTELEGG_IKKE_MULIG_FLAGG,
-    SJOMENN_UTENRIKS_FLAGG,
-    OPPDATERT_DATO,
-    LASTET_DATO,
-    KILDESYSTEM,
-    FK_DIM_TID_PASSERT_8_UKER,
+
+    pk_fak_syfo_aktivitetskrav_mnd,
+    fk_person1,
+    fk_dim_tid_sf_start_dato,
+    fk_dim_tid_status,
+    fk_dim_alder,
+    nvl(fk_dim_organisasjon, -1) as fk_dim_organisasjon,
+    nvl(fk_dim_geografi_bosted, -1) as fk_dim_geografi_bosted,
+    to_number(periode) as periode,
+    status,
+    oppdatert_dato,
+    unntak_foer_8_uker_flagg,
+    unntak_etter_8_uker_flagg,
+    medisinske_grunner_flagg,
+    tilrettelegging_ikke_mulig_flagg,
+    sjomenn_utenriks_flagg,
+    fk_dim_tid_passert_8_uker,
     avvent_annet_flagg,
     avvent_informasjon_beh_flagg,
-    avvent_oppfolgplan_arbgv_flagg
-  from {{ ref('fak_syfo_aktivitetskrav_mnd_dbt_surr')}}
+    avvent_oppfolgplan_arbgv_flagg,
+    lastet_dato_dbt
+
+  from fak_syfo_aktivitetskrav_mnd
 )
 
-select * from FAK_SYFO_AKTIVITETSKRAV_MND_DBT
+select * from final
