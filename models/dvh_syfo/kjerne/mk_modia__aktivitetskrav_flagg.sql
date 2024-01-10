@@ -1,5 +1,5 @@
 WITH aktivitetskrav_mk as (
-  SELECT a.*, last_day(LASTET_DATO) as siste_dag_i_mnd -- vil jeg ikke bruke periode her?
+  SELECT a.*, last_day(LASTET_DATO) as siste_dag_i_mnd
   FROM {{ ref("mk_modia__aktivitetskrav") }} a
 ),
 
