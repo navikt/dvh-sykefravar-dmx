@@ -9,7 +9,7 @@ Status LUKKET ikke håndtert. Havner som null i periode ved telling */
   config(
     materialized='incremental',
     incremental_strategy = 'merge',
-    unique_key = ['FK_PERSON1, PERIODE']
+    unique_key = ['FK_PERSON1', 'PERIODE']
   )
 }} */
 
