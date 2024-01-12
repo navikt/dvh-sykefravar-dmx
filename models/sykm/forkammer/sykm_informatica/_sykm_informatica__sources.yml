@@ -4,7 +4,6 @@ sources:
   - name: fk_sykm_informatica
     schema: fk_sensitiv
     tables:
-      - name: sykm_periode
       - name: hist_ff_lsp_sykmelding
   - name: dvh_sykm
     schema: dvh_sykm
