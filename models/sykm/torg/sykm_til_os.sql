@@ -4,7 +4,7 @@
 ) }}
 
 WITH tilfeller AS (
-  SELECT * FROM {{ ref('fk_dt_sensitv__fak_sykm_sykefravar_tilfelle') }}
+  SELECT * FROM {{ ref('fk_dvh_sykm__fak_sykm_sykefravar_tilfelle') }}
   WHERE sykefravar_til_dato between trunc(sysdate - 14) and trunc(sysdate + 365)
 )
 
@@ -12,7 +12,7 @@ WITH tilfeller AS (
   SELECT pasient_fk_person1,
          sykmelding_tom,
          gradering,
-         lastet_dato FROM {{ ref('fk_fk_sensitiv__sykm_periode') }}
+         lastet_dato FROM {{ ref('fk_dvh_sykm__sykm_periode') }}
   WHERE sykmelding_tom >= trunc(sysdate - 14)
     union
   SELECT fk_person1 as pasient_fk_person1,
