@@ -17,8 +17,8 @@ WITH dialogmote AS (
     dialogmote.kafka_mottatt_dato,
     dialogmote.lastet_dato,
     dialogmote.kildesystem
-  from {{ source('modia', 'raw_isdialogmote') }} as dialogmote
-  inner join {{ref('felles_dt_person__ident_off_id_til_fk_person1') }} person
+  from {{ source('modia', 'raw_isdialogmote') }} dialogmote
+  inner join {{ ref('felles_dt_person__ident_off_id_til_fk_person1') }} person
           on person.off_id = dialogmote.kafka_message.personIdent
          and person.gyldig_til_dato = to_date('31.12.9999','DD.MM.YYYY') -- henter gyldige
          and person.skjermet_kode not in (6, 7) -- fjerner skjerma personer
