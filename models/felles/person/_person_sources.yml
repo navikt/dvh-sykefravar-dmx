@@ -6,3 +6,4 @@ sources:
     tables:
     - name: dvh_person_ident_off_id
     - name: dim_person1
+    - name: IDENT_OFF_ID_TIL_FK_PERSON1
