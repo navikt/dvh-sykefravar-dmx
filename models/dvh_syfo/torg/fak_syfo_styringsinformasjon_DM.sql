@@ -4,7 +4,7 @@
 
 
 with hendelser_org AS (
-    SELECT * FROM {{ref('mk_dialogmote__join_fk_person1') }}
+    SELECT * FROM {{ref('mk_dialogmote__union') }}
      where HENDELSE in ('INNKALT','AVLYST','UNNTAK','FERDIGSTILT','STOPPUNKT') and KILDESYSTEM = 'MODIA'
 ),
 final  as  (
