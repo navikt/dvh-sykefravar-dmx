@@ -13,4 +13,6 @@ sources:
     - name: raw_aktivitetskrav
     - name: FK_SYFO_PERSON_OVERSIKT_STATUS__SNAPSHOT_V4
     - name: aktivitetskrav_key
+    - name: fk_motebehov_sky
+      description: Møtebehov RAW fra sky
 
