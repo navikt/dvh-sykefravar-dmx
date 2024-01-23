@@ -23,6 +23,15 @@ WITH hendelser AS (
 ,motebehov AS (
   SELECT * FROM {{ ref('mk_motebehov__prepp') }}
 )
+
+,dim_alder as (
+  select * from {{ ref('felles_dt_p__dim_alder') }}
+)
+
+,fak_sykm_sykefravar_tilfelle as (
+  select * from {{ ref('fk_dvh_sykm__fak_sykm_sykefravar_tilfelle') }}
+)
+
 ,dm_2_7 as (
 -- copilot er benyttet til å analysere og utvide spørring med flere dialogmøter basert på eksisterende kode
 /*
@@ -89,6 +98,7 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
   SELECT
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
+    ,hendelser.virksomhetsnr
     ,dialogmote2_innen_26_uker_flagg AS dm2_innen_26_uker_flagg
     ,behov_meldt_dato
     ,behov_sykmeldt
@@ -130,6 +140,9 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     ,TO_NUMBER(
       TO_CHAR(unntak, 'YYYYMMDD')
     ) AS fk_dim_tid__unntak_dato
+    , dim_alder.pk_dim_alder as fk_dim_alder
+    , dim_person1.fk_dim_kjonn as fk_dim_kjonn
+    , fak_sykm_sykefravar_tilfelle.pk_fak_sykm_sykefravar_tilf as fk_fak_sykm_sykefravar_tilf
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
@@ -146,6 +159,11 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
   LEFT JOIN motebehov ON
     hendelser.fk_person1 = motebehov.fk_person1 AND
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
-)
+  LEFT JOIN dim_alder ON
+    dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12)
+  LEFT JOIN fak_sykm_sykefravar_tilfelle ON
+    hendelser.fk_person1 = fak_sykm_sykefravar_tilfelle.fk_person1
+    AND hendelser.tilfelle_startdato BETWEEN fak_sykm_sykefravar_tilfelle.sykefravar_fra_dato AND fak_sykm_sykefravar_tilfelle.sykefravar_til_dato
+  )
 
 SELECT * FROM final

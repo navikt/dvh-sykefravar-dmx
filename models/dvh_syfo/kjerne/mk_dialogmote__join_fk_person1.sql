@@ -23,7 +23,8 @@ WITH hendelser as (
       arbeidsgiver_flagg,
       sykmelder_flagg,
       kilde_uuid,
-      kildesystem
+      kildesystem,
+      virksomhetsnr
     FROM hendelser
     LEFT JOIN dvh_person_ident
     ON
