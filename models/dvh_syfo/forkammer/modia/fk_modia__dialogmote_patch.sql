@@ -33,7 +33,7 @@ with dialogmote_forkammer as
     dialogmote_tidspunkt,
     hendelse,
     hendelse_tidspunkt,
-    person_ident,
+    fk_person1,
     virksomhetsnr,
     enhet_nr,
     nav_ident,

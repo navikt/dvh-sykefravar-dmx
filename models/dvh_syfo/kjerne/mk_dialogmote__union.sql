@@ -14,7 +14,6 @@ WITH union_all AS (
 ,
 final as (
     SELECT
-      person_ident,
       fk_person1,
       tilfelle_startdato,
       hendelse,
