@@ -142,7 +142,7 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     ) AS fk_dim_tid__unntak_dato
     , dim_alder.pk_dim_alder as fk_dim_alder
     , dim_person1.fk_dim_kjonn as fk_dim_kjonn
-    , fak_sykm_sykefravar_tilfelle.pk_fak_sykm_sykefravar_tilf as fk_fak_sykm_sykefravar_tilf
+    --, fak_sykm_sykefravar_tilfelle.pk_fak_sykm_sykefravar_tilf as fk_fak_sykm_sykefravar_tilf
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
@@ -161,9 +161,9 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
   LEFT JOIN dim_alder ON
     dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12)
-  LEFT JOIN fak_sykm_sykefravar_tilfelle ON
+  /*LEFT JOIN fak_sykm_sykefravar_tilfelle ON
     hendelser.fk_person1 = fak_sykm_sykefravar_tilfelle.fk_person1
-    AND hendelser.tilfelle_startdato BETWEEN fak_sykm_sykefravar_tilfelle.sykefravar_fra_dato AND fak_sykm_sykefravar_tilfelle.sykefravar_til_dato
+    AND hendelser.tilfelle_startdato BETWEEN fak_sykm_sykefravar_tilfelle.sykefravar_fra_dato AND fak_sykm_sykefravar_tilfelle.sykefravar_til_dato */
   )
 
 SELECT * FROM final
