@@ -1,0 +1,8 @@
+# Bruk et Python-basert image som utgangspunkt
+FROM python:3.8-slim-buster
+
+# Oppdater pip
+RUN pip install --upgrade pip
+
+# Installer dbt-oracle
+RUN pip install dbt-oracle

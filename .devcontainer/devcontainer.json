@@ -1,0 +1,11 @@
+{
+  "name": "DBT Dev Container",
+  "dockerFile": "Dockerfile",
+  "forwardPorts": [
+    5432
+  ],
+  "postCreateCommand": "dbt debug",
+  "extensions": [
+    "innoverio.vscode-dbt-power-user"
+  ]
+}
