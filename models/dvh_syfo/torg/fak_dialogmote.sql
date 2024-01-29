@@ -26,43 +26,46 @@ WITH hendelser AS (
 ,dm_2_7 as (
 -- copilot er benyttet til å analysere og utvide spørring med flere dialogmøter basert på eksisterende kode
 /*
-Sjekker om unntaksdato er satt for hver dialogmotetidspunkt 1 til 7
-Hvis unntaksdato er NULL               => dialogmote_tidspunkt
-Hvis dialogmøtetidspunkt < unntaksdato => dialogmote_tidspunkt
-Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dialogmøte
+Sjekker for hver dialogmotetidspunkt 1 til 7
+1. Hvis dialogmote_tidspunkt = NULL,                             => NULL
+2. Hvis dialogmote_tidspunkt > unntaksdato,                      => NULL
+3. Hvis (dialogmote_tidspunkt - tilfelle_startdato) > 365 dager, => NULL
+4. Hvis unntaksdato = NULL,                                      => dialogmote_tidspunkt
+5. Hvis dialogmøtetidspunkt < unntaksdato,                       => dialogmote_tidspunkt
+6. Hvis dialogmøtetidspunkt > unntaksdato,                       => NULL eller tidspunkt for forrige dialogmøte
 */
   select fk_person1, tilfelle_startdato,
     CASE
-      WHEN (dialogmote_tidspunkt1 > unntak) or (extract(day from (dialogmote_tidspunkt1 - tilfelle_startdato))) > 365 then null
+      WHEN (dialogmote_tidspunkt1 is null) or (dialogmote_tidspunkt1 > unntak) or (extract(day from (dialogmote_tidspunkt1 - tilfelle_startdato))) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt1
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt1
     END AS dialogmote2_avholdt_dato,
     CASE
-      WHEN extract(day from (dialogmote_tidspunkt2 - tilfelle_startdato)) > 365 then null
+      WHEN (dialogmote_tidspunkt2 is null) or extract(day from (dialogmote_tidspunkt2 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt2
       WHEN dialogmote_tidspunkt1 < unntak then dialogmote_tidspunkt2
       WHEN dialogmote_tidspunkt1 > unntak then dialogmote_tidspunkt1
     END AS dialogmote3_avholdt_dato,
     CASE
-      WHEN extract(day from (dialogmote_tidspunkt3 - tilfelle_startdato)) > 365 then null
+      WHEN (dialogmote_tidspunkt3 is null) or extract(day from (dialogmote_tidspunkt3 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt3
       WHEN dialogmote_tidspunkt2 < unntak then dialogmote_tidspunkt3
       WHEN dialogmote_tidspunkt2 > unntak then dialogmote_tidspunkt2
     END AS dialogmote4_avholdt_dato,
     CASE
-      WHEN extract(day from (dialogmote_tidspunkt4 - tilfelle_startdato)) > 365 then null
+      WHEN (dialogmote_tidspunkt4 is null) or extract(day from (dialogmote_tidspunkt4 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt4
       WHEN dialogmote_tidspunkt3 < unntak then dialogmote_tidspunkt4
       WHEN dialogmote_tidspunkt3 > unntak then dialogmote_tidspunkt3
     END AS dialogmote5_avholdt_dato,
     CASE
-      WHEN extract(day from (dialogmote_tidspunkt5 - tilfelle_startdato)) > 365 then null
+      WHEN (dialogmote_tidspunkt5 is null) or extract(day from (dialogmote_tidspunkt5 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt5
       WHEN dialogmote_tidspunkt4 < unntak then dialogmote_tidspunkt5
       WHEN dialogmote_tidspunkt4 > unntak then dialogmote_tidspunkt4
     END AS dialogmote6_avholdt_dato,
     CASE
-      WHEN extract(day from (dialogmote_tidspunkt6 - tilfelle_startdato)) > 365 then null
+      WHEN (dialogmote_tidspunkt6 is null) or extract(day from (dialogmote_tidspunkt6 - tilfelle_startdato)) > 365 then null
       WHEN unntak is null then dialogmote_tidspunkt6
       WHEN dialogmote_tidspunkt5 < unntak then dialogmote_tidspunkt6
       WHEN dialogmote_tidspunkt5 > unntak then dialogmote_tidspunkt5
