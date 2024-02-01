@@ -2,7 +2,7 @@
 *I denne modellen velges kun hendelser relevante for syfo210
 **************************************************/
 WITH hendelser as (
-  SELECT * FROM {{ ref("mk_dialogmote__join_fk_person1") }}
+  SELECT * FROM {{ ref("mk_dialogmote__union") }}
 )
 
 ,final as (
