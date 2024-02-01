@@ -8,7 +8,7 @@ WITH aktivitetskrav AS (
   SELECT * FROM {{ ref('fk_modia__aktivitetskrav_raw') }}
 )
 ,dvh_person_ident AS (
-    SELECT * FROM {{ref('felles_dt_person__dvh_person_ident_off_id') }}
+    SELECT * FROM {{ref('felles_dt_person__ident_off_id_til_fk_person1') }}
 )
 , aktivitet_dta AS (
   SELECT
