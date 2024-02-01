@@ -2,7 +2,7 @@ WITH motebehov AS (
   SELECT * FROM {{ ref('fk_modia__motebehov_raw') }}
 )
 ,dvh_person_ident AS (
-    SELECT * FROM {{ref('felles_dt_person__dvh_person_ident_off_id') }}
+    SELECT * FROM {{ref('felles_dt_person__ident_off_id_til_fk_person1') }}
 )
  ,join_fk_person_sm AS (
     SELECT
