@@ -13,4 +13,5 @@
   "editor.insertSpaces": true,
   "dbt.enableNewLineagePanel": true,
   "dbt.enableNewQueryPanel": true,
+  "dbt.queryLimit": 500,
 }
