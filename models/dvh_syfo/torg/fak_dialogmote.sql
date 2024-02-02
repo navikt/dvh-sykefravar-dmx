@@ -60,7 +60,8 @@ Setter dialogmote3_avholdt_dato basert på reglene:
 */
   select dm_2.*,
     CASE
-      WHEN (dm_2.dialogmote_tidspunkt2 is null) or extract(day from (dm_2.dialogmote_tidspunkt2 - dm_2.tilfelle_startdato)) > 365 then null
+      WHEN ((dm_2.dialogmote_tidspunkt2 is null) or extract(day from (dm_2.dialogmote_tidspunkt2 - dm_2.tilfelle_startdato)) > 365 )
+        and ((dm_2.dialogmote_tidspunkt1 is null) or extract(day from (dm_2.dialogmote_tidspunkt1 - dm_2.tilfelle_startdato)) > 365 ) then null
       WHEN dm_2.dialogmote2_avholdt_dato is null then dm_2.dialogmote_tidspunkt1
       ELSE dialogmote_tidspunkt2
     END AS dialogmote3_avholdt_dato
@@ -77,7 +78,8 @@ Setter dialogmote4_avholdt_dato basert på reglene:
 */
     select dm_3.*,
     CASE
-      WHEN (dm_3.dialogmote_tidspunkt3 is null) or extract(day from (dm_3.dialogmote_tidspunkt3 - dm_3.tilfelle_startdato)) > 365 then null
+      WHEN ((dm_3.dialogmote_tidspunkt3 is null) or extract(day from (dm_3.dialogmote_tidspunkt3 - dm_3.tilfelle_startdato)) > 365 )
+        and ((dm_3.dialogmote_tidspunkt2 is null) or extract(day from (dm_3.dialogmote_tidspunkt2 - dm_3.tilfelle_startdato)) > 365 ) then null
       WHEN dm_3.dialogmote2_avholdt_dato is null then dm_3.dialogmote_tidspunkt2
       ELSE dialogmote_tidspunkt3
     END AS dialogmote4_avholdt_dato
@@ -94,7 +96,8 @@ Setter dialogmote5_avholdt_dato basert på reglene:
 */
   select dm_4.*,
     CASE
-      WHEN (dm_4.dialogmote_tidspunkt4 is null) or extract(day from (dm_4.dialogmote_tidspunkt4 - dm_4.tilfelle_startdato)) > 365 then null
+      WHEN ((dm_4.dialogmote_tidspunkt4 is null) or extract(day from (dm_4.dialogmote_tidspunkt4 - dm_4.tilfelle_startdato)) > 365 )
+        and ((dm_4.dialogmote_tidspunkt3 is null) or extract(day from (dm_4.dialogmote_tidspunkt3 - dm_4.tilfelle_startdato)) > 365 ) then null
       WHEN dm_4.dialogmote2_avholdt_dato is null then dm_4.dialogmote_tidspunkt3
       else dialogmote_tidspunkt4
       END AS dialogmote5_avholdt_dato
@@ -111,7 +114,8 @@ Setter dialogmote6_avholdt_dato basert på reglene:
 */
   select dm_5.*,
     CASE
-      WHEN (dm_5.dialogmote_tidspunkt5 is null) or extract(day from (dm_5.dialogmote_tidspunkt5 - dm_5.tilfelle_startdato)) > 365 then null
+      WHEN ((dm_5.dialogmote_tidspunkt5 is null) or extract(day from (dm_5.dialogmote_tidspunkt5 - dm_5.tilfelle_startdato)) > 365 )
+        and ((dm_5.dialogmote_tidspunkt4 is null) or extract(day from (dm_5.dialogmote_tidspunkt4 - dm_5.tilfelle_startdato)) > 365) then null
       WHEN dm_5.dialogmote2_avholdt_dato is null then dm_5.dialogmote_tidspunkt4
       else dialogmote_tidspunkt5
     END AS dialogmote6_avholdt_dato
@@ -128,7 +132,8 @@ Setter dialogmote7_avholdt_dato basert på reglene:
 */
   select dm_6.*,
     CASE
-      WHEN (dm_6.dialogmote_tidspunkt6 is null) or extract(day from (dm_6.dialogmote_tidspunkt6 - dm_6.tilfelle_startdato)) > 365 then null
+      WHEN ((dm_6.dialogmote_tidspunkt6 is null) or extract(day from (dm_6.dialogmote_tidspunkt6 - dm_6.tilfelle_startdato)) > 365 )
+        and ((dm_6.dialogmote_tidspunkt5 is null) or extract(day from (dm_6.dialogmote_tidspunkt5 - dm_6.tilfelle_startdato)) > 365 ) then null
       WHEN dm_6.dialogmote2_avholdt_dato is null then dm_6.dialogmote_tidspunkt5
       else dialogmote_tidspunkt6
     END AS dialogmote7_avholdt_dato
@@ -230,3 +235,5 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
 )
 
 SELECT * FROM final
+
+
