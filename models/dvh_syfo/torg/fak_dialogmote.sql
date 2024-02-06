@@ -78,6 +78,7 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     END AS dialogmote7_avholdt_dato
   from hendelser
 )
+-- Trengs dm3-7 i SELECT her?
 ,flag_innen_26Uker AS (
   SELECT fk_person1,
          tilfelle_startdato,
@@ -146,6 +147,7 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
     hendelser.tilfelle_startdato BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
+    -- Brukers virksomhetsnr, kjønn og organisasjon v/tilfelle_startdato
   LEFT JOIN flag_innen_26Uker ON
     hendelser.fk_person1 = flag_innen_26Uker.fk_person1 AND
     hendelser.tilfelle_startdato = flag_innen_26Uker.tilfelle_startdato
@@ -159,7 +161,9 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     hendelser.fk_person1 = motebehov.fk_person1 AND
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
   LEFT JOIN dim_alder ON
-    dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12)
+   -- dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12) -- Brukt til månedlig rapportering - feil?
+    dim_alder.alder = floor((hendelser.tilfelle_startdato-dim_person1.fodt_dato)/365.25)
+    and hendelser.tilfelle_startdato between dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
 
   )
 
