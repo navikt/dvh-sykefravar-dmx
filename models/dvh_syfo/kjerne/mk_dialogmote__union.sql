@@ -25,7 +25,8 @@ final as (
       arbeidsgiver_flagg,
       sykmelder_flagg,
       kilde_uuid,
-      kildesystem
+      kildesystem,
+      virksomhetsnr
     FROM union_all
 )
 select * from final
