@@ -28,10 +28,6 @@ WITH hendelser AS (
   select * from {{ ref('felles_dt_p__dim_alder') }}
 )
 
-,fak_sykm_sykefravar_tilfelle as (
-  select * from {{ ref('fk_dvh_sykm__fak_sykm_sykefravar_tilfelle') }}
-)
-
 ,dm_2 as (
 /*
 Setter dialogmote2_avholdt_dato basert på reglene:
