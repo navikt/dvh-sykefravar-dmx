@@ -141,8 +141,8 @@ Hvis dialogmøtetidspunkt > unntaksdato => null eller tidspunkt for forrige dial
     ,TO_NUMBER(
       TO_CHAR(unntak, 'YYYYMMDD')
     ) AS fk_dim_tid__unntak_dato
-    , dim_alder.pk_dim_alder as fk_dim_alder
-    , dim_person1.fk_dim_kjonn as fk_dim_kjonn
+    , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
+    , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
