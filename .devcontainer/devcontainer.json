@@ -5,7 +5,17 @@
     5432
   ],
   "postCreateCommand": "dbt debug",
-  "extensions": [
-    "innoverio.vscode-dbt-power-user"
-  ]
+  "customizations": {
+    "vscode": {
+            "files.associations": {
+        "*.yaml": "jinja-yaml",
+        "*.yml": "jinja-yaml",
+        "*.sql": "jinja-sql",
+        "*.md": "jinja-md"
+      }
+    },
+    "extensions": [
+            "innoverio.vscode-dbt-power-user"
+    ]
+  }
 }
