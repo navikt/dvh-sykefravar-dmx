@@ -194,33 +194,33 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
-    ,TO_NUMBER(
+    ,NVL(TO_NUMBER(
       TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__behov_meldt
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__behov_meldt
+    ,NVL(TO_NUMBER(
       TO_CHAR(hendelser.tilfelle_startdato, 'YYYYMMDD')
-    ) AS fk_dim_tid__tilfelle_startdato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__tilfelle_startdato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote2_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm2_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm2_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote3_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm3_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm3_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote4_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm4_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm4_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote5_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm5_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm5_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote6_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm6_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm6_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(dialogmote7_avholdt_dato, 'YYYYMMDD')
-    ) AS fk_dim_tid__dm7_avholdt_dato
-    ,TO_NUMBER(
+    ), -1) AS fk_dim_tid__dm7_avholdt_dato
+    ,NVL(TO_NUMBER(
       TO_CHAR(unntak, 'YYYYMMDD')
-    ) AS fk_dim_tid__unntak_dato
+    ), -1) AS fk_dim_tid__unntak_dato
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
   FROM hendelser
