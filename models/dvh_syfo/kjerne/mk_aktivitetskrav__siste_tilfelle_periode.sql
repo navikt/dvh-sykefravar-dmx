@@ -23,7 +23,7 @@ WITH aktivitetskrav_last as (
     tilfelle_startdato,
     oppdatert_dato
   FROM {{ ref('mk_aktivitetskrav__join_sykefravar_tilfelle') }}
-
+/*
   where (
     sistvurdert < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
     and sistvurdert >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
@@ -32,6 +32,7 @@ WITH aktivitetskrav_last as (
     status in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and createdat < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
     and createdat >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
     )
+    */
 
 ),
 
