@@ -5,14 +5,6 @@ For statusene NY, AUTOMATISK_OPPFYLT og NY_VURDERING er ikke SISTVURDERT utfylt,
 AUTOMATISK_OPPFYLT som siste status ekskluderes da person ikke vurderes.
 Status LUKKET ikke håndtert. Havner som null i periode ved telling */
 
-{{
-  config(
-    materialized='incremental',
-    incremental_strategy = 'merge',
-    unique_key = ['FK_PERSON1', 'PERIODE']
-  )
-}}
-
 
 WITH aktivitetskrav_last as (
   SELECT
@@ -22,25 +14,24 @@ WITH aktivitetskrav_last as (
     arsaker2,
     createdat,
     fk_person1,
+    lastet_dato,
     sysdate as lastet_dato_dbt,
-    CASE WHEN status IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and sistvurdert is null then createdat else sistvurdert END as sistvurdert,
+    case when status in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and sistvurdert is null then createdat else sistvurdert end as sistvurdert,
     status,
     stoppunktat,
-    CASE WHEN status IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') then TO_CHAR(createdat, 'YYYYMM') else TO_CHAR(sistvurdert, 'YYYYMM') END as periode,
+    case when status IN ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') then TO_CHAR(createdat, 'YYYYMM') else TO_CHAR(sistvurdert, 'YYYYMM') end as periode,
     tilfelle_startdato,
     oppdatert_dato
   FROM {{ ref('mk_aktivitetskrav__join_sykefravar_tilfelle') }}
 
-  {% if is_incremental() %}
-    where (
-        sistvurdert < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
-        and sistvurdert >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
-      ) OR
-      (
-        STATUS in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and createdat < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
-        and createdat >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
-      )
-  {% endif %}
+  where (
+    sistvurdert < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
+    and sistvurdert >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
+    ) or
+    (
+    status in ('NY', 'AUTOMATISK_OPPFYLT', 'NY_VURDERING') and createdat < TO_DATE('{{var("slutt_dato_last")}}','YYYY-MM-DD')
+    and createdat >= TO_DATE('{{var("start_dato_last")}}','YYYY-MM-DD')
+    )
 
 ),
 
@@ -48,10 +39,10 @@ WITH aktivitetskrav_last as (
 /* Grupperer sykefraværstilfeller innenfor periode med row-funksjon.
 WHERE indikerer at startdato for sykefraværstilfelle er tidligere enn dato for satt aktivitetskrav.*/
 siste_tilfelle_i_periode as (
-  SELECT
+  select
     aktivitetskrav_last.*,
-    ROW_NUMBER() OVER (PARTITION BY fk_person1, periode ORDER BY tilfelle_startdato desc, kafka_mottatt_dato desc) AS rangerte_rader
-  FROM aktivitetskrav_last
+    ROW_NUMBER() over (partition by fk_person1, periode order by tilfelle_startdato desc, kafka_mottatt_dato desc) as rangerte_rader
+  from aktivitetskrav_last
   where aktivitetskrav_last.tilfelle_startdato < aktivitetskrav_last.createdat and
    aktivitetskrav_last.tilfelle_startdato < aktivitetskrav_last.stoppunktat
 ),
@@ -62,12 +53,14 @@ final as (
     fk_person1,
     periode,
     status,
+    oppdatert_dato,
     arsaker,
     arsaker1,
     arsaker2,
     sistvurdert,
     stoppunktat,
     tilfelle_startdato as siste_tilfelle_startdato,
+    lastet_dato,
     lastet_dato_dbt
   from siste_tilfelle_i_periode
   where rangerte_rader=1 and status != 'AUTOMATISK_OPPFYLT'
