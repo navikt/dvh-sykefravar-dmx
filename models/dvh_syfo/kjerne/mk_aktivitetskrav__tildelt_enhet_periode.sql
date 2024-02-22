@@ -26,7 +26,7 @@ aktivitetskrav_med_tildelt_enhet as (
     a.*,
     b.*
   from aktivitetskrav a
-    LEFT JOIN person_oversikt_scd b ON a.fk_person1 = b.fk_person1_scd
+    left join person_oversikt_scd b on a.fk_person1 = b.fk_person1_scd
 ),
 
 /* Case løser modellering over flere måneder, og sørger for at det for en gitt periode hentes riktig tildelt enhet.
@@ -48,7 +48,7 @@ aktivitetskrav_sett_gyldig_enhet_flagg_steg_1 as (
         then 1
       when periode < min_periode_scd
         and dbt_valid_from = max_dbt_valid_from_periode
-        then row_number() over (partition by fk_person1, periode ORDER BY dbt_valid_to nulls first)
+        then row_number() over (partition by fk_person1, periode order by dbt_valid_to nulls first)
       else 0
       end as valid_flag
   from aktivitetskrav_med_tildelt_enhet a
@@ -57,7 +57,7 @@ aktivitetskrav_sett_gyldig_enhet_flagg_steg_1 as (
 aktivitetskrav_sett_gyldig_enhet_flagg_steg_2 as (
   select
     a.*,
-    row_number() over (partition by fk_person1, periode ORDER BY dbt_valid_to nulls first) as valid_flag_2
+    row_number() over (partition by fk_person1, periode order by dbt_valid_to nulls first) as valid_flag_2
   from aktivitetskrav_sett_gyldig_enhet_flagg_steg_1 a
   where valid_flag = 1
 ),
@@ -81,6 +81,7 @@ final as (
     siste_tilfelle_startdato,
     tildelt_enhet,
     oppdatert_dato,
+    lastet_dato,
     lastet_dato_dbt
   from aktivitetskrav_gyldig_enhet
 

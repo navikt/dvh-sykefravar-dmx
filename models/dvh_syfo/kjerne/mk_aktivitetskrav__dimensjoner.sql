@@ -24,7 +24,7 @@ aktivitetskrav_med_dim_tid as (
   select
     a.*,
     b.pk_dim_tid as fk_dim_tid_sf_start_dato,
-    c.pk_dim_tid as fk_dim_passert_8_uker,
+    c.pk_dim_tid as fk_dim_tid_passert_8_uker,
     d.pk_dim_tid as fk_dim_tid_status
   from aktivitetskrav a
   left join dim_tid b on b.pk_dim_tid = to_number(to_char(a.siste_tilfelle_startdato, 'YYYYMMDD'))
@@ -35,7 +35,7 @@ aktivitetskrav_med_dim_tid as (
 aktivitetskrav_med_dim_organisasjon as (
   select
     a.*,
-    b.pk_dim_organisasjon
+    b.pk_dim_organisasjon as fk_dim_organisasjon
   from aktivitetskrav_med_dim_tid a
   left join dim_organisasjon b on b.nav_enhet_kode = a.tildelt_enhet
     where (b.gyldig_fra_dato <= sistvurdert AND gyldig_til_dato >= sistvurdert and
@@ -75,9 +75,9 @@ final as (
     siste_tilfelle_startdato,
     lastet_dato_dbt,
     fk_dim_tid_sf_start_dato,
-    fk_dim_passert_8_uker,
+    fk_dim_tid_passert_8_uker,
     fk_dim_tid_status,
-    pk_dim_organisasjon,
+    fk_dim_organisasjon,
     fk_dim_geografi_bosted,
     fk_dim_alder
   from sykefravar_med_dim_alder

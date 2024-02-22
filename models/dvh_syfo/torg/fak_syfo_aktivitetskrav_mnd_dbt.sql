@@ -5,12 +5,11 @@
 )}}
 
 with fak_syfo_aktivitetskrav_mnd AS (
-  select * from {{ ref('_fak_syfo_aktivitetskrav_mnd_dbt_key') }}
+  select * from {{ ref('key_gen_syfo_aktivitetskrav_mnd_dbt') }}
 ),
 
 final as (
   select
-
     pk_fak_syfo_aktivitetskrav_mnd,
     fk_person1,
     fk_dim_tid_sf_start_dato,
