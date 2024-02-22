@@ -6,3 +6,5 @@ sources:
     schema: dvh_syfra
     tables:
       - name: ssb_syfra_teller_kv
+  #    - name: fak_ia_sykefravar
+

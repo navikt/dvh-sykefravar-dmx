@@ -9,5 +9,6 @@ sources:
     - name: dim_varighet
     - name: dim_org
     - name: dim_alder
+    - name: fak_ia_sykefravar
 
 # Oppdatere fra fellesskjema til riktig komponentskjema på sikt (eks. dt_kodeverk)

@@ -14,7 +14,6 @@ WITH union_all AS (
 ,
 final as (
     SELECT
-      person_ident,
       fk_person1,
       tilfelle_startdato,
       hendelse,
@@ -26,7 +25,8 @@ final as (
       arbeidsgiver_flagg,
       sykmelder_flagg,
       kilde_uuid,
-      kildesystem
+      kildesystem,
+      virksomhetsnr
     FROM union_all
 )
 select * from final

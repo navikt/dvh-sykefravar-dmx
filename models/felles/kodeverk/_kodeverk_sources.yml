@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: dt_kodeverk
+    schema: dt_kodeverk
+    tables:
+    - name: dim_versjon
+    - name: publiseringstabell
