@@ -17,7 +17,9 @@ dim_org AS (
 dim_alder AS (
     SELECT * FROM {{ ref('felles_dt_p__dim_alder') }}
 ),
-
+dim_geografi as (
+    SELECT * FROM {{ ref('felles_dt_p__dim_geografi') }}
+),
 dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 ),
@@ -28,7 +30,9 @@ dialogmøter_agg AS (
         EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
         TO_CHAR(gen_dato.dato, 'IW') as uke,
         dim_org.nav_enhet_navn,
-        dir_org.nav_nivaa3_navn as fylke,
+        dim_org.nav_nivaa3_navn as fylke,
+        dim_geografi.fylke_navn,
+        dim_geografi.kommune_navn,
         dim_alder.alder as alder,
          CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
@@ -46,26 +50,34 @@ dialogmøter_agg AS (
     join
         dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
     join
-        dim_person1  ON fakta_gen.fk_person1 = dim_person1.pk_dim_person
+        dim_person1  ON fakta_gen.fk_person1 = dim_person1.pk_dim_person and dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+      JOIN
+        dim_geografi ON dim_person1.fk_dim_geografi_bosted = dim_geografi.pk_dim_geografi
+        and dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+
     GROUP BY
          EXTRACT(YEAR FROM gen_dato.dato),
         EXTRACT(MONTH FROM gen_dato.dato),
         TO_CHAR(gen_dato.dato, 'IW'),
        dim_org.nav_enhet_navn,
-       dir_org.nav_nivaa3_navn as fylke,
+       dim_org.nav_nivaa3_navn,
+        dim_geografi.fylke_navn,
+        dim_geografi.kommune_navn,
        dim_alder.alder,
         CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END
-    union all
+    union
      SELECT
         EXTRACT(YEAR FROM gen_dato.dato) AS aar,
         EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
         TO_CHAR(gen_dato.dato, 'IW') as uke,
         dim_org.nav_enhet_navn,
-        dir_org.nav_nivaa3_navn as fylke,
+        dim_org.nav_nivaa3_navn as fylke,
+        dim_geografi.fylke_navn,
+        dim_geografi.kommune_navn,
         dim_alder.alder as alder,
          CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
@@ -84,12 +96,18 @@ dialogmøter_agg AS (
         dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
     join
         dim_person1  ON fakta_gen.fk_person1 = dim_person1.pk_dim_person
+        and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+     JOIN
+        dim_geografi ON dim_person1.fk_dim_geografi_bosted = dim_geografi.pk_dim_geografi
+        and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
     GROUP BY
          EXTRACT(YEAR FROM gen_dato.dato),
         EXTRACT(MONTH FROM gen_dato.dato),
         TO_CHAR(gen_dato.dato, 'IW'),
        dim_org.nav_enhet_navn,
-       dir_org.nav_nivaa3_navn,
+       dim_org.nav_nivaa3_navn,
+      dim_geografi.fylke_navn,
+     dim_geografi.kommune_navn,
        dim_alder.alder,
        CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
