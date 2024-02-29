@@ -17,6 +17,7 @@ dim_org AS (
 dim_alder AS (
     SELECT * FROM {{ ref('felles_dt_p__dim_alder') }}
 ),
+
 dialogmøter_agg AS (
 SELECT
     EXTRACT(YEAR FROM gen_dato.dato) AS aar,
