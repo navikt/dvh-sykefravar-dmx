@@ -28,6 +28,7 @@ dialogmøter_agg AS (
         EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
         TO_CHAR(gen_dato.dato, 'IW') as uke,
         dim_org.nav_enhet_navn,
+        dir_org.nav_nivaa3_navn as fylke,
         dim_alder.alder as alder,
          CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
@@ -51,6 +52,7 @@ dialogmøter_agg AS (
         EXTRACT(MONTH FROM gen_dato.dato),
         TO_CHAR(gen_dato.dato, 'IW'),
        dim_org.nav_enhet_navn,
+       dir_org.nav_nivaa3_navn as fylke,
        dim_alder.alder,
         CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
@@ -63,6 +65,7 @@ dialogmøter_agg AS (
         EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
         TO_CHAR(gen_dato.dato, 'IW') as uke,
         dim_org.nav_enhet_navn,
+        dir_org.nav_nivaa3_navn as fylke,
         dim_alder.alder as alder,
          CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
@@ -86,6 +89,7 @@ dialogmøter_agg AS (
         EXTRACT(MONTH FROM gen_dato.dato),
         TO_CHAR(gen_dato.dato, 'IW'),
        dim_org.nav_enhet_navn,
+       dir_org.nav_nivaa3_navn,
        dim_alder.alder,
        CASE
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
