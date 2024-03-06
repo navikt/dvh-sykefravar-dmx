@@ -31,24 +31,24 @@ sources:
    #     description: Geografi
    #   - name: DIM_DIAGNOSE
    #     description: 'Diagnoser hovedkategori'
-  - name: dmx_poc_person
-    tags: ['syfo']
-    description: 'henter fra DT_PERSON'
-    schema: DT_PERSON
-    tables:
-      - name: DIM_PERSON1
-        description: informasjon om person
-  - name: dmx_poc_sykefravar
-    tags: ['syfo']
-    description: 'henter fra diverse sykefraværsfakta'
-    schema: DVH_SYKM
-    tables:
-      - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
-        description: 'Sykefraværstilfeller'
-  - name: dmx_pov_sykefravar_andre
-    tags: ['syfo']
-    description: 'henter fra andre tabeller'
-    schema: DK_P
-    tables:
-      - name: ARBEIDSPERIODE
-        description: 'Oversikt over hvor personen jobbet'
+  # - name: dmx_poc_person
+   # tags: ['syfo']
+   # description: 'henter fra DT_PERSON'
+   # schema: DT_PERSON
+   # tables:
+   #   - name: DIM_PERSON1
+   #     description: informasjon om person
+ # - name: dmx_poc_sykefravar
+  #  tags: ['syfo']
+  #  description: 'henter fra diverse sykefraværsfakta'
+  #  schema: DVH_SYKM
+  #  tables:
+  #    - name: FAK_SYKM_SYKEFRAVAR_TILFELLE
+  #      description: 'Sykefraværstilfeller'
+ # - name: dmx_pov_sykefravar_andre
+ #   tags: ['syfo']
+ #   description: 'henter fra andre tabeller'
+ #   schema: DK_P
+ #   tables:
+ #     - name: ARBEIDSPERIODE
+ #       description: 'Oversikt over hvor personen jobbet'
