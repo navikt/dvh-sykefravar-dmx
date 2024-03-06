@@ -1,10 +1,10 @@
 
 WITH fak_syfo_hendelse_org_v AS (
-  SELECT * FROM {{ref('stg_fak_sf_hendelse_dag' )}}
+  SELECT * FROM {{ref('felles_dt_p__fak_sf_hendelse_dag' )}}
 ),
 
 dim_varighet AS (
-    SELECT * FROM {{ref('felles_dt_p__dim_varighet')}}
+    SELECT * FROM {{ref('felles_dt_kodeverk__dim_varighet')}}
 ),
 
 final AS (
