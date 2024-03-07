@@ -1,6 +1,6 @@
 
 WITH motebehov as (
-  SELECT * FROM {{ ref("fk_modia__motebehov") }}
+  SELECT * FROM {{ ref("fk_modia__motebehov_raw") }}
 )
 
 ,dvh_person_ident AS (
@@ -33,7 +33,7 @@ WITH motebehov as (
     MOTEBEHOV_UUID,
     OPPRETTET_DATO,
     OPPRETTET_AV,
-    AKTOER_ID,
+    --AKTOER_ID,
     VIRKSOMHETSNUMMER,
     HAR_MOTEBEHOV,
     TILDELT_ENHET,
