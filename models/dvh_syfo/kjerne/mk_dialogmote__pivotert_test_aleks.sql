@@ -17,11 +17,16 @@ WITH hendelser as (
     group by fk_person1, tilfelle_startdato
 )
 
-,unntak_arsak as (
+,unntak_arsak_modia as (
   select fk_person1,
          tilfelle_startdato,
          unntakarsak
   from hendelser
+)
+
+,unntak_arsak_arena as (
+  select fk_person1
+
 )
 
 ,final AS (
