@@ -6,3 +6,8 @@ sources:
     tables:
     - name: dim_versjon
     - name: publiseringstabell
+    - name: dim_alder
+    - name: dim_org
+    - name: dim_organisasjon
+    - name: dim_tid
+    - name: dim_varighet

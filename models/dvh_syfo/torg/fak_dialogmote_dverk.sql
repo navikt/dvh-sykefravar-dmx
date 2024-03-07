@@ -13,11 +13,11 @@ WITH hendelser AS (
 )
 
 ,dim_organisasjon AS (
-  SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
+  SELECT * FROM {{ ref('felles_dt_kodeverk__dim_organisasjon') }}
 )
 
 ,dim_org AS (
-  SELECT * FROM {{ ref('felles_dt_p__dim_org') }}
+  SELECT * FROM {{ ref('felles_dt_kodeverk__dim_org') }}
 )
 
 ,motebehov AS (

@@ -5,11 +5,11 @@ aktivitetskrav as (
 ),
 
 dim_tid as (
-  select * from {{ ref("felles_dt_p__dim_tid") }}
+  select * from {{ ref("felles_dt_kodeverk__dim_tid") }}
 ),
 
 dim_organisasjon as (
-  select * from {{ ref("felles_dt_p__dim_organisasjon") }}
+  select * from {{ ref("felles_dt_kodeverk__dim_organisasjon") }}
 ),
 
 dim_person as (
@@ -17,7 +17,7 @@ dim_person as (
 ),
 
 dim_alder as (
-  select * from {{ ref("felles_dt_p__dim_alder") }}
+  select * from {{ ref("felles_dt_kodeverk__dim_alder") }}
 ),
 
 aktivitetskrav_med_dim_tid as (
