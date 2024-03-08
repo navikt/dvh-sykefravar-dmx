@@ -1,5 +1,5 @@
 WITH arena AS (
-  SELECT * FROM {{ ref('fk_arena__fak_sf_hendelse_dag') }}
+  SELECT * FROM {{ ref('felles_dt_p__fak_sf_hendelse_dag') }}
 )
 
 , final AS (
