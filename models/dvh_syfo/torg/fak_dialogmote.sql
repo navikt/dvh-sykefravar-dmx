@@ -28,6 +28,15 @@ WITH hendelser AS (
   select * from {{ ref('felles_dt_kodeverk__dim_alder') }}
 )
 
+,dim_virksomhet as (
+    select * from {{ ref('felles_dt_p__dim_virksomhet') }}
+)
+
+,dim_naering as (
+    select * from {{ ref('felles_dt_p__dim_naering') }}
+)
+
+
 ,dm_2 as (
 /*
 Setter dialogmote2_avholdt_dato basert på reglene:
@@ -129,7 +138,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   from dm_7
 )
 -- Trengs dm3-7 i SELECT her?
-,flag_innen_26Uker AS (
+,flagg_innen_26Uker AS (
   SELECT fk_person1,
          tilfelle_startdato,
          dialogmote2_avholdt_dato,
@@ -145,7 +154,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     END AS dialogmote2_innen_26_uker_flagg
   FROM dm_2_7
 )
-,final AS (
+
+,joined AS (
   SELECT
     hendelser.fk_person1
     ,hendelser.tilfelle_startdato
@@ -162,7 +172,6 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote7_avholdt_dato
     ,unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
     ,NVL(TO_NUMBER(
       TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
@@ -193,14 +202,15 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ), -1) AS fk_dim_tid__unntak_dato
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
+    , rtrim(dim_virksomhet.bedrift_naring_primar_kode) as bedrift_naring_primar_kode
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
     hendelser.tilfelle_startdato BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
     -- Brukers virksomhetsnr, kjønn og organisasjon v/tilfelle_startdato
-  LEFT JOIN flag_innen_26Uker ON
-    hendelser.fk_person1 = flag_innen_26Uker.fk_person1 AND
-    hendelser.tilfelle_startdato = flag_innen_26Uker.tilfelle_startdato
+  LEFT JOIN flagg_innen_26Uker ON
+    hendelser.fk_person1 = flagg_innen_26Uker.fk_person1 AND
+    hendelser.tilfelle_startdato = flagg_innen_26Uker.tilfelle_startdato
   LEFT JOIN dim_organisasjon ON
     dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
   LEFT JOIN dim_org ON
@@ -214,8 +224,48 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
    -- dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12) -- Brukt til månedlig rapportering - feil?
     dim_alder.alder = floor((hendelser.tilfelle_startdato-dim_person1.fodt_dato)/365.25)
     and hendelser.tilfelle_startdato between dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
+  LEFT JOIN dim_virksomhet ON
+    hendelser.virksomhetsnr = dim_virksomhet.bedrift_org_nr
+        and hendelser.tilfelle_startdato BETWEEN dim_virksomhet.gyldig_fra_dato AND dim_virksomhet.gyldig_til_dato
 
   )
+
+,final as (
+  select
+    fk_person1,
+    tilfelle_startdato,
+    virksomhetsnr,
+    dm2_innen_26_uker_flagg,
+    behov_meldt_dato,
+    behov_sykmeldt,
+    behov_arbeidsgiver,
+    dialogmote2_avholdt_dato,
+    dialogmote3_avholdt_dato,
+    dialogmote4_avholdt_dato,
+    dialogmote5_avholdt_dato,
+    dialogmote6_avholdt_dato,
+    dialogmote7_avholdt_dato,
+    unntak_dato,
+    tilfelle_26uker_mnd_startdato,
+    fk_dim_organisasjon,
+    fk_dim_tid__behov_meldt,
+    fk_dim_tid__tilfelle_startdato,
+    fk_dim_tid__dm2_avholdt_dato,
+    fk_dim_tid__dm3_avholdt_dato,
+    fk_dim_tid__dm4_avholdt_dato,
+    fk_dim_tid__dm5_avholdt_dato,
+    fk_dim_tid__dm6_avholdt_dato,
+    fk_dim_tid__dm7_avholdt_dato,
+    fk_dim_tid__unntak_dato,
+    fk_dim_alder,
+    fk_dim_kjonn,
+    dim_naering.naering_kode as naering_kode
+  from joined
+  left join dim_naering on dim_naering.naering_kode = joined.bedrift_naring_primar_kode
+    and joined.tilfelle_startdato between dim_naering.gyldig_fra_dato AND dim_naering.gyldig_til_dato
+
+)
+
 
 SELECT * FROM final
 
