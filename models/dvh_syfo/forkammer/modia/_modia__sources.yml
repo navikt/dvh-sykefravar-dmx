@@ -14,4 +14,6 @@ sources:
     - name: aktivitetskrav_key
     - name: fk_motebehov_sky
       description: Møtebehov RAW fra sky
+    - name: raw_oppfolgingstilfelle
+      description: Oppfølgingstillfelle med korrekte datoer
 
