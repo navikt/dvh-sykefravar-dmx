@@ -29,7 +29,7 @@ WITH hendelser AS (
 )
 
 ,hendelser_med_naering as (
-  select * from {{ ref('mk_dialogmote__naering_hendelse') }}
+  select * from {{ ref('mk_dialogmote__naering_ved_tilfelle_startdato') }}
 )
 
 ,dm_2 as (
