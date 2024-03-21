@@ -5,7 +5,7 @@
 
 
 WITH hendelser AS (
-  SELECT * FROM {{ref("mk_dialogmote__pivotert")}}
+  SELECT * FROM {{ ref('mk_dialogmote__pivotert')}}
 )
 
 ,dim_person1 AS (
@@ -28,14 +28,9 @@ WITH hendelser AS (
   select * from {{ ref('felles_dt_kodeverk__dim_alder') }}
 )
 
-,dim_virksomhet as (
-    select * from {{ ref('felles_dt_p__dim_virksomhet') }}
+,hendelser_med_naering as (
+  select * from {{ ref('mk_dialogmote__naering_hendelse') }}
 )
-
-,dim_naering as (
-    select * from {{ ref('felles_dt_p__dim_naering') }}
-)
-
 
 ,dm_2 as (
 /*
@@ -155,6 +150,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   FROM dm_2_7
 )
 
+
+
 ,joined AS (
   SELECT
     hendelser.fk_person1
@@ -170,7 +167,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote5_avholdt_dato
     ,dialogmote6_avholdt_dato
     ,dialogmote7_avholdt_dato
-    ,unntak AS unntak_dato
+    ,hendelser.unntak AS unntak_dato
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_person1.fk_dim_organisasjon
     ,NVL(TO_NUMBER(
@@ -198,11 +195,11 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
       TO_CHAR(dialogmote7_avholdt_dato, 'YYYYMMDD')
     ), -1) AS fk_dim_tid__dm7_avholdt_dato
     ,NVL(TO_NUMBER(
-      TO_CHAR(unntak, 'YYYYMMDD')
+      TO_CHAR(hendelser.unntak, 'YYYYMMDD')
     ), -1) AS fk_dim_tid__unntak_dato
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
-    , rtrim(dim_virksomhet.bedrift_naring_primar_kode) as bedrift_naring_primar_kode
+    , fk_dim_naering
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
@@ -224,9 +221,9 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
    -- dim_alder.alder = TRUNC(MONTHS_BETWEEN(hendelser.tilfelle_startdato, dim_person1.fodt_dato)/12) -- Brukt til månedlig rapportering - feil?
     dim_alder.alder = floor((hendelser.tilfelle_startdato-dim_person1.fodt_dato)/365.25)
     and hendelser.tilfelle_startdato between dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
-  LEFT JOIN dim_virksomhet ON
-    hendelser.virksomhetsnr = dim_virksomhet.bedrift_org_nr
-        and hendelser.tilfelle_startdato BETWEEN dim_virksomhet.gyldig_fra_dato AND dim_virksomhet.gyldig_til_dato
+  LEFT JOIN hendelser_med_naering ON
+    hendelser.fk_person1 = hendelser_med_naering.fk_person1
+    and hendelser.tilfelle_startdato = hendelser_med_naering.tilfelle_startdato
 
   )
 
@@ -259,14 +256,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     fk_dim_tid__unntak_dato,
     fk_dim_alder,
     fk_dim_kjonn,
-    dim_naering.naering_kode as naering_kode
+    fk_dim_naering
   from joined
-  left join dim_naering on dim_naering.naering_kode = joined.bedrift_naring_primar_kode
-    and joined.tilfelle_startdato between dim_naering.gyldig_fra_dato AND dim_naering.gyldig_til_dato
-
 )
 
-
 SELECT * FROM final
-
-
