@@ -17,13 +17,6 @@ WITH hendelser as (
     group by fk_person1, tilfelle_startdato
 )
 
-,unntak_arsak as (
-  select fk_person1,
-         tilfelle_startdato,
-         unntakarsak
-  from hendelser
-)
-
 ,final AS (
   SELECT * FROM (
     SELECT
@@ -32,13 +25,9 @@ WITH hendelser as (
       ,CONCAT(a.hendelse, a.ROW_NUMBER) AS hendelse1
       ,a.hendelse_tidspunkt1
       ,b.virksomhetsnr
-      ,unntak_arsak.unntakarsak
     FROM hendelser a
     left join not_null_virksomhetsnr b on
       a.fk_person1=b.fk_person1 and a.tilfelle_startdato=b.tilfelle_startdato
-    left join unntak_arsak on unntak_arsak.fk_person1 = a.fk_person1
-                          and unntak_arsak.tilfelle_startdato = a.tilfelle_startdato
-                          and unntak_arsak.unntakarsak is not null
   )
   PIVOT(
     MAX(hendelse_tidspunkt1) FOR hendelse1 IN (
