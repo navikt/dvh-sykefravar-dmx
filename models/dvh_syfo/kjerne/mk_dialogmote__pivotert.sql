@@ -1,12 +1,31 @@
 WITH hendelser as (
-  SELECT
-    aktuelle_hendelser.*
-    ,DECODE(
-      hendelse, 'FERDIGSTILT'
-        ,dialogmote_tidspunkt
-        ,hendelse_tidspunkt
-    ) AS hendelse_tidspunkt1
+  SELECT aktuelle_hendelser.fk_person1,
+         aktuelle_hendelser.tilfelle_startdato,
+         aktuelle_hendelser.hendelse,
+         aktuelle_hendelser.hendelse_tidspunkt,
+         aktuelle_hendelser.dialogmote_tidspunkt,
+         aktuelle_hendelser.unntakarsak,
+         aktuelle_hendelser.enhet_nr,
+         aktuelle_hendelser.arbeidstaker_flagg,
+         aktuelle_hendelser.arbeidsgiver_flagg,
+         aktuelle_hendelser.sykmelder_flagg,
+         aktuelle_hendelser.kilde_uuid,
+         aktuelle_hendelser.kildesystem,
+         aktuelle_hendelser.virksomhetsnr,
+         aktuelle_hendelser.row_number,
+         DECODE(hendelse,'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) AS hendelse_tidspunkt1
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
+),
+
+unntakarsak as (
+  /* henter første rad/unntaksårsak for sykefraværstilfellet for hendelser = 'UNNTAK' */
+  select fk_person1,
+         hendelse_tidspunkt1,
+         tilfelle_startdato,
+         unntakarsak
+  from hendelser
+  where hendelse = 'UNNTAK'
+    and row_number = 1
 )
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
@@ -17,7 +36,7 @@ WITH hendelser as (
     group by fk_person1, tilfelle_startdato
 )
 
-,final AS (
+,pivotert AS (
   SELECT * FROM (
     SELECT
       a.fk_person1
@@ -44,6 +63,26 @@ WITH hendelser as (
   ORDER BY
     fk_person1
     ,tilfelle_startdato
-)
+),
 
-SELECT * FROM final
+final as (
+    SELECT
+      pivotert.fk_person1,
+      pivotert.tilfelle_startdato,
+      pivotert.virksomhetsnr,
+      pivotert.stoppunkt,
+      pivotert.dialogmote_tidspunkt1,
+      pivotert.dialogmote_tidspunkt2,
+      pivotert.dialogmote_tidspunkt3,
+      pivotert.dialogmote_tidspunkt4,
+      pivotert.dialogmote_tidspunkt5,
+      pivotert.dialogmote_tidspunkt6,
+      pivotert.unntak,
+      ua.unntakarsak
+    FROM pivotert
+    left join unntakarsak ua on ua.fk_person1 = pivotert.fk_person1
+                            and ua.hendelse_tidspunkt1 = pivotert.unntak
+                            and ua.tilfelle_startdato  = pivotert.tilfelle_startdato
+ )
+
+select * from final

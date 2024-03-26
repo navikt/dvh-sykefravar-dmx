@@ -161,6 +161,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote6_avholdt_dato
     ,dialogmote7_avholdt_dato
     ,unntak AS unntak_dato
+    ,lower(unntakarsak) as unntak_årsak
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
