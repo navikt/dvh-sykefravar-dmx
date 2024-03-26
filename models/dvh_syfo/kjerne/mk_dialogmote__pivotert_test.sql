@@ -6,7 +6,7 @@ WITH hendelser as (
         ,dialogmote_tidspunkt
         ,hendelse_tidspunkt
     ) AS hendelse_tidspunkt1
-  FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
+  FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato_test") }} aktuelle_hendelser
 )
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
