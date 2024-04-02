@@ -1,4 +1,4 @@
-version:  2
+catversion:  2
 
 models:
   - name: fak_syfo_aktivitetskrav_mnd_dbt

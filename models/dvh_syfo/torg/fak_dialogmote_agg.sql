@@ -39,6 +39,12 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END as kjonn,
+        CASE
+            WHEN dialogmote2_avholdt_dato IS NULL THEN -2
+            WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
+            ELSE 0
+        END AS dialogmote2_innen_26_uker_flagg,
+        -2 as dialogmote3_innen_39_uker_flagg,
         COUNT(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO) AS antall_dialogmøter2,
         0 as antall_dialogmøter3,
         0 as antall_tilfelle_startdato
@@ -70,6 +76,11 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
+        END,
+         CASE
+            WHEN dialogmote2_avholdt_dato IS NULL THEN -2
+            WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
+            ELSE 0
         END
     -- antall dialogmøter 3
     union all
@@ -87,6 +98,12 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END as kjonn,
+        -2 as dialogmote2_innen_26_uker_flagg,
+         CASE
+            WHEN dialogmote3_avholdt_dato IS NULL THEN -2
+            WHEN dialogmote3_avholdt_dato < (tilfelle_startdato + 39*7) THEN 1
+            ELSE 0
+            END AS dialogmote3_innen_39_uker_flagg,
         0 as antall_dialogmøter2,
         COUNT(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO) AS antall_dialogmøter3,
         0 as antall_tilfelle_startdato
@@ -118,6 +135,12 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
+        END,
+        -2,
+        CASE
+            WHEN dialogmote3_avholdt_dato IS NULL THEN -2
+            WHEN dialogmote3_avholdt_dato < (tilfelle_startdato + 39*7) THEN 1
+            ELSE 0
         END
     -- antall tilfeller
     union all
@@ -135,6 +158,8 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END as kjonn,
+         -2 as dialogmote2_innen_26_uker_flagg,
+         -2 as dialogmote3_innen_39_uker_flagg,
         0 as antall_dialogmøter2,
         0 as antall_dialogmøter3,
         COUNT(fakta_gen.tilfelle_startdato) AS antall_tilfelle_startdato
@@ -166,7 +191,9 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
-        END
+        END,
+         -2,
+         -2
 
 )
 SELECT * FROM dialogmøter_agg
