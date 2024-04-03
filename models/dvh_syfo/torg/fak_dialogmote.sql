@@ -13,11 +13,11 @@ WITH hendelser AS (
 )
 
 ,dim_organisasjon AS (
-  SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
+  SELECT * FROM {{ ref('felles_dt_kodeverk__dim_organisasjon') }}
 )
 
 ,dim_org AS (
-  SELECT * FROM {{ ref('felles_dt_p__dim_org') }}
+  SELECT * FROM {{ ref('felles_dt_kodeverk__dim_org') }}
 )
 
 ,motebehov AS (
@@ -25,7 +25,7 @@ WITH hendelser AS (
 )
 
 ,dim_alder as (
-  select * from {{ ref('felles_dt_p__dim_alder') }}
+  select * from {{ ref('felles_dt_kodeverk__dim_alder') }}
 )
 
 ,dm_2 as (
@@ -161,6 +161,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote6_avholdt_dato
     ,dialogmote7_avholdt_dato
     ,unntak AS unntak_dato
+    ,lower(unntakarsak) as unntak_årsak
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon

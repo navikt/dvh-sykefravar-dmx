@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: arena
+  - name: dt_p
     schema: dt_p
     tables:
+    - name: fak_ia_sykefravar
     - name: fak_sf_hendelse_dag
-    - name: dim_sf_aarsak

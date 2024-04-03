@@ -1,7 +1,7 @@
 {{ config(materialized='table') }}
 
 with source_fak_sf_hendelse as (
-    select  *  from {{ source ('dmx_pox_oppfolging', 'FAK_SF_HENDELSE_DAG')}}
+    select  *  from {{ ref ('felles_dt_p__fak_sf_hendelse_dag')}}
 ),
 
 final as (

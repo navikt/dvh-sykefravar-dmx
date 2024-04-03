@@ -100,7 +100,7 @@ if __name__ == "__main__":
                             err.stdout.decode("utf-8"))
 
 
-    run_dbt(["deps"])      
+    run_dbt(["deps"])
     run_dbt(["compile"])
     run_dbt(command)
 
