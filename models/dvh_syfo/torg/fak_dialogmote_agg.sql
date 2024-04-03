@@ -10,7 +10,8 @@ wITH gen_dato AS (
 fakta_gen AS (
     SELECT * FROM {{ ref('fak_dialogmote') }}
 ),
-dim_org AS ({{ref('felles_dt_kodeverk__dim_organisasjon') }}
+dim_org AS (
+    select * from {{ref('felles_dt_kodeverk__dim_organisasjon') }}
 ),
 
 dim_alder AS (
@@ -44,6 +45,11 @@ dialogmøter_agg AS (
             ELSE 0
         END AS dialogmote2_innen_26_uker_flagg,
         -2 as dialogmote3_innen_39_uker_flagg,
+        CASE
+            WHEN unntak_dato IS NULL THEN -2
+            WHEN unntak_dato < (tilfelle_startdato + 26*7) THEN 1
+            ELSE 0
+        END AS unntak_innen_26_uker_flagg,
         COUNT(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO) AS antall_dialogmøter2,
         0 as antall_dialogmøter3,
         0 as antall_tilfelle_startdato
@@ -80,6 +86,11 @@ dialogmøter_agg AS (
             WHEN dialogmote2_avholdt_dato IS NULL THEN -2
             WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
             ELSE 0
+        END,
+        CASE
+            WHEN unntak_dato IS NULL THEN -2
+            WHEN unntak_dato < (tilfelle_startdato + 26*7) THEN 1
+            ELSE 0
         END
     -- antall dialogmøter 3
     union all
@@ -103,6 +114,7 @@ dialogmøter_agg AS (
             WHEN dialogmote3_avholdt_dato < (tilfelle_startdato + 39*7) THEN 1
             ELSE 0
             END AS dialogmote3_innen_39_uker_flagg,
+        -2 as unntak_innen_26_uker_flagg,
         0 as antall_dialogmøter2,
         COUNT(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO) AS antall_dialogmøter3,
         0 as antall_tilfelle_startdato
@@ -135,12 +147,13 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END,
-        -2,
+        -2, -- dialogmote2_innen_26_uker_flagg
         CASE
             WHEN dialogmote3_avholdt_dato IS NULL THEN -2
             WHEN dialogmote3_avholdt_dato < (tilfelle_startdato + 39*7) THEN 1
             ELSE 0
-        END
+        END,
+        -2 --unntak_innen_26_uker_flagg
     -- antall tilfeller
     union all
     SELECT
@@ -157,8 +170,9 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END as kjonn,
-         -2 as dialogmote2_innen_26_uker_flagg,
-         -2 as dialogmote3_innen_39_uker_flagg,
+        -2 as dialogmote2_innen_26_uker_flagg,
+        -2 as dialogmote3_innen_39_uker_flagg,
+        -2 as unntak_innen_26_uker_flagg,
         0 as antall_dialogmøter2,
         0 as antall_dialogmøter3,
         COUNT(fakta_gen.tilfelle_startdato) AS antall_tilfelle_startdato
@@ -175,8 +189,8 @@ dialogmøter_agg AS (
         and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
     JOIN
         dim_geografi ON dim_person1.fk_dim_geografi_bosted = dim_geografi.pk_dim_geografi
-       and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
-       and  dim_geografi.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+        and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
+        and  dim_geografi.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
     GROUP BY
         EXTRACT(YEAR FROM gen_dato.dato),
         EXTRACT(MONTH FROM gen_dato.dato),
@@ -191,9 +205,9 @@ dialogmøter_agg AS (
             WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
             ELSE 'U'
         END,
-         -2,
-         -2
-
+        -2, -- dialogmote2_innen_26_uker_flagg
+        -2, -- dialogmote3_innen_39_uker_flagg
+        -2 -- unntak_innen_26_uker_flagg
 )
 SELECT * FROM dialogmøter_agg
 

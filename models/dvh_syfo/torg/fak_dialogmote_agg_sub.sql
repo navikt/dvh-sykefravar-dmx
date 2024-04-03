@@ -17,6 +17,9 @@ dim_org AS (
 dim_alder AS (
     SELECT * FROM {{ ref('felles_dt_kodeverk__dim_alder') }}
 ),
+dim_person1 AS (
+  SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
+),
 
 dialogmøter_agg AS (
 SELECT
@@ -25,6 +28,11 @@ SELECT
     TO_CHAR(gen_dato.dato, 'IW') as uke,
     dim_org.nav_enhet_navn,
     dim_alder.alder as alder,
+    CASE
+        WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
+        WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
+        ELSE 'U'
+    END as kjonn,
     COUNT(CASE WHEN fakta_gen.DIALOGMOTE2_AVHOLDT_DATO = gen_dato.dato THEN 1 END) AS antall_dialogmøter2,
     COUNT(CASE WHEN fakta_gen.DIALOGMOTE3_AVHOLDT_DATO = gen_dato.dato THEN 1 END) AS antall_dialogmøter3
 FROM
@@ -40,7 +48,12 @@ GROUP BY
      EXTRACT(MONTH FROM gen_dato.dato),
      TO_CHAR(gen_dato.dato, 'IW') ,
     dim_org.nav_enhet_navn,
-    dim_alder.alder
+    dim_alder.alder,
+    CASE
+        WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
+        WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
+        ELSE 'U'
+    END
 )
 SELECT * FROM dialogmøter_agg
 
