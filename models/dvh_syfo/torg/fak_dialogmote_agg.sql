@@ -10,12 +10,11 @@ wITH gen_dato AS (
 fakta_gen AS (
     SELECT * FROM {{ ref('fak_dialogmote') }}
 ),
-dim_org AS (
-    SELECT * FROM {{ ref('felles_dt_p__dim_organisasjon') }}
+dim_org AS ({{ref('felles_dt_kodeverk__dim_organisasjon') }}
 ),
 
 dim_alder AS (
-    SELECT * FROM {{ ref('felles_dt_p__dim_alder') }}
+    SELECT * FROM {{ ref('felles_dt_kodeverk__dim_alder') }}
 ),
 dim_geografi as (
     SELECT * FROM {{ ref('felles_dt_p__dim_geografi') }}
