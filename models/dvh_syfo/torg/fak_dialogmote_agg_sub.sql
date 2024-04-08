@@ -15,9 +15,11 @@ fakta_gen AS (
     select fakta_gen_org.*,
     CASE
         WHEN dialogmote2_avholdt_dato IS NULL THEN 0
-        WHEN dialogmote2_avholdt_dato < (tilfelle_startdato + 26*7) THEN 1
+        WHEN (trunc(cast(DIALOGMOTE2_AVHOLDT_DATO as date),'d') -
+        trunc(cast(TILFELLE_STARTDATO as date),'d')) BETWEEN 0 AND 26*7
+        THEN 1
         ELSE 0
-    END AS dialogmote2_innen_26_uker_flagg
+    END AS dialogmote2_innen_26_uker_flagg_2
     from fakta_gen_org
 ),
 dim_org AS (
@@ -35,7 +37,7 @@ dialogmøter_agg AS (
 SELECT
     EXTRACT(YEAR FROM gen_dato.dato) AS aar,
     EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
-    TO_CHAR(gen_dato.dato, 'IW') as uke,
+   -- TO_CHAR(gen_dato.dato, 'IW') as uke,
     dim_org.nav_nivaa3_navn as enhet_fylke,
     dim_alder.alder as alder,
     CASE
@@ -46,7 +48,7 @@ SELECT
     COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmøter2,
     COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmøter3,
     COUNT(CASE WHEN TRUNC(fakta_gen.unntak_dato) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_unntak,
-    sum(fakta_gen.dialogmote2_innen_26_uker_flagg) AS ant_dialogmote2_innen_26_uker
+    sum(fakta_gen.dialogmote2_innen_26_uker_flagg_2) AS ant_dialogmote2_innen_26_uker
 FROM
     gen_dato
 INNER JOIN
@@ -57,12 +59,12 @@ INNER JOIN
 INNER JOIN
     dim_person1  ON fakta_gen.fk_person1 = dim_person1.fk_person1
      and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
-left join
+inner join
     dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
 GROUP BY
     EXTRACT(YEAR FROM gen_dato.dato),
     EXTRACT(MONTH FROM gen_dato.dato),
-    TO_CHAR(gen_dato.dato, 'IW'),
+  --  TO_CHAR(gen_dato.dato, 'IW'),
     dim_org.nav_nivaa3_navn,
     dim_alder.alder,
     CASE
