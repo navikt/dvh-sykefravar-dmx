@@ -8,6 +8,10 @@ WITH hendelser AS (
   SELECT * FROM {{ref("mk_dialogmote__pivotert")}}
 )
 
+,unntakarsak as (
+  SELECT * FROM {{ref("mk_dialogmote__unntakarsak")}}
+)
+
 ,dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 )
@@ -160,8 +164,9 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote5_avholdt_dato
     ,dialogmote6_avholdt_dato
     ,dialogmote7_avholdt_dato
-    ,unntak AS unntak_dato
-    --,lower(unntakarsak) as unntak_årsak
+    ,unntak AS første_unntak
+    ,unntakarsak.hendelse_tidspunkt as siste_unntak
+    ,lower(unntakarsak.unntakarsak) as siste_unntak_årsak
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_org.ek_dim_org
     ,dim_person1.fk_dim_organisasjon
@@ -195,6 +200,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
   FROM hendelser
+  LEFT JOIN unntakarsak ua ON unntakarsak.fk_person1 = hendelser.fk_person1
+                          AND unntakarsak.tilfelle_startdato = hendelser.tilfelle_startdato
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
     hendelser.tilfelle_startdato BETWEEN dim_person1.gyldig_fra_dato AND dim_person1.gyldig_til_dato
