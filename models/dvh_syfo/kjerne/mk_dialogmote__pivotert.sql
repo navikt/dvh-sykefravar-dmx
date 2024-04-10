@@ -15,17 +15,6 @@ WITH hendelser as (
          aktuelle_hendelser.row_number,
          DECODE(hendelse,'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) AS hendelse_tidspunkt1
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
-),
-
-unntakarsak as (
-  /* henter første rad/unntaksårsak for sykefraværstilfellet for hendelser = 'UNNTAK' */
-  select fk_person1,
-         hendelse_tidspunkt1,
-         tilfelle_startdato,
-         unntakarsak
-  from hendelser
-  where hendelse = 'UNNTAK'
-    and row_number = 1
 )
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
@@ -77,12 +66,8 @@ final as (
       pivotert.dialogmote_tidspunkt4,
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
-      pivotert.unntak,
-      ua.unntakarsak
+      pivotert.unntak
     FROM pivotert
-    left join unntakarsak ua on ua.fk_person1 = pivotert.fk_person1
-                            and ua.hendelse_tidspunkt1 = pivotert.unntak
-                            and ua.tilfelle_startdato  = pivotert.tilfelle_startdato
  )
 
 select * from final

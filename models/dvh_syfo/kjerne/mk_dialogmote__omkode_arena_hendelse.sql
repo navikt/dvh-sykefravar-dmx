@@ -6,7 +6,7 @@ WITH arena AS (
   SELECT
     arena.fk_person1
     ,TO_DATE(TO_CHAR(arena.fk_dim_tid_ident_dato), 'YYYYMMDD') AS tilfelle_startdato
-    ,TO_DATE(TO_CHAR(arena.fk_dim_tid_dato_hendelse), 'YYYYMMDD') AS hendelse_tidspunkt
+    ,arena.opprettet_kilde_sf_hend_dato AS hendelse_tidspunkt
     ,
     CASE
       when arena.fk_dim_sf_hendelsestype in (105,179) then
