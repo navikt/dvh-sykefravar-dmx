@@ -12,6 +12,22 @@ sources:
         description: dialogmote data - raw
       - name: fk_syfo_person_oversikt_status
         description: Kandidater for dialogmøte med korrekte nav -enheter
+models:
+  - name: mk_dialogmote__unntakårsak
+    description: I denne modellen hentes siste unntaksårsak, som brukes i fak_dialogmote-tabellen.
+    columns:
+    - name: fk_person1
+      description: Fremmednøkkel som refererer til person
+    - name: tilfelle_startdato
+      description: Startdato for sf-tilfellet
+    - name: hendelse_tidspunkt
+      description: Tidspunkt for hendelsen
+    - name: unntakarsak
+      description: Årsak til unntaket
+    - name: kildesystem
+      description: Kildesystem til hendelse
+    - name: lastet_dato
+      description: Dato for last
  # - name: dmx_pox_oppfolging
    # tags: ['syfo']
    # description: 'Oppfølging samt diverse felles dimensjoner'

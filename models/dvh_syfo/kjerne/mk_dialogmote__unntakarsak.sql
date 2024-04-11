@@ -14,7 +14,9 @@ final as (
 select t1.fk_person1,
        t1.tilfelle_startdato,
        t1.hendelse_tidspunkt,
-       t1.unntakarsak
+       t1.unntakarsak,
+       t1.kildesystem,
+       current_date as lastet_dato
 from hendelser t1
 inner join (/* Henter siste hendelsestidspunktet for unntaket innenfor sf-tilfellet */
             select fk_person1,
