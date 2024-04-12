@@ -29,7 +29,7 @@ dialogmoter_join_virksomhet_gyldig_tid as (
 ),
 
 -- Finner riktig naering_kode basert på gyldighetsintervall
--- Bruker nærringsstandard 'SN2007'. Flere treff per bedrift_naring_primar_kode hvis ikke denne settes
+-- Bruker næringsstandard 'SN2007'. Flere treff per bedrift_naring_primar_kode hvis ikke denne settes
 -- Har med naering_kode is null i where-clause for å få med rader som ikke får treff i dim_naering/gyldighetsintervallet
 dialogmoter_join_naering_gyldig_tid as (
     select
