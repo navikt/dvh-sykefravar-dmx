@@ -1,5 +1,13 @@
 {{ config(
-    materialized='table'
+    materialized='table',
+    post_hook = [
+      "COMMENT ON COLUMN {{ this }}.fk_person1 IS 'Fremmednøkkel som refererer til person'",
+      "COMMENT ON COLUMN {{ this }}.tilfelle_startdato IS 'Startdato for sykefraværstilfellet'",
+      "COMMENT ON COLUMN {{ this }}.hendelse_tidspunkt IS 'Tidspunkt for hendelsen'",
+      "COMMENT ON COLUMN {{ this }}.unntakarsak IS 'Årsak til unntaket'",
+      "COMMENT ON COLUMN {{ this }}.kildesystem IS 'Kildesystem til hendelse'",
+      "COMMENT ON COLUMN {{ this }}.lastet_dato IS 'Dato for last'"
+    ]
 )}}
 
 /*
