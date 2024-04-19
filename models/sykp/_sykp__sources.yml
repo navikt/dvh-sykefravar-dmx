@@ -15,3 +15,4 @@ sources:
         loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
       - name: fk_sporbar_annullering
       - name: raw_utbetaling_ny
+      - name: raw_vedtak_ny
