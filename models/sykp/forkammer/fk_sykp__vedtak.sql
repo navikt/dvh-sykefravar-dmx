@@ -11,22 +11,19 @@ vedtak_bygg AS ( select
     JSON_VALUE(vedtak.kafka_message,'$.organisasjonsnummer') as organisasjonsnummer,
     CAST(TO_TIMESTAMP_TZ(vedtak.kafka_message.fom, 'YYYY-MM-DD HH24:MI:SS:TZH:TZM') at TIME ZONE 'CET' as timestamp) AS soknad_fom_dato,
     CAST(TO_TIMESTAMP_TZ(vedtak.kafka_message.fom, 'YYYY-MM-DD HH24:MI:SS:TZH:TZM') at TIME ZONE 'CET' as timestamp) AS soknad_tom_dato,
-    json_value(vedtak.kafka_message,'$.doumenter.dokumentId') as dokument_sykemelding_id,
-    json_value(vedtak.kafka_message,'$.doumenter.soknadId') as dokument_soknad_id,
+    json_value(vedtak.kafka_message,'$.dokumenter[1].dokumentId') as dokument_soknad_id,
+    json_value(vedtak.kafka_message,'$.dokumenter[0].dokumentId') as dokument_sykemelding_id,
     vedtak.kafka_topic,
     vedtak.kafka_partisjon,
     vedtak.kafka_offset,
     vedtak.kafka_mottatt_dato,
     vedtak.lastet_dato,
     vedtak.kildesystem
-  from vedtak   
+  from vedtak
   inner join  person
           on person.off_id = json_value(vedtak.kafka_message,'$.fødselsnummer')
         and person.gyldig_til_dato = to_date('31.12.9999','DD.MM.YYYY')
         and person.skjermet_kode not in (6, 7)
-        WHERE json_value(vedtak.kafka_message,'$.utbetalingId') is not null
-
-
 ),
 
 final as (
