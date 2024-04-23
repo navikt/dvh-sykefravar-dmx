@@ -1,43 +1,22 @@
-with utbetaling as (
-   select *  from {{ source('sykp', 'raw_utbetaling_ny') }}
+with linje_personOppdrag as (
+   select *  from {{ ref('fk_sykp__utbetalingslinjeArbeidsgiverOppdrag') }}
 ),
- person as (
-  select * from  {{ ref('felles_dt_person__ident_off_id_til_fk_person1') }}
+ linje_arbeidsgiverOppdrag as (
+  select * from {{ ref('fk_sykp__utbetalingslinjePersonOppdrag') }}
  ),
 
-utbetaling_bygg AS ( select
-    JSON_VALUE(utbetaling.KAFKA_MESSAGE, '$.utbetalingId') as utbetaling_id,
-    --JSON_VALUE(utbetaling.kafka_message,'$.oppdragsType') as oppdragstype,
-    --json_value(utbetaling.kafka_message,'$.fagsystemId') as fagsystem_id,
-    JSON_VALUE(utbetaling.kafka_message,'$.organisasjonsnummer') as mottaker_orgnummer,
-    person.fk_person1 as mottaker_fk_person1,
-    JSON_VALUE(utbetaling.kafka_message,'$.nettoBeløp')  as netto_belop,
-    JSON_VALUE(utbetaling.kafka_message,'$.stønadsDager') as stonadsdager,
-    CAST(TO_TIMESTAMP_TZ(JSON_VALUE(utbetaling.kafka_message,'$.tom'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AS timestamp) AS tom,
-    CAST(TO_TIMESTAMP_TZ(JSON_VALUE(utbetaling.kafka_message,'$.fom'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AS timestamp) AS fom,
-    --CAST(TO_TIMESTAMP_TZ(JSON_VALUE(utbetaling.kafka_message,'$.tom'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AS timestamp) AS utbetalt_tom_dato,
-    --CAST(TO_TIMESTAMP_TZ(JSON_VALUE(utbetaling.kafka_message,'$.fom'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AS timestamp) AS utbetalt_fom_dato,
-    CAST(TO_TIMESTAMP_TZ(JSON_VALUE(utbetaling.kafka_message,'$.oppdatert_dato'), 'YYYY-MM-DD HH24:MI:SS.FF:TZH:TZM') AS timestamp) AS oppdatert_dato,
-    jt_linjer.grad as grad,
-    jt_linjer.dagsats as dagsats,
-    utbetaling.lastet_dato,
-    utbetaling.kildesystem
-  from utbetaling
-    CROSS JOIN JSON_TABLE(utbetaling.kafka_message, '$.utbetalingslinjer[*]'
-            COLUMNS (dagsats NUMBER(10,0) PATH '$.dagsats',
-                    grad NUMBER(3,0) PATH '$.grad')) jt_linjer
-
-  inner join  person
-          on person.off_id = json_value(utbetaling.kafka_message,'$.fødselsnummer')
-        and person.gyldig_til_dato = to_date('31.12.9999','DD.MM.YYYY')
-        and person.skjermet_kode not in (6, 7)
-      where json_value(utbetaling.kafka_message,'$.event') = 'utbetaling_utbetalt'
-
+linje_totalt AS (
+  select * from linje_personOppdrag
+  union all
+  select * from linje_arbeidsgiverOppdrag
 ),
 
 final as (
   select
         utbetaling_id,
+        oppdragstype,
+        fagomraade,
+        fagsystem_id,
         mottaker_orgnummer,
         mottaker_fk_person1,
         netto_belop,
@@ -47,9 +26,11 @@ final as (
         oppdatert_dato,
         grad,
         dagsats,
+        utbetalt_tom_dato,
+        utbetalt_fom_dato,
         lastet_dato,
         kildesystem
-  from utbetaling_bygg
+  from linje_totalt
 )
 
 select * from final
