@@ -7,7 +7,7 @@ with utbetaling as (
 
 utbetaling_bygg AS ( select
     JSON_VALUE(utbetaling.KAFKA_MESSAGE, '$.utbetalingId') as utbetaling_id,
-    --JSON_VALUE(utbetaling.kafka_message,'$.oppdragsType') as oppdragstype,
+    'personOppdrag' as oppdragstype,
     JSON_VALUE(utbetaling.kafka_message,'$.organisasjonsnummer') as mottaker_orgnummer,
     json_value(utbetaling.kafka_message,'$.personOppdrag.fagsystemId') as fagsystem_id,
     json_value(utbetaling.kafka_message,'$.personOppdrag.fagområde') as fagomraade,
@@ -40,9 +40,10 @@ utbetaling_bygg AS ( select
 
 final as (
   select
-        mottaker_fk_person1,
-        utbetaling_id,
+       utbetaling_id,
+        oppdragstype,
         mottaker_orgnummer,
+        mottaker_fk_person1,
         fagsystem_id,
         fagomraade,
         netto_belop,

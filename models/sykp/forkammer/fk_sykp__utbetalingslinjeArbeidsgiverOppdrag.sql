@@ -42,10 +42,10 @@ final as (
   select
         utbetaling_id,
         oppdragstype,
-        fagomraade,
-        fagsystem_id,
         mottaker_orgnummer,
         mottaker_fk_person1,
+        fagsystem_id,
+        fagomraade,
         netto_belop,
         stonadsdager,
         tom,
