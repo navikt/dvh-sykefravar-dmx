@@ -1,3 +1,10 @@
+{{
+  config(
+    materialized = 'table',
+    )
+}}
+
+
 with utbetaling as (
    select *  from {{ source('sykp', 'raw_utbetaling_ny') }}
 ),
