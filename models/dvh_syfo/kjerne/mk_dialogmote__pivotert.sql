@@ -92,7 +92,8 @@ final as (
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
       pivotert.unntak,
-      ua.unntakarsak
+      ua.unntakarsak,
+      pivotert.region_oppf_enhet_vviken_flagg
     FROM pivotert
     left join unntakarsak ua on ua.fk_person1 = pivotert.fk_person1
                             and ua.hendelse_tidspunkt1 = pivotert.unntak
