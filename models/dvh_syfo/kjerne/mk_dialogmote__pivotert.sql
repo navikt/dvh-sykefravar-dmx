@@ -42,7 +42,7 @@ Dersom en hendelse er registrert med en identene under, skal flagget settes til 
 Velger max-verdi for at alle rader tilknyttet et tilfelle skal indikere at minst ett av hendelsene har kommet inn med denne identen.
 Dersom ikke max-verdi settes, vil pivoteringen resultere i flere rader per tilfelle der det er ulike identer.  */
 ,not_null_region_oppf_enhet_vviken_flagg as (
-    select fk_person1, tilfelle_startdato, max(case when nav_ident in ('B160279', 'SNA0624', 'ELE0602', 'MOH0219') then 1 end) as region_oppf_enhet_vviken_flagg
+    select fk_person1, tilfelle_startdato, max(case when nav_ident in ('B160279', 'SNA0624', 'ELE0602', 'MOH0219') then 1 else 0 end) as region_oppf_enhet_vviken_flagg
     from hendelser
     group by fk_person1, tilfelle_startdato
 )
