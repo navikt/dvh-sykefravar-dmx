@@ -66,8 +66,7 @@ final as (
       pivotert.dialogmote_tidspunkt4,
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
-      pivotert.unntak,
-      ua.unntakarsak
+      pivotert.unntak
     FROM pivotert
  )
 
