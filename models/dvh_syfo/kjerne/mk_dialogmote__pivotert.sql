@@ -15,7 +15,7 @@ WITH hendelser as (
          aktuelle_hendelser.row_number,
          DECODE(hendelse,'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) AS hendelse_tidspunkt1
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
-),
+)
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
 -- Joiner denne i neste steg for å hindre feil i pivoteringen da vi får flere rader per fk_person1 + tilfelle_startdato (null fra Arena + kandidater og not-null fra dialogmøter i Modia).
