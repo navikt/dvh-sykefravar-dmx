@@ -20,11 +20,8 @@ WITH arena AS (
       ,108 ,'UNNTAK'
     ) AS hendelse
     ,arena.kildesystem
-    ,aarsak.navn as unntakarsak
     ,arena.pk_fak_sf_hendelse_dag AS kilde_uuid
   FROM arena
-  inner join {{ ref('dim_sf_aarsak') }} aarsak
-          on aarsak.pk_dim_sf_aarsak = arena.fk_dim_sf_aarsak
   WHERE
     arena.fk_dim_sf_hendelsestype IN (
       105  -- DM2
