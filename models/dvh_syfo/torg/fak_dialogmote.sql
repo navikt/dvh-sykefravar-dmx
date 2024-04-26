@@ -200,6 +200,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
     , fk_dim_naering
+    , hendelser.region_oppf_enhet_vviken_flagg as region_oppf_enhet_vviken_flagg
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
@@ -256,7 +257,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     fk_dim_tid__unntak_dato,
     fk_dim_alder,
     fk_dim_kjonn,
-    fk_dim_naering
+    fk_dim_naering,
+    region_oppf_enhet_vviken_flagg
   from joined
 )
 
