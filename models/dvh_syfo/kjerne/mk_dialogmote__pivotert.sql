@@ -18,17 +18,6 @@ WITH hendelser as (
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
 )
 
-,unntakarsak as (
-  /* henter første rad/unntaksårsak for sykefraværstilfellet for hendelser = 'UNNTAK' */
-  select fk_person1,
-         hendelse_tidspunkt1,
-         tilfelle_startdato,
-         unntakarsak
-  from hendelser
-  where hendelse = 'UNNTAK'
-    and row_number = 1
-)
-
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
 -- Joiner denne i neste steg for å hindre feil i pivoteringen da vi får flere rader per fk_person1 + tilfelle_startdato (null fra Arena + kandidater og not-null fra dialogmøter i Modia).
 ,not_null_virksomhetsnr as (
@@ -92,7 +81,6 @@ final as (
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
       pivotert.unntak,
-      ua.unntakarsak,
       pivotert.region_oppf_enhet_vviken_flagg
     FROM pivotert
  )
