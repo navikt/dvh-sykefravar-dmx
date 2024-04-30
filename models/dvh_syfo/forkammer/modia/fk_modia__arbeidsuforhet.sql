@@ -13,9 +13,8 @@ WITH uforhet_raw AS (
 , uforhet_dta AS (
   SELECT
       JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.uuid') AS kilde_uuid,
-      JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.personIdent') AS personIdent,
+      JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.personident') AS personIdent,
       CAST(TO_TIMESTAMP_TZ(JSON_VALUE(uforhet.KAFKA_MESSAGE,'$.createdAt'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') at TIME ZONE 'CET' as timestamp) as createdAt,
-      JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.status') as status,
       JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.type') AS vurderingsType,
       json_value(uforhet.kafka_message,'$.veilederident') as veilederIdent,
       json_value(uforhet.kafka_message,'$.begrunnelse') as begrunnelse,
@@ -31,19 +30,17 @@ WITH uforhet_raw AS (
 ,med_fkPerson1 as (
   SELECT
     kilde_uuid,
+    dvh_person_ident.fk_person1 as fk_person1,
     createdAt,
-    status,
     vurderingsType,
     veilederIdent,
-    begrunnelse,
-    kafka_topic,
+    kafka_mottatt_dato,
     kafka_partisjon,
     kafka_offset,
-    kafka_mottatt_dato,
     oppdatert_dato,
     lastet_dato,
     kildesystem,
-    dvh_person_ident.fk_person1 as fk_person1
+    begrunnelse
   from uforhet_dta
   LEFT JOIN dvh_person_ident
   ON
