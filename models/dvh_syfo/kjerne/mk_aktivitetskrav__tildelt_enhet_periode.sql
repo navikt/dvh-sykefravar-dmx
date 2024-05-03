@@ -8,7 +8,7 @@ WITH aktivitetskrav as (
   select * from {{ ref('mk_aktivitetskrav__siste_tilfelle_periode') }}
 ),
 
-person_oversikt_scd as (
+person_oversikt_status_scd as (
   select
     fk_person1 as fk_person1_scd,
     tildelt_enhet,
@@ -16,7 +16,7 @@ person_oversikt_scd as (
     dbt_valid_to,
     max(dbt_valid_from) over(partition by fk_person1, TO_CHAR(dbt_valid_from, 'YYYYMM') ) as max_dbt_valid_from_periode,
     TO_CHAR(min(dbt_valid_from) over (partition by fk_person1), 'YYYYMM') as min_periode_scd
-  from {{ ref("fk_modia__person_oversikt_scd") }}
+  from {{ ref("fk_modia__person_oversikt_status_scd") }}
   order by dbt_valid_to desc
 ),
 
@@ -26,7 +26,7 @@ aktivitetskrav_med_tildelt_enhet as (
     a.*,
     b.*
   from aktivitetskrav a
-    left join person_oversikt_scd b on a.fk_person1 = b.fk_person1_scd
+    left join person_oversikt_status_scd b on a.fk_person1 = b.fk_person1_scd
 ),
 
 /* Case løser modellering over flere måneder, og sørger for at det for en gitt periode hentes riktig tildelt enhet.
