@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: dk_p
+    schema: dk_p
+    tables:
+    - name: sf_oppfolging
