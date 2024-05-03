@@ -21,6 +21,7 @@ with dialogmote_forkammer as
   when kilde_uuid = '1662ee9f-5186-4c5b-a43b-bd0c926d8d19' and hendelse in ('FERDIGSTILT') then CAST(TO_TIMESTAMP_TZ('2022-09-14','YYYY-MM-DD') at TIME ZONE 'CET' as timestamp) /*hentet fra annen dialogmote hendelse*/
   when kilde_uuid = '7352a6f3-d7e2-4676-a2fe-de0c55f59f68' and hendelse in ('FERDIGSTILT','INNKALT') then  CAST(TO_TIMESTAMP_TZ('2023-01-23','YYYY-MM-DD') at TIME ZONE 'CET' as timestamp) /*hentet fra sf_oppfolging*/
   when kilde_uuid = '7574b760-cef4-44a7-9c21-463055fd6a36' and hendelse in ('FERDIGSTILT','INNKALT') then  CAST(TO_TIMESTAMP_TZ('2023-10-09','YYYY-MM-DD') at TIME ZONE 'CET' as timestamp) /*hentet fra sf_oppfolging og sykm_sykmelding*/
+  when kilde_uuid = 'a5a7e0c1-a7b1-428c-b868-0b747cd51009' and hendelse in ('FERDIGSTILT','INNKALT', 'NYTT_TID_STED') then  CAST(TO_TIMESTAMP_TZ('2024-04-05','YYYY-MM-DD') at TIME ZONE 'CET' as timestamp) /*hentet fra sykm_sykmelding*/
   else tilfelle_startdato
   end
   tilfelle_startdato_patch

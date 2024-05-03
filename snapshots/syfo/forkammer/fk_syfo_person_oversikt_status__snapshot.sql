@@ -1,4 +1,4 @@
-{% snapshot fk_syfo_person_oversikt_status__snapshot_v4%}
+{% snapshot fk_syfo_person_oversikt_status__snapshot%}
 
 {{
     config(
@@ -13,7 +13,7 @@
 SELECT
   oversikt_status.*
 FROM
-  {{ ref ('fk_modia__oversikt_person_status') }} oversikt_status
+  {{ ref ('fk_modia__person_oversikt_status') }} oversikt_status
 
 
 

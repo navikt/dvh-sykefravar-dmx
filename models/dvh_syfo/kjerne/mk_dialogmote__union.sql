@@ -21,6 +21,7 @@ final as (
       dialogmote_tidspunkt,
       unntakarsak,
       enhet_nr,
+      nav_ident,
       arbeidstaker_flagg,
       arbeidsgiver_flagg,
       sykmelder_flagg,
