@@ -1,26 +1,14 @@
 {{ config(materialized='table') }}
 
-with person_oversikt_status_snapshot AS (
+with person_oversikt_status_snapshot as (
   select * from {{ source('modia', 'fk_syfo_person_oversikt_status__snapshot') }}
-  --where trunc(lastet_dato) != to_date('02.05.2024', 'dd.mm.yyyy') for stopp lasting av gårsdagens data
-  -- slik at vi kan teste last med ny dags data
-),
-
-nyeste_rader as (
-  select * from person_oversikt_status_snapshot
---  where trunc(lastet_dato) > (select max(oppdatert_dato_dbt) from person_oversikt_status_scd)
-),
-
-rader_til_operasjon as (
-    select * from person_oversikt_status_snapshot
-    where fk_person1 in (select fk_person1 from nyeste_rader) --and dbt_valid_to is null for å bare ta siste?
 ),
 
 finn_neste_dato_for_tildelt_enhet as (
     select
-       rader_til_operasjon.*,
+       person_oversikt_status_snapshot.*,
         lead (tildelt_enhet_updated_at, 1) over ( partition by fk_person1 order by tildelt_enhet_updated_at  ) as neste_dato
-    from rader_til_operasjon
+    from person_oversikt_status_snapshot 
 ),
 
 sett_gyldig_kolonner as (
