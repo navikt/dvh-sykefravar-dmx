@@ -11,7 +11,7 @@ sf_oppfolging as (
   where lk_sf_oppfolgingstypekode = 'S'
 ),
 
--- dim_sf_hendelse_dag må grantes til syfo
+-- dim_sf_hendelsetype må grantes til syfo
 sf_hendelse_hendelsetype_39_uker as (
     select * from {{ ref('int__sf_hendelse_hendelsetype_39_uker') }}
 ),
