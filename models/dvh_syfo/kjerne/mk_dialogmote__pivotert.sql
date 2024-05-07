@@ -16,6 +16,16 @@ WITH hendelser as (
          aktuelle_hendelser.nav_ident,
          DECODE(hendelse,'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) AS hendelse_tidspunkt1
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
+),
+
+unntakarsak_modia as (
+  select fk_person1,
+         tilfelle_startdato,
+         hendelse_tidspunkt1,
+         unntakarsak as unntakarsak_modia
+  from hendelser
+  where hendelse='UNNTAK'
+    and kildesystem = 'MODIA'
 )
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
@@ -81,8 +91,13 @@ final as (
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
       pivotert.unntak,
+      um.unntakarsak_modia,
       pivotert.region_oppf_enhet_vviken_flagg
     FROM pivotert
+    left join unntakarsak_modia um on um.fk_person1 = pivotert.fk_person1
+                                  and um.tilfelle_startdato = pivotert.tilfelle_startdato
+                                  and um.hendelse_tidspunkt1 = pivotert.unntak
+
  )
 
 select * from final
