@@ -39,6 +39,7 @@ sykm_uten_arbgiver_flagg as (
 
 /* 39 uker-flagg */
 /* Setter flagg dersom det finnes rad større enn tilfelle_dato (nærmeste vi kommer samme tilfelle).
+Bruker maxdato i tabell (se join) for å unngå duplikate rader der hvor både 0 og 1 i flagg settes. 
 Vil fungere godt nok kort frem i tid, men gi feil resultater idet personer får flere tilfeller og
 det ikke matches med rett dato fra sf_hendelse_dag-tabellen.
 Løsning: Inkrementell daglig last for å slippe sjekke mot gamle tilfeller.  */
