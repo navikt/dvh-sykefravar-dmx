@@ -5,6 +5,8 @@ sources:
     schema: dvh_syfo
     tables:
     - name: raw_isdialogmote
+    - name: raw_dialogmelding
+    - name: raw_isdialogmelding
     - name: raw_isdialogmotekandidat
       freshness:
         warn_after: {count: 1, period: day}
