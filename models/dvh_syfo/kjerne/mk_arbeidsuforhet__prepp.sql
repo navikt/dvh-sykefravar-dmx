@@ -1,6 +1,6 @@
 with uforhet as (
   select
-    distinct fk_person1, createdAt, vurderingstype
+    distinct fk_person1, vurderingsdato, vurderingstype
   from {{ ref('fk_modia__arbeidsuforhet')}}
 ),
 
@@ -18,21 +18,23 @@ uforhet_tilfelle_startdato as (
         select
           uforhet.*,
           dialogmoter.tilfelle_startdato,
+          dialogmoter.virksomhetsnr,
           row_number() over(
             partition by uforhet.fk_person1
-            order by (uforhet.createdAt) - (dialogmoter.tilfelle_startdato)
+            order by (uforhet.vurderingsdato) - (dialogmoter.tilfelle_startdato)
           ) rn
         from uforhet
     left join dialogmoter on uforhet.fk_person1 = dialogmoter.fk_person1
-      and trunc((uforhet.createdAt)) - trunc((dialogmoter.tilfelle_startdato)) < 365 --ok?
-      and uforhet.createdAt >= dialogmoter.tilfelle_startdato --ok?
+      and trunc((uforhet.vurderingsdato)) - trunc((dialogmoter.tilfelle_startdato)) < 365 --ok?
+      and uforhet.vurderingsdato >= dialogmoter.tilfelle_startdato --ok?
     )
   where rn = 1
 )
 
 select
   fk_person1,
-  createdAt,
+  vurderingsdato,
   vurderingstype,
-  tilfelle_startdato
+  trunc(tilfelle_startdato) as tilfelle_startdato,
+  virksomhetsnr
 from uforhet_tilfelle_startdato
