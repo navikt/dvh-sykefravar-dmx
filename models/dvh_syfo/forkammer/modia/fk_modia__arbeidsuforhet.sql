@@ -16,7 +16,7 @@ WITH uforhet_raw AS (
   SELECT
       JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.uuid') AS kilde_uuid,
       JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.personident') AS personIdent,
-      CAST(TO_TIMESTAMP_TZ(JSON_VALUE(uforhet.KAFKA_MESSAGE,'$.createdAt'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') at TIME ZONE 'CET' as timestamp) as createdAt,
+      CAST(TO_TIMESTAMP_TZ(JSON_VALUE(uforhet.KAFKA_MESSAGE,'$.createdAt'), 'yyyy-mm-dd"T"hh24:mi:ss.fftzh:tzm"Z"') at TIME ZONE 'CET' as timestamp) as vurderingsdato,
       JSON_VALUE(uforhet.KAFKA_MESSAGE, '$.type') AS vurderingsType,
       json_value(uforhet.kafka_message,'$.veilederident') as veilederIdent,
    --   json_value(uforhet.kafka_message,'$.begrunnelse') as begrunnelse,
@@ -34,7 +34,7 @@ WITH uforhet_raw AS (
   SELECT
     kilde_uuid,
     dvh_person_ident.fk_person1 as fk_person1,
-    createdAt,
+    vurderingsdato,
     vurderingsType,
     veilederIdent,
     kafka_mottatt_dato,
