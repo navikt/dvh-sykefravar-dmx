@@ -29,9 +29,10 @@
     select * from {{ ref('felles_dt_p__dim_naering') }}
 )
 
+/* Skal ikke bruke denne - har ingenting å joine med. Vurder DT_P.DIM_ARBEID_AVTALE
 , dim_yrke as (
   select * from {{ ref('felles_dt_p__dim_yrke')}}
-)
+) */
 
 
 , finn__bedrift_naring_primar_kode__fra__virksomhet as (
@@ -77,7 +78,6 @@
   left join finn__fk_dim_naering__fra__bedrift_naring_primar_kode on
     kilde.fk_person1 = finn__fk_dim_naering__fra__bedrift_naring_primar_kode.fk_person1
     and kilde.tilfelle_startdato = finn__fk_dim_naering__fra__bedrift_naring_primar_kode.tilfelle_startdato
- -- left join dim_yrke on
 
 )
 

@@ -9,4 +9,3 @@ sources:
     - name: dim_naering
     - name: dim_virksomhet
     - name: dim_sf_hendelsetype
-    - name: dim_yrke
