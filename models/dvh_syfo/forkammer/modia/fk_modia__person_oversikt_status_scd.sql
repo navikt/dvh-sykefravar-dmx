@@ -2,7 +2,7 @@
 
 with person_oversikt_status_snapshot AS (
   select * from {{ source('modia', 'fk_syfo_person_oversikt_status__snapshot') }}
-  --where trunc(lastet_dato) != to_date('02.05.2024', 'dd.mm.yyyy') for stopp lasting av gårsdagens data
+  where trunc(lastet_dato) != to_date('14.05.2024', 'dd.mm.yyyy') AND trunc(lastet_dato) != to_date('15.05.2024', 'dd.mm.yyyy') -- for stopp lasting av gårsdagens data
   -- slik at vi kan teste last med ny dags data
 ),
 
@@ -29,7 +29,7 @@ sett_gyldig_kolonner as (
         trunc(tildelt_enhet_updated_at) as gyldig_fra_dato,
         case when neste_dato is null then trunc(to_date('9999-12-31', 'YYYY-MM-DD')) else neste_dato - 1 end as gyldig_til_dato,
         case when dbt_valid_to is null then 1 else 0 end as gyldig_flagg,
-        trunc(sysdate) as oppdatert_dato_dbt --finn nytt navn for å ikke ligne DBT_UPDATED_AT.
+        trunc(sysdate-2) as oppdatert_dato_dbt --finn nytt navn for å ikke ligne DBT_UPDATED_AT.
     from finn_neste_dato_for_tildelt_enhet
 
 ),
