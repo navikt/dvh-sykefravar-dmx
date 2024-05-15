@@ -168,6 +168,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote6_avholdt_dato
     ,dialogmote7_avholdt_dato
     ,hendelser.unntak AS unntak_dato
+    ,hendelser.unntakarsak_modia
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
     ,dim_person1.fk_dim_organisasjon
     ,NVL(TO_NUMBER(
@@ -244,6 +245,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     dialogmote6_avholdt_dato,
     dialogmote7_avholdt_dato,
     unntak_dato,
+    unntakarsak_modia,
     tilfelle_26uker_mnd_startdato,
     fk_dim_organisasjon,
     fk_dim_tid__behov_meldt,

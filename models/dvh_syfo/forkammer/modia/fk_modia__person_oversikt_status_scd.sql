@@ -1,6 +1,6 @@
 {{ config(materialized='table') }}
 
-with person_oversikt_status_snapshot AS (
+with person_oversikt_status_snapshot as (
   select * from {{ source('modia', 'fk_syfo_person_oversikt_status__snapshot') }}
   where trunc(lastet_dato) != to_date('14.05.2024', 'dd.mm.yyyy') AND trunc(lastet_dato) != to_date('15.05.2024', 'dd.mm.yyyy') -- for stopp lasting av gårsdagens data
   -- slik at vi kan teste last med ny dags data
@@ -18,9 +18,9 @@ rader_til_operasjon as (
 
 finn_neste_dato_for_tildelt_enhet as (
     select
-       rader_til_operasjon.*,
+       person_oversikt_status_snapshot.*,
         lead (tildelt_enhet_updated_at, 1) over ( partition by fk_person1 order by tildelt_enhet_updated_at  ) as neste_dato
-    from rader_til_operasjon
+    from person_oversikt_status_snapshot
 ),
 
 sett_gyldig_kolonner as (

@@ -16,6 +16,16 @@ WITH hendelser as (
          aktuelle_hendelser.nav_ident,
          DECODE(hendelse,'FERDIGSTILT', dialogmote_tidspunkt, hendelse_tidspunkt) AS hendelse_tidspunkt1
   FROM {{ ref("mk_dialogmote__tidligste_tilfelle_startdato") }} aktuelle_hendelser
+),
+
+unntakarsak_modia as (
+  select fk_person1,
+         tilfelle_startdato,
+         hendelse_tidspunkt1,
+         unntakarsak as unntakarsak_modia
+  from hendelser
+  where hendelse='UNNTAK'
+    and kildesystem = 'MODIA'
 )
 
 -- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
@@ -31,7 +41,7 @@ Dersom en hendelse er registrert med en identene under, skal flagget settes til 
 Velger max-verdi for at alle rader tilknyttet et tilfelle skal indikere at minst ett av hendelsene har kommet inn med denne identen.
 Dersom ikke max-verdi settes, vil pivoteringen resultere i flere rader per tilfelle der det er ulike identer.  */
 ,not_null_region_oppf_enhet_vviken_flagg as (
-    select fk_person1, tilfelle_startdato, max(case when nav_ident in ('B160279', 'SNA0624', 'ELE0602', 'MOH0219') then 1 else 0 end) as region_oppf_enhet_vviken_flagg
+    select fk_person1, tilfelle_startdato, max(case when nav_ident in ('B160279', 'G154329', 'L154047', 'N146924') then 1 else 0 end) as region_oppf_enhet_vviken_flagg
     from hendelser
     group by fk_person1, tilfelle_startdato
 )
@@ -81,8 +91,13 @@ final as (
       pivotert.dialogmote_tidspunkt5,
       pivotert.dialogmote_tidspunkt6,
       pivotert.unntak,
+      um.unntakarsak_modia,
       pivotert.region_oppf_enhet_vviken_flagg
     FROM pivotert
+    left join unntakarsak_modia um on um.fk_person1 = pivotert.fk_person1
+                                  and um.tilfelle_startdato = pivotert.tilfelle_startdato
+                                  and um.hendelse_tidspunkt1 = pivotert.unntak
+
  )
 
 select * from final
