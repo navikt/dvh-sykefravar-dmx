@@ -9,7 +9,7 @@ wITH gen_dato AS (
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,
-    TILFELLE_STARTDATO,fk_dim_organisasjon,fk_dim_alder,fk_person1
+    TILFELLE_STARTDATO,fk_dim_organisasjon,fk_dim_alder,fk_person1,fk_dim_naering
     FROM {{ ref('fak_dialogmote') }}
 ),
 fakta_gen AS (
@@ -52,10 +52,14 @@ dim_geografi as (
     SELECT * FROM {{ ref('felles_dt_p__dim_geografi') }}
 ),
 dim_alder AS (
-    SELECT * FROM {{ ref('felles_dt_kodeverk__dim_alder') }}
+    SELECT *
+    FROM {{ ref('felles_dt_kodeverk__dim_alder') }}
 ),
 dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
+),
+naering as (
+    select * from {{ ref('felles_dt_p__dim_naering') }}
 ),
 
 dialogmøter_agg AS (
@@ -67,7 +71,8 @@ SELECT
     dim_org.nav_enhet_navn,
     dim_geografi.fylke_navn as bosted_fylke,
     dim_geografi.kommune_navn as bosted_kommune,
-    dim_alder.alder as alder,
+    dim_alder.TI_AAR_GRUPPE_BESK as alder_interval,
+    naering.gruppe1_besk_lang as naering,
     CASE
         WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
@@ -98,6 +103,9 @@ inner JOIN
         and  dim_geografi.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
 inner join
     dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
+inner join
+    naering on  fakta_gen.fk_dim_naering = naering.pk_dim_naering
+    and naering.gyldig_flagg=1
 GROUP BY
     EXTRACT(YEAR FROM gen_dato.dato),
     EXTRACT(MONTH FROM gen_dato.dato),
@@ -106,7 +114,8 @@ GROUP BY
     dim_org.nav_enhet_navn,
     dim_geografi.fylke_navn,
     dim_geografi.kommune_navn,
-    dim_alder.alder,
+    dim_alder.TI_AAR_GRUPPE_BESK,
+    naering.gruppe1_besk_lang,
     CASE
         WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
