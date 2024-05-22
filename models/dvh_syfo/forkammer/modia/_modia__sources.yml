@@ -10,10 +10,12 @@ sources:
         warn_after: {count: 1, period: day}
       loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
     - name: raw_aktivitetskrav
-    - name: FK_SYFO_PERSON_OVERSIKT_STATUS__SNAPSHOT_V4
+    - name: fk_syfo_person_oversikt_status__snapshot
     - name: aktivitetskrav_key
     - name: fk_motebehov_sky
       description: Møtebehov RAW fra sky
+    - name: fk_syfo_person_oversikt_status
+      description: Kandidater for dialogmøte med korrekte nav -enheter
     - name: raw_oppfolgingstilfelle
       description: Oppfølgingstillfelle med korrekte datoer
 
