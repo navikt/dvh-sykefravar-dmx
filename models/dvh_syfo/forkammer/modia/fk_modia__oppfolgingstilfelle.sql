@@ -12,7 +12,7 @@ with src_oppfolgingstilfelle_person as (
       , oppdatert_dato
       , kildesystem
    from {{ source('modia', 'raw_oppfolgingstilfelle') }}
-   where kafka_offset > 17000000
+   where kafka_offset > 17000000 --fjernes siden, brukes for å minimere datamengde ved testing
 )
 
 , dvh_person_ident as (
