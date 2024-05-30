@@ -1,11 +1,11 @@
 WITH
 dialogmelding AS (
   select JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.msgId') as msg_id,
-        JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.msgType') as msg_type,
-        JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.mottattTidspunkt') as mottatt_tidspunkt,
-        JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.personIdentPasient') AS person_ident_pasient,
-        JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.legekontorOrgNr') as legekontor_org_nr,
-        JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.antallVedlegg') as antall_vedlegg
+         JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.msgType') as msg_type,
+         JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.mottattTidspunkt') as mottatt_tidspunkt,
+         JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.personIdentPasient') AS person_ident_pasient,
+         JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.legekontorOrgNr') as legekontor_org_nr,
+         JSON_VALUE(dialogmelding.KAFKA_MESSAGE, '$.antallVedlegg') as antall_vedlegg
   from {{ source('modia', 'raw_dialogmelding') }} dialogmelding
 ),
 
