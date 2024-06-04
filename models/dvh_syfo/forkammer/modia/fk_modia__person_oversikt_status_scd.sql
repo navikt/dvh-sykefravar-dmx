@@ -30,7 +30,7 @@ nyeste_rader as (
 
 {% if is_incremental() %}
 
-  where trunc(lastet_dato) >= (select max(oppdatert_dato) from {{ this }})
+  where lastet_dato >= (select max(trunc(oppdatert_dato)) from {{ this }})
 
 {% endif  %}
 
