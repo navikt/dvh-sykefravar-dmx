@@ -30,7 +30,7 @@ nyeste_rader as (
 
 {% if is_incremental() %}
 
-  where trunc(lastet_dato) > (select max(oppdatert_dato) from {{ this }})
+  where trunc(lastet_dato) >= (select max(oppdatert_dato) from {{ this }})
 
 {% endif  %}
 
@@ -65,7 +65,7 @@ sett_gyldig_kolonner as (
         trunc(tildelt_enhet_updated_at) as gyldig_fra_dato,
         case when neste_dato is null then trunc(to_date('9999-12-31', 'YYYY-MM-DD')) else trunc(neste_dato - 1) end as gyldig_til_dato,
         case when dbt_valid_to is null then 1 else 0 end as gyldig_flagg,
-        trunc(sysdate) as oppdatert_dato
+        sysdate as oppdatert_dato
     from finn_neste_dato_for_tildelt_enhet
 
 ),
