@@ -84,7 +84,8 @@ final as (
     oppdatert_dato,
     gyldig_fra_dato,
     gyldig_til_dato,
-    gyldig_flagg
+    gyldig_flagg,
+    dbt_updated_at
 
   from sett_gyldig_kolonner
 )
