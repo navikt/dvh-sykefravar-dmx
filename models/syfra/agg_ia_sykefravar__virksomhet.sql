@@ -70,24 +70,6 @@ tapte_dagsverk_per_varighet_pivotert as (
 
 ),
 
-mulige_dagsverk_per_varighet_pivotert as (
-  select * from (
-    select
-      orgnr,
-      arstall,
-      kvartal,
-      varighet,
-      muligedv
-    from sykefravar_statistikk_virksomhet_per_varighet
-  )
-  PIVOT
-  (
-    sum(muligedv)
-    for varighet in (
-     'X' as varighet_X)
-  )
-),
-
 final as (
   select
     s.orgnr,
@@ -102,15 +84,11 @@ final as (
     round(td.varighet_C, 1) as varighet_C,
     round(td.varighet_D, 1) as varighet_D,
     round(td.varighet_E, 1) as varighet_E,
-    round(td.varighet_F, 1) as varighet_F,
-    round(md.varighet_X, 1) as varighet_X
+    round(td.varighet_F, 1) as varighet_F
   from sykefravar_statistikk_virksomhet s
   left join tapte_dagsverk_per_varighet_pivotert td on
     s.orgnr=td.orgnr and s.arstall=td.arstall and s.kvartal=td.kvartal
-  left join mulige_dagsverk_per_varighet_pivotert md on
-    s.orgnr=md.orgnr and s.arstall=md.arstall and s.kvartal=md.kvartal
 
 )
-
 
 select * from final
