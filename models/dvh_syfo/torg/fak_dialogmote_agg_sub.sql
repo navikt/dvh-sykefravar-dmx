@@ -49,7 +49,7 @@ dim_org AS (
     SELECT * FROM {{ ref('felles_dt_kodeverk__dim_organisasjon') }}
 ),
 dim_geografi as (
-    SELECT * FROM {{ ref('felles_dt_p__dim_geografi') }}
+    SELECT * FROM {{ ref('felles_dt_kodeverk__dim_geografi') }}
 ),
 dim_alder AS (
     SELECT *

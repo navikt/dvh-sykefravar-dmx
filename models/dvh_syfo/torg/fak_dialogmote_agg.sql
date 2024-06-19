@@ -18,7 +18,7 @@ dim_alder AS (
     SELECT * FROM {{ ref('felles_dt_kodeverk__dim_alder') }}
 ),
 dim_geografi as (
-    SELECT * FROM {{ ref('felles_dt_p__dim_geografi') }}
+    SELECT * FROM {{ ref('felles_dt_kodeverk__dim_geografi') }}
 ),
 dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
