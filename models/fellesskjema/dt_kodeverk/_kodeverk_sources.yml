@@ -11,3 +11,4 @@ sources:
     - name: dim_organisasjon
     - name: dim_tid
     - name: dim_varighet
+    - name: dim_geografi
