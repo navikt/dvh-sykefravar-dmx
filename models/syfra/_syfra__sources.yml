@@ -6,5 +6,10 @@ sources:
     schema: dvh_syfra
     tables:
       - name: ssb_syfra_teller_kv
-  #    - name: fak_ia_sykefravar
+      - name: fak_ia_sykefravar
+        description: >
+        "#NAVN: sykefraværstorg for IAWEB applikasjonen
+        #INNHOLD: Faktatorg for IAWEB applikasjonen som inneholder antall tapte og avtalte dagsverk pr organisasjonsenhet gruppert på næring, sektor, yrke, diagnose, geografi, alder og kjønn.
+        #BESKRIVELSE: Tabellen er versjonert og periodisert på kvartal.
+        #AVHENGIGHET: ved last er tabellen avhengig av: DVH_SYFRA.TMP_IA_SYKEFRAVAR, DT_KODEVERK.DIM_VERSJON"
 
