@@ -17,13 +17,15 @@ sykefravar_statistikk_virksomhet_per_varighet as (
     sum(taptedv) taptedv,
     sum(muligedv) muligedv,
     sum(taptedv_gs) taptedv_gs
-from {{ source('dt_p', 'fak_ia_sykefravar') }} fak
+from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.pk_dim_versjon = fak.fk_dim_versjon and
     dim.tabell_navn = 'FAK_IA_SYKEFRAVAR'
     and dim.offentlig_flagg = 1
 where dim.rapport_periode <= (select periode from siste_periode)
 and dim.rapport_periode > (select periode - 500 from siste_periode)
+-- Filtrerer for kun rectype 2: VIRKSOMHET (B-nummer), tilsvarende offisiell sykefraværsstatistikk
+and fak.rectype = 2
 group by
     orgnr,
     arstall,
@@ -36,8 +38,8 @@ sykefravar_statistikk_virksomhet as (
       orgnr,
       arstall,
       kvartal,
-      sum(taptedv) taptedv, -- ROUND her?
-      sum(muligedv) muligedv, -- ROUND her?
+      sum(taptedv) taptedv,
+      sum(muligedv) muligedv,
       sum(taptedv_gs) taptedv_gs
   from sykefravar_statistikk_virksomhet_per_varighet
   group by
@@ -70,7 +72,7 @@ tapte_dagsverk_per_varighet_pivotert as (
 
 ),
 
-final as (
+sykefravar_statistikk_virksomhet_med_varighet as (
   select
     s.orgnr,
     s.arstall,
@@ -79,16 +81,34 @@ final as (
     s.taptedv,
     s.muligedv,
     s.taptedv_gs,
-    round(td.varighet_A, 1) as varighet_A,
-    round(td.varighet_B, 1) as varighet_B,
-    round(td.varighet_C, 1) as varighet_C,
-    round(td.varighet_D, 1) as varighet_D,
-    round(td.varighet_E, 1) as varighet_E,
-    round(td.varighet_F, 1) as varighet_F
+    td.varighet_A as varighet_A,
+    td.varighet_B as varighet_B,
+    td.varighet_C as varighet_C,
+    td.varighet_D as varighet_D,
+    td.varighet_E as varighet_E,
+    td.varighet_F as varighet_F
   from sykefravar_statistikk_virksomhet s
   left join tapte_dagsverk_per_varighet_pivotert td on
     s.orgnr=td.orgnr and s.arstall=td.arstall and s.kvartal=td.kvartal
 
+),
+
+final as (
+  select
+    orgnr,
+    arstall,
+    kvartal,
+    prosent,
+    taptedv,
+    muligedv,
+    taptedv_gs,
+    varighet_A,
+    varighet_B,
+    varighet_C,
+    varighet_D,
+    varighet_E,
+    varighet_F
+  from sykefravar_statistikk_virksomhet_med_varighet
 )
 
 select * from final

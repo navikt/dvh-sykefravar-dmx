@@ -13,17 +13,18 @@ sykefravar_statistikk_sektor as (
     sektor,
     arstall,
     kvartal,
-    round( sum(taptedv)/sum(muligedv) * 100, 1) as prosent,
     sum(taptedv) taptedv,
     sum(muligedv) muligedv,
     sum(antpers) antpers
-from {{ source('dt_p', 'fak_ia_sykefravar') }} fak
+from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.pk_dim_versjon = fak.fk_dim_versjon and
     dim.tabell_navn = 'FAK_IA_SYKEFRAVAR'
     and dim.offentlig_flagg = 1
 where dim.rapport_periode <= (select periode from siste_periode)
 and dim.rapport_periode > (select periode - 500 from siste_periode)
+-- Filtrerer for kun rectype 2: VIRKSOMHET (B-nummer), tilsvarende offisiell sykefraværsstatistikk
+and fak.rectype = 2
 group by
     sektor,
     arstall,
@@ -35,7 +36,7 @@ final as (
     sektor,
     arstall,
     kvartal,
-    prosent,
+    round(taptedv/muligedv * 100, 1) as prosent,
     taptedv,
     muligedv,
     antpers
