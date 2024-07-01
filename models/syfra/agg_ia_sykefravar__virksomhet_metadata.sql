@@ -1,3 +1,6 @@
+/********************************************************
+View til Team PIA
+*********************************************************/
 with siste_periode as (
   select max(b.rapport_periode) periode
   from {{ source('dt_kodeverk', 'dim_versjon') }}  b
