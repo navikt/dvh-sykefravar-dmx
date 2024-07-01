@@ -15,6 +15,7 @@ sykefravar_statistikk as (
     kvartal,
     sektor,
     replace(naring_primar_kode, '.' , '') as primar_naring_kode,
+    rectype,
     case
         when kvartal = 1 then to_date(arstall || '0331', 'YYYYMMDD')
         when kvartal = 2 then to_date(arstall || '0630', 'YYYYMMDD')
@@ -38,7 +39,8 @@ sykefravar_statistikk_virksomhet_metadata as (
     kvartal,
     sektor,
     gruppe3_kode as primar_naring,
-    primar_naring_kode
+    primar_naring_kode,
+    rectype
   from sykefravar_statistikk
   left join dt_p.dim_naering nar on
     nar.naering_kode = primar_naring_kode
@@ -53,7 +55,8 @@ final as (
     kvartal,
     sektor,
     primar_naring,
-    primar_naring_kode
+    primar_naring_kode,
+    rectype
   from sykefravar_statistikk_virksomhet_metadata
 )
 

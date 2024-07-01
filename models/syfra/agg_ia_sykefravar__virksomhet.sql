@@ -16,7 +16,8 @@ sykefravar_statistikk_virksomhet_per_varighet as (
     varighet,
     sum(taptedv) taptedv,
     sum(muligedv) muligedv,
-    sum(taptedv_gs) taptedv_gs
+    sum(taptedv_gs) taptedv_gs,
+    rectype
 from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.pk_dim_versjon = fak.fk_dim_versjon and
@@ -24,13 +25,12 @@ join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     and dim.offentlig_flagg = 1
 where dim.rapport_periode <= (select periode from siste_periode)
 and dim.rapport_periode > (select periode - 500 from siste_periode)
--- Filtrerer for kun rectype 2: VIRKSOMHET (B-nummer), tilsvarende offisiell sykefraværsstatistikk
-and fak.rectype = 2
 group by
     orgnr,
     arstall,
     kvartal,
-    varighet
+    varighet,
+    rectype
 ),
 
 sykefravar_statistikk_virksomhet as (
@@ -40,12 +40,14 @@ sykefravar_statistikk_virksomhet as (
       kvartal,
       sum(taptedv) taptedv,
       sum(muligedv) muligedv,
-      sum(taptedv_gs) taptedv_gs
+      sum(taptedv_gs) taptedv_gs,
+      rectype
   from sykefravar_statistikk_virksomhet_per_varighet
   group by
     orgnr,
     arstall,
-    kvartal
+    kvartal,
+    rectype
 ),
 
 tapte_dagsverk_per_varighet_pivotert as (
@@ -77,10 +79,11 @@ sykefravar_statistikk_virksomhet_med_varighet as (
     s.orgnr,
     s.arstall,
     s.kvartal,
-    round((s.taptedv/s.muligedv) * 100, 1) as prosent,
+    round((s.taptedv/NULLIF(s.muligedv, 0)) * 100, 1) as prosent,
     s.taptedv,
     s.muligedv,
     s.taptedv_gs,
+    s.rectype as rectype,
     td.varighet_A as varighet_A,
     td.varighet_B as varighet_B,
     td.varighet_C as varighet_C,
@@ -101,6 +104,7 @@ final as (
     prosent,
     taptedv,
     muligedv,
+    rectype,
     taptedv_gs,
     varighet_A,
     varighet_B,
