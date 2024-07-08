@@ -17,7 +17,7 @@ with siste_periode as (
 
 sykefravar_statistikk as (
   select
-    orgnr,
+    distinct orgnr,
     arstall,
     kvartal,
     sektor,
