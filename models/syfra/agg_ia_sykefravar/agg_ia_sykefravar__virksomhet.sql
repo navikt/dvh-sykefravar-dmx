@@ -1,6 +1,10 @@
 /********************************************************
 View til Team PIA
 *********************************************************/
+{{ config(
+    post_hook= ["grant READ ON {{this}} to DVH_SYK_DBT"]
+)}}
+
 with siste_periode as (
   select max(b.rapport_periode) periode
   from {{ source('dt_kodeverk', 'dim_versjon') }}  b
