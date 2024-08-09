@@ -1,11 +1,103 @@
-catversion:  2
-
+catversion: 2
 models:
   - name: fak_dialogmote
-    description: "#NAVN Faktatabell for dialogmøter. #INNHOLD Inneholder innformasjon om bl.a. behov, avholdte dialogmøter, unntak og div flagg. Én rad per sykefraværtstilfelle. Sluttprodukt for rapportering i BO"
+    description: "#NAVN Faktatabell for dialogmøter. #INNHOLD Inneholder
+      innformasjon om bl.a. behov, avholdte dialogmøter, unntak og div flagg. Én
+      rad per sykefraværtstilfelle. Sluttprodukt for rapportering i BO"
+    columns:
+      - name: fk_person1
+        description: "#NAVN fk_person1 #INNHOLD unik pseudonymiseringsnøkkel for person"
+        data_type: number
+      - name: tilfelle_startdato
+        data_type: date
+        description: "#NAVN tilfelle_startdato #INNHOLD startdato for sykefraværstilfellet"
+      - name: virksomhetsnr
+        data_type: varchar2
+        description: "#NAVN virksomhetsnr #INNHOLD virksomhetsnummer"
+      - name: dm2_innen_26_uker_flagg
+        data_type: number
+        description: "#NAVN dm2_innen_26_uker_flagg #INNHOLD flagg for om dialogmøtet har blitt holdt før 26 uker etter sykefraværstilfellestart"
+      - name: behov_meldt_dato
+        data_type: timestamp(6)
+        description: "#NAVN behov_meldt_dato #INNHOLD dato for når behov for dialogmøte ble meldt"
+      - name: behov_sykmeldt
+        data_type: number
+        description: "#NAVN behov_sykmeldt #INNHOLD om den sykmeldte har meldt behov for dialogmøte, 1 eller 0"
+      - name: behov_arbeidsgiver
+        data_type: number
+        description: "#NAVN behov_arbeidsgiver #INNHOLD om arbeidsgiver har meldt behov for dialogmøte, 1 eller 0"
+      - name: dialogmote2_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote2_avholdt_dato #INNHOLD dato for når dialogmøte 2 ble avholdt (ferdigstilt)"
+      - name: dialogmote3_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote3_avholdt_dato #INNHOLD dato for når dialogmøte 3 ble avholdt (ferdigstilt)"
+      - name: dialogmote4_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote4_avholdt_dato #INNHOLD dato for når dialogmøte 4 ble avholdt (ferdigstilt)"
+      - name: dialogmote5_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote5_avholdt_dato #INNHOLD dato for når dialogmøte 5 ble avholdt (ferdigstilt)"
+      - name: dialogmote6_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote6_avholdt_dato #INNHOLD dato for når dialogmøte 6 ble avholdt (ferdigstilt)"
+      - name: dialogmote7_avholdt_dato
+        data_type: timestamp(6)
+        description: "#NAVN dialogmote7_avholdt_dato #INNHOLD dato for når dialogmøte 7 ble avholdt (ferdigstilt)"
+      - name: unntak_dato
+        data_type: timestamp(6)
+        description: "#NAVN unntak_dato #INNHOLD dato for når unntak på dialogmøte ble satt"
+      - name: unntakarsak_modia
+        data_type: varchar2
+        description: "#NAVN unntakarsak_modia #INNHOLD årsak til at unntak ble satt på dialogmøte"
+      - name: tilfelle_26uker_mnd_startdato
+        data_type: date
+        description: "#NAVN tilfelle_26uker_mnd_startdato #INNHOLD dato 26 uker etter sykefraværstilfellestart"
+      - name: fk_dim_organisasjon
+        data_type: number
+        description: "#NAVN fk_dim_organisasjon #INNHOLD fremmednøkkel til dim_organisasjon"
+      - name: fk_dim_tid__behov_meldt
+        data_type: number
+        description: "#NAVN fk_dim_tid__behov_meldt #INNHOLD fremmednøkkel til dim_tid for behov meldt-dato"
+      - name: fk_dim_tid__tilfelle_startdato
+        data_type: number
+        description: "#NAVN fk_dim_tid__tilfelle_startdato #INNHOLD fremmednøkkel til dim_tid for sykefraværstilfellestart-dato"
+      - name: fk_dim_tid__dm2_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm2_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 2-avholdtdato"
+      - name: fk_dim_tid__dm3_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm3_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 3-avholdtdato"
+      - name: fk_dim_tid__dm4_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm4_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 4-avholdtdato"
+      - name: fk_dim_tid__dm5_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm5_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 5-avholdtdato"
+      - name: fk_dim_tid__dm6_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm6_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 6-avholdtdato"
+      - name: fk_dim_tid__dm7_avholdt_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__dm7_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 7-avholdtdato"
+      - name: fk_dim_tid__unntak_dato
+        data_type: number
+        description: "#NAVN fk_dim_tid__unntak_dato #INNHOLD fremmednøkkel til dim_tid for dato da unntak ble satt "
+      - name: fk_dim_alder
+        data_type: number
+        description: "#NAVN fk_dim_alder #INNHOLD fremmednøkkel til dim_alder"
+      - name: fk_dim_kjonn
+        data_type: number
+        description: "#NAVN fk_dim_kjonn #INNHOLD fremmednøkkel til dim_kjonn"
+      - name: fk_dim_naering
+        data_type: number
+        description: "#NAVN fk_dim_naering #INNHOLD fremmednøkkel til dim_naering"
+      - name: region_oppf_enhet_vviken_flagg
+        data_type: number
+        description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
+
   - name: fak_syfo_aktivitetskrav_mnd_dbt
     description: final table to BO
     config:
       meta:
         surrogate_key: true
-
