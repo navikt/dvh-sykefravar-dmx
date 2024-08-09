@@ -1,8 +1,11 @@
 catversion:  2
 
 models:
+  - name: fak_dialogmote
+    description: "#NAVN Faktatabell for dialogmøter. #INNHOLD Inneholder innformasjon om bl.a. behov, avholdte dialogmøter, unntak og div flagg. Én rad per sykefraværtstilfelle. Sluttprodukt for rapportering i BO"
   - name: fak_syfo_aktivitetskrav_mnd_dbt
     description: final table to BO
     config:
       meta:
         surrogate_key: true
+
