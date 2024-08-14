@@ -45,5 +45,3 @@ dmx_poc:
       service: dwh_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
       threads: 10
-config:
-  send_anonymous_usage_stats: False

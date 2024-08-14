@@ -12,5 +12,3 @@ dmx_poc:
       service: "{{env_var('DBT_ORCL_SERVICE')}}"
       schema: "{{env_var('DBT_ORCL_SCHEMA')}}"
       threads: 10
-config:
-  send_anonymous_usage_stats: False
