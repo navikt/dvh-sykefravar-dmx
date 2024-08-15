@@ -24,6 +24,7 @@ sykefravar_statistikk_virksomhet_per_varighet as (
     sum(taptedv) taptedv,
     sum(muligedv) muligedv,
     sum(taptedv_gs) taptedv_gs,
+    sum(antpers) antpers,
     rectype
 from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
@@ -48,6 +49,7 @@ sykefravar_statistikk_virksomhet as (
       sum(taptedv) taptedv,
       sum(muligedv) muligedv,
       sum(taptedv_gs) taptedv_gs,
+      sum(antpers) antpers,
       rectype
   from sykefravar_statistikk_virksomhet_per_varighet
   group by
@@ -90,6 +92,7 @@ sykefravar_statistikk_virksomhet_med_varighet as (
     s.taptedv,
     s.muligedv,
     s.taptedv_gs,
+    s.antpers as antpers,
     s.rectype as rectype,
     td.varighet_A as varighet_A,
     td.varighet_B as varighet_B,
@@ -111,6 +114,7 @@ final as (
     prosent,
     taptedv,
     muligedv,
+    antpers,
     rectype,
     taptedv_gs,
     varighet_A,
