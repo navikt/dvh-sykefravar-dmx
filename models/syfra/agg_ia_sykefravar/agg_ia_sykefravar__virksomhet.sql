@@ -108,22 +108,38 @@ sykefravar_statistikk_virksomhet_med_varighet as (
 
 final as (
   select
-    orgnr,
-    arstall,
-    kvartal,
-    prosent,
-    taptedv,
-    muligedv,
-    antpers,
-    rectype,
-    taptedv_gs,
-    varighet_A,
-    varighet_B,
-    varighet_C,
-    varighet_D,
-    varighet_E,
-    varighet_F
+    cast(orgnr as varchar2(100)) as orgnr,
+    cast(arstall as number) as arstall,
+    cast(kvartal as number) as kvartal,
+    cast(round(taptedv/muligedv * 100, 1) as number)  as prosent,
+    cast(taptedv as number) as taptedv,
+    cast(muligedv as number) as muligedv,
+    cast(taptedv_gs as number) as taptedv_gs,
+    cast(varighet_A as number) as varighet_A,
+    cast(varighet_B as number) as varighet_B,
+    cast(varighet_C as number) as varighet_C,
+    cast(varighet_D as number) as varighet_D,
+    cast(varighet_E as number) as varighet_E,
+    cast(varighet_F as number) as varighet_F,
+    cast(antpers as number) as antpers,
+    cast(rectype as varchar2(100)) as rectype
   from sykefravar_statistikk_virksomhet_med_varighet
 )
 
-select * from final
+select
+  orgnr,
+  arstall,
+  kvartal,
+  prosent,
+  taptedv,
+  muligedv,
+  taptedv_gs,
+  varighet_A,
+  varighet_B,
+  varighet_C,
+  varighet_D,
+  varighet_E,
+  varighet_F,
+  antpers,
+  rectype
+from final

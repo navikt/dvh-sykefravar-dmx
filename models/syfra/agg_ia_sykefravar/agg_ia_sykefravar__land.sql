@@ -39,14 +39,22 @@ group by
 
 final as (
   select
-    land,
-    arstall,
-    kvartal,
-    round(taptedv/muligedv * 100, 1) as prosent,
-    taptedv,
-    muligedv,
-    antpers
+    cast(land as varchar2(100)) as land,
+    cast(arstall as number) as arstall,
+    cast(kvartal as number) as kvartal,
+    cast(round(taptedv/muligedv * 100, 1) as number) as prosent,
+    cast(taptedv as number) as taptedv,
+    cast(muligedv as number) as muligedv,
+    cast(antpers as number) as antpers
   from sykefravar_statistikk_land
 )
 
-select * from final
+select
+  land,
+  arstall,
+  kvartal,
+  prosent,
+  taptedv,
+  muligedv,
+  antpers
+from final

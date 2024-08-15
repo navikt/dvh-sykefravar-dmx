@@ -57,14 +57,22 @@ sykefravar_statistikk_virksomhet_metadata as (
 
 final as (
   select
-    orgnr,
-    arstall,
-    kvartal,
-    sektor,
-    primar_naring,
-    primar_naring_kode,
-    rectype
+    cast(orgnr as varchar2(100)) as orgnr,
+    cast(arstall as number) as arstall,
+    cast(kvartal as number) as kvartal,
+    cast(sektor as varchar2(100)) as sektor,
+    cast(primar_naring as varchar2(100)) as primar_naring,
+    cast(primar_naring_kode as varchar2(100)) as primar_naring_kode,
+    cast(rectype as varchar2(100)) as rectype
   from sykefravar_statistikk_virksomhet_metadata
 )
 
-select * from final
+select
+  orgnr,
+  arstall,
+  kvartal,
+  sektor,
+  primar_naring,
+  primar_naring_kode,
+  rectype
+from final
