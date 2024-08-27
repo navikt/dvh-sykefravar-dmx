@@ -25,13 +25,13 @@ models:
   - name: agg_ia_sykefravar__land
     description: Kvartalsvis sykefraværsstatistikk for hele Norge til Team PIA
   - name: agg_ia_sykefravar__naering
-    description: Kvartalsvis sykefraværsstatistikk per næring (kode på nivå 2 i SN2007, på 2 siffer)) til Team PIA
+    description: Kvartalsvis sykefraværsstatistikk per næring (kode på nivå 2 i SN2007, på 2 siffer) til Team PIA
   - name: agg_ia_sykefravar__naeringskode
     description: Kvartalsvis sykefraværsstatistikk per næringsundergruppe (kode på nivå 5 i SN2007, på 5 siffer) til Team PIA
   - name: agg_ia_sykefravar__sektor
     description: Kvartalsvis sykefraværsstatistikk per sektor til Team PIA
   - name: agg_ia_sykefravar__virksomhet
-    description: Kvartalsvis sykefraværsstatistikk per virksomhet (orgnr), både underenhet og overordnet enhet. Med gradering (og hvis mulig varighet) til Team PIA
+    description: Kvartalsvis sykefraværsstatistikk per virksomhet (orgnr), både underenhet og overordnet enhet. Med gradering og varighet til Team PIA
   - name: agg_ia_sykefravar__virksomhet_metadata
     description: Tilleggsinformasjon om virksomhet, som sektor, primærnæring og primærnæringsundergruppe til Team PIA
 
