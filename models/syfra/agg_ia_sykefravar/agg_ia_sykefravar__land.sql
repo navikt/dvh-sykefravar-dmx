@@ -37,8 +37,8 @@ join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.tabell_navn = 'FAK_IA_SYKEFRAVAR'
     and dim.offentlig_flagg = 1 -- siste versjon med status 'GODKJENT' etter tidspunkt for pre-/offentliggjøring får flagg 1, eldre tabeller etter rekjøringer får flagg 0
 where dim.rapport_periode = (select periode from siste_periode) --sjekker at siste periode er den samme som offentliggjort periode
---where dim.rapport_periode <= (select periode from siste_periode) --sjekker at siste periode ikke er større enn offentliggjort periode, vet henting av mer data tilbake i tid
--- and dim.rapport_periode > (select periode - 500 from siste_periode) --henter data fra fem år tilbake, ikke aktuelt per september 2024
+--where dim.rapport_periode <= (select periode from siste_periode) --sjekker at siste periode ikke er større enn offentliggjort periode, ved henting av mer data tilbake i tid
+ --and dim.rapport_periode > (select periode - 500 from siste_periode) --henter data fra fem år tilbake, ikke aktuelt per september 2024
 and fak.rectype = 2 -- Filtrerer for kun rectype 2: VIRKSOMHET (B-nummer), tilsvarende offisiell sykefraværsstatistikk
 group by
     arstall,
@@ -50,10 +50,10 @@ final as (
     cast(land as varchar2(100)) as land,
     cast(arstall as number(4,0)) as arstall, --ønsket som number av Team PIA
     cast(kvartal as number(1,0)) as kvartal, --ønsket som number av Team PIA
-    cast(round(taptedv/muligedv * 100, 1) as number(3,1)) as prosent, --ønsket med én desimal av Team PIA
-    cast(taptedv as number(12,6)) as taptedv,
-    cast(muligedv as number(13,6)) as muligedv,
-    cast(antpers as number(6,0)) as antpers
+    cast(round(taptedv/muligedv * 100, 1) as number(4,1)) as prosent, --ønsket med én desimal av Team PIA
+    cast(taptedv as number(20,6)) as taptedv,
+    cast(muligedv as number(20,6)) as muligedv,
+    cast(antpers as number(7,0)) as antpers
   from sykefravar_statistikk_land
 )
 

@@ -66,8 +66,8 @@ sykefravar_statistikk_virksomhet_metadata as (
 final as (
   select
     cast(orgnr as varchar2(100)) as orgnr,
-    cast(arstall as number) as arstall, --ønsket som number av Team PIA
-    cast(kvartal as number) as kvartal, --ønsket som number av Team PIA
+    cast(arstall as number(4)) as arstall, --ønsket som number av Team PIA
+    cast(kvartal as number(1)) as kvartal, --ønsket som number av Team PIA
     cast(sektor as varchar2(100)) as sektor,
     cast(primar_naring as varchar2(100)) as primar_naring,
     cast(primar_naring_kode as varchar2(100)) as primar_naring_kode,
