@@ -119,19 +119,19 @@ sykefravar_statistikk_naeringskode_med_varighet as (
 final as (
   select
     cast(naering_kode as varchar2(100)) as naering_kode,
-    cast(arstall as number) as arstall, --ønsket som number av Team PIA
-    cast(kvartal as number) as kvartal, --ønsket som number av Team PIA
-    cast(round(taptedv/muligedv * 100, 1) as number)  as prosent, --ønsket med én desimal av Team PIA
-    cast(taptedv as number) as taptedv,
-    cast(muligedv as number) as muligedv,
-    cast(taptedv_gs as number) as taptedv_gs,
-    cast(varighet_A as number) as varighet_A,
-    cast(varighet_B as number) as varighet_B,
-    cast(varighet_C as number) as varighet_C,
-    cast(varighet_D as number) as varighet_D,
-    cast(varighet_E as number) as varighet_E,
-    cast(varighet_F as number) as varighet_F,
-    cast(antpers as number) as antpers
+    cast(arstall as number(4)) as arstall, --ønsket som number av Team PIA
+    cast(kvartal as number(1)) as kvartal, --ønsket som number av Team PIA
+    cast(round(taptedv/muligedv * 100, 1) as number(4,1)) as prosent, --ønsket med én desimal av Team PIA
+    cast(taptedv as number(20,6)) as taptedv,
+    cast(muligedv as number(20,6)) as muligedv,
+    cast(taptedv_gs as number(20,6)) as taptedv_gs,
+    cast(varighet_A as number(20,6)) as varighet_A,
+    cast(varighet_B as number(20,6)) as varighet_B,
+    cast(varighet_C as number(20,6)) as varighet_C,
+    cast(varighet_D as number(20,6)) as varighet_D,
+    cast(varighet_E as number(20,6)) as varighet_E,
+    cast(varighet_F as number(20,6)) as varighet_F,
+    cast(antpers as number(7,0)) as antpers
   from sykefravar_statistikk_naeringskode_med_varighet
 
 )

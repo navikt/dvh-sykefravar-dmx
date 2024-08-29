@@ -49,12 +49,12 @@ group by
 final as (
   select
     cast(sektor as varchar2(100)) as sektor,
-    cast(arstall as number) as arstall, --ønsket som number av Team PIA
-    cast(kvartal as number) as kvartal, --ønsket som number av Team PIA
-    cast(round(taptedv/muligedv * 100, 1) as number) as prosent, --ønsket med én desimal av Team PIA
-    cast(taptedv as number) as taptedv,
-    cast(muligedv as number) as muligedv,
-    cast(antpers as number) as antpers
+    cast(arstall as number(4)) as arstall, --ønsket som number av Team PIA
+    cast(kvartal as number(1)) as kvartal, --ønsket som number av Team PIA
+    cast(round(taptedv/muligedv * 100, 1) as number(4,1)) as prosent, --ønsket med én desimal av Team PIA
+    cast(taptedv as number(20,6)) as taptedv,
+    cast(muligedv as number(20,6)) as muligedv,
+    cast(antpers as number(7,0)) as antpers
   from sykefravar_statistikk_sektor
 )
 
