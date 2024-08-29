@@ -1,10 +1,17 @@
 /********************************************************
 View til Team PIA
+Post hook for at viewene kan genereres fra Airflow
 *********************************************************/
 {{ config(
     post_hook= ["grant READ ON {{this}} to DVH_SYK_DBT"]
 )}}
 
+/* Henter siste offentliggjorte periode som har tilgjengeliggjorte data.
+Dersom data fra perioden ikke er offentlig enda, hentes ikke disse dataene.
+Publiseringsdatoer ligger i publiseringstabellen, og det gjøres en sjekk på om
+denne datoene har blitt passert ved generering av viewet.
+Egentlig tilstrekkelig å se på dim_versjon siden en Informatica-jobb sjekker mot
+publiseringstabellen for å sette offentlig_flagg, men lar det stå som sikkerhet.  */
 with siste_periode as (
   select max(b.rapport_periode) periode
   from {{ source('dt_kodeverk', 'dim_versjon') }}  b
@@ -15,6 +22,7 @@ with siste_periode as (
       b.tabell_navn = 'FAK_IA_SYKEFRAVAR'
 ),
 
+/* Sykefravær, kvartalsstatistikk for virksomhet, én rad per virksomhet og varighet*/
 sykefravar_statistikk_virksomhet_per_varighet as (
     select
     orgnr,
@@ -30,9 +38,10 @@ from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.pk_dim_versjon = fak.fk_dim_versjon and
     dim.tabell_navn = 'FAK_IA_SYKEFRAVAR'
-    and dim.offentlig_flagg = 1
-where dim.rapport_periode <= (select periode from siste_periode)
-and dim.rapport_periode > (select periode - 500 from siste_periode)
+    and dim.offentlig_flagg = 1 -- siste versjon med status 'GODKJENT' etter tidspunkt for pre-/offentliggjøring får flagg 1, eldre tabeller etter rekjøringer får flagg 0
+where dim.rapport_periode = (select periode from siste_periode) -- sjekker at siste periode er den samme som offentliggjort periode
+--where dim.rapport_periode <= (select periode from siste_periode) -- sjekker at siste periode ikke er større enn offentliggjort periode, vet henting av mer data tilbake i tid
+-- and dim.rapport_periode > (select periode - 500 from siste_periode) --henter data fra fem år tilbake, ikke aktuelt per september 2024
 group by
     orgnr,
     arstall,
@@ -41,6 +50,7 @@ group by
     rectype
 ),
 
+/* Sykefravær, kvartalsstatistikk for virksomhet, én rad per virksomhet*/
 sykefravar_statistikk_virksomhet as (
   select
       orgnr,
@@ -59,6 +69,8 @@ sykefravar_statistikk_virksomhet as (
     rectype
 ),
 
+/* Summerer tapte dagsverk per varighet som egne kolonner,
+slik at granulariteten havner på virksomhet, og ikke virksomhet og varighet */
 tapte_dagsverk_per_varighet_pivotert as (
   select * from (
     select
@@ -83,6 +95,8 @@ tapte_dagsverk_per_varighet_pivotert as (
 
 ),
 
+/* Joiner statistikk per virksomhet med aggregeringen på varighet
+for full statistikk */
 sykefravar_statistikk_virksomhet_med_varighet as (
   select
     s.orgnr,
@@ -109,9 +123,9 @@ sykefravar_statistikk_virksomhet_med_varighet as (
 final as (
   select
     cast(orgnr as varchar2(100)) as orgnr,
-    cast(arstall as number) as arstall,
-    cast(kvartal as number) as kvartal,
-    cast(round(taptedv/muligedv * 100, 1) as number)  as prosent,
+    cast(arstall as number) as arstall, --ønsket som number av Team PIA
+    cast(kvartal as number) as kvartal, --ønsket som number av Team PIA
+    cast(round(taptedv/muligedv * 100, 1) as number)  as prosent, --ønsket med én desimal av Team PIA
     cast(taptedv as number) as taptedv,
     cast(muligedv as number) as muligedv,
     cast(taptedv_gs as number) as taptedv_gs,
