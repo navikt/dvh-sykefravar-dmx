@@ -28,7 +28,7 @@ agg_ia_sykefravar as (
     sum(antall_gs) antall_gs,
     sum(taptedv_gs) taptedv_gs,
     sum(antpers) antpers
-from {{ source('dt_p', 'fak_ia_sykefravar') }} fak
+from {{ source('syfra', 'fak_ia_sykefravar') }} fak
 join {{ source('dt_kodeverk', 'dim_versjon') }} dim on
     dim.pk_dim_versjon = fak.fk_dim_versjon and
     dim.tabell_navn = 'FAK_IA_SYKEFRAVAR'

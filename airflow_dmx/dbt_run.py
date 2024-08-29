@@ -29,6 +29,7 @@ def filter_logs(file_path: str) -> List[dict]:
       'Z021', #Info about warning in tests
       'Z022', #Info about failing tests
       'E040', #Total runtime
+      'Q035', #Nothing to do
     ]
 
     filtered_logs = []
