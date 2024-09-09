@@ -142,6 +142,7 @@ select
   prosent,
   taptedv,
   muligedv,
+  taptedv_gs,
   varighet_A,
   varighet_B,
   varighet_C,
