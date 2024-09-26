@@ -19,11 +19,22 @@ with src_utbetaling as (
     utbetaling.kafka_offset,
     utbetaling.kafka_mottatt_dato,
     utbetaling.kildesystem,
-    utbetaling.lastet_dato as oppdatert_dato,
-    utbetaling.lastet_dato
+    sysdate as lastet_dato,
+    sysdate as oppdatert_dato
   from {{ source('sykp', 'raw_utbetaling') }} utbetaling
   where json_value(utbetaling.kafka_message,'$.event') = 'utbetaling_utbetalt'
   and kafka_mottatt_dato < trunc(sysdate)
+
+ {% if is_incremental() %}
+    and
+        not exists (
+        select 1
+        from {{ this }} old
+        where utbetaling.kafka_partisjon = old.kafka_partisjon
+          and utbetaling.kafka_offset = old.kafka_offset -- legger til rad dersom kombinasjonen av partisjon og offset ikke allerede finnes i datasettet
+      )
+  {% endif %}
+
 ),
 
 dvh_person_ident as (
@@ -48,20 +59,20 @@ utbetaling_med_fk_person1 as (
 
 final as (
   select
-    cast( utbetaling_id as varchar2(100) ) as utbetaling_id,
-    cast( pasient_fk_person1 as varchar2(100) ) as pasient_fk_person1,
-    cast( organisasjonsnummer as varchar2(100) ) as organisasjonsnummer,
+    cast( utbetaling_id as varchar2(100 char) ) as utbetaling_id,
+    cast( pasient_fk_person1 as number(38,0) ) as pasient_fk_person1,
+    cast( organisasjonsnummer as varchar2(9 char) ) as organisasjonsnummer,
     cast( forbrukteSykedager as number(3,0) ) as forbrukte_sykedager,
     cast( gjenstaendeSykedager as number(3,0) ) as gjenstaende_sykedager,
     cast( maksdato as date ) as maksdato,
-    cast( utbetaling_type as varchar2(100) ) as utbetaling_type,
-    cast( kafka_topic as varchar2(100) ) as kafka_topic,
-    cast( kafka_partisjon as number ) as kafka_partisjon,
-    cast( kafka_offset as number ) as kafka_offset,
+    cast( utbetaling_type as varchar2(100 char) ) as utbetaling_type,
+    cast( kafka_topic as varchar2(100 char) ) as kafka_topic,
+    cast( kafka_partisjon as number(38,0) ) as kafka_partisjon,
+    cast( kafka_offset as number(38,0) ) as kafka_offset,
     cast( kafka_mottatt_dato as date ) as kafka_mottatt_dato,
     cast( lastet_dato as date ) as lastet_dato,
     cast( oppdatert_dato as date ) as oppdatert_dato,
-    cast( kildesystem as varchar2(10) ) as kildesystem
+    cast( kildesystem as varchar2(10 char) ) as kildesystem
   from utbetaling_med_fk_person1
   )
   select * from final

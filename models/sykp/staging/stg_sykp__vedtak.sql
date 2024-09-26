@@ -92,16 +92,16 @@ stg_vedtak as (
 
 pre_final as (
   select
-    cast( pasient_fk_person1 as varchar2(100) ) as pasient_fk_person1,
-    cast( organisasjonsnummer as varchar2(100) ) as organisasjonsnummer,
+    cast( pasient_fk_person1 as number(38,0) ) as pasient_fk_person1,
+    cast( organisasjonsnummer as varchar2(9 char) ) as organisasjonsnummer,
     cast( soknad_fom_dato as date ) as soknad_fom_dato,
     cast( soknad_tom_dato as date ) as soknad_tom_dato,
     cast( soknad_id as varchar2(100) ) as soknad_id,
     cast( sykmelding_id as varchar2(100) ) as sykmelding_id,
     cast( utbetaling_id as varchar2(100) ) as utbetaling_id,
     cast( kafka_topic as varchar2(100) ) as kafka_topic,
-    cast( kafka_partisjon as number ) as kafka_partisjon,
-    cast( kafka_offset as number ) as kafka_offset,
+    cast( kafka_partisjon as number(38,0) ) as kafka_partisjon,
+    cast( kafka_offset as number(38,0) ) as kafka_offset,
     cast( kafka_mottatt_dato as date ) as kafka_mottatt_dato,
     cast( lastet_dato as date ) as lastet_dato,
     cast( oppdatert_dato as date ) as oppdatert_dato,
