@@ -72,7 +72,7 @@ SELECT
     dim_geografi.fylke_navn as bosted_fylke,
     dim_geografi.kommune_navn as bosted_kommune,
     dim_alder.TI_AAR_GRUPPE_BESK as alder_interval,
-    naering.gruppe1_besk_lang as naering,
+    naering.gruppe5_besk_lang as naering,
     CASE
         WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
@@ -115,7 +115,7 @@ GROUP BY
     dim_geografi.fylke_navn,
     dim_geografi.kommune_navn,
     dim_alder.TI_AAR_GRUPPE_BESK,
-    naering.gruppe1_besk_lang,
+    naering.gruppe5_besk_lang,
     CASE
         WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
