@@ -1,6 +1,6 @@
- /* Daglig last av sykepengeutbetalingar.
--- Events som tas med: utbetaling_utbetalt.
--- Følgjande events blir dermed ikkje med: utbetaling_uten_utbetaling og utbetaling_annullert.
+ /* Daglig last av annulleringar av sykepengeutbetalingar.
+-- Events som tas med: utbetaling_annullert.
+-- Følgjande events blir dermed ikkje med: utbetaling_uten_utbetaling og utbetaling_utbetalt.
 -- Nye rader legges til med 'append'.
 -- Kjøres med flagg --full-refresh for å opprette tabellen på nytt. */
 
