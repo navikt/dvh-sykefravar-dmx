@@ -18,7 +18,7 @@ with src_annullering as (
     sysdate as lastet_dato,
     sysdate as oppdatert_dato
   from {{ source('sykp', 'raw_utbetaling') }} annullering
-  where json_value(utbetaling.kafka_message,'$.event') = 'utbetaling_annullert'
+  where json_value(annullering.kafka_message,'$.event') = 'utbetaling_annullert'
   and kafka_mottatt_dato < trunc(sysdate)
 
  {% if is_incremental() %}
@@ -26,8 +26,8 @@ with src_annullering as (
         not exists (
         select 1
         from {{ this }} old
-        where utbetaling.kafka_partisjon = old.kafka_partisjon
-          and utbetaling.kafka_offset = old.kafka_offset -- legger til rad dersom kombinasjonen av partisjon og offset ikke allerede finnes i datasettet
+        where annullering.kafka_partisjon = old.kafka_partisjon
+          and annullering.kafka_offset = old.kafka_offset -- legger til rad dersom kombinasjonen av partisjon og offset ikke allerede finnes i datasettet
       )
   {% endif %}
 
