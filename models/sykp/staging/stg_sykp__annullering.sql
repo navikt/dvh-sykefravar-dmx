@@ -6,10 +6,15 @@
 
 with src_annullering as (
   select
-    json_value(annullering.kafka_message,'$.event') as utbetaling_event,
-    JSON_VALUE(annullering.KAFKA_MESSAGE, '$.utbetalingId') as utbetaling_id,
+
+    json_value(annullering.KAFKA_MESSAGE,'$.utbetalingId') as utbetaling_id,
+    json_value(annullering.kafka_message,'$.organisasjonsnummer') as organisasjonsnummer,
     json_value(annullering.kafka_message,'$.fødselsnummer') as fnr,
-    JSON_VALUE(annullering.kafka_message,'$.organisasjonsnummer') as organisasjonsnummer,
+    json_value(annullering.kafka_message,'$.fom') as fom,
+    json_value(annullering.kafka_message,'$.tom') as tom,
+    json_value(annullering.kafka_message,'$.arbeidsgiverFagsystemId') as arbeidsgiver_fagsystem_id,
+    json_value(annullering.kafka_message,'$.personFagsystemId') as person_fagsystem_id,
+    json_value(annullering.kafka_message,'$.event') as utbetaling_event,
     annullering.kafka_topic,
     annullering.kafka_partisjon,
     annullering.kafka_offset,
@@ -56,8 +61,13 @@ annullering_med_fk_person1 as (
 final as (
   select
     cast( utbetaling_id as varchar2(100 char) ) as utbetaling_id,
-    cast( pasient_fk_person1 as number(38,0) ) as pasient_fk_person1,
     cast( organisasjonsnummer as varchar2(9 char) ) as organisasjonsnummer,
+    cast( pasient_fk_person1 as number(38,0) ) as pasient_fk_person1,
+    cast( to_date(fom, 'YYYY-MM-DD') as date ) as fom,
+    cast( to_date(tom, 'YYYY-MM-DD') as date ) as tom,
+    cast( arbeidsgiver_fagsystem_id as varchar2(50 char) ) as arbeidsgiver_fagsystem_id,
+    cast( person_fagsystem_id as varchar2(50 char) ) as person_fagsystem_id,
+    cast( utbetaling_event as varchar2(100 char ) ) as utbetaling_event,
     cast( kafka_topic as varchar2(100 char) ) as kafka_topic,
     cast( kafka_partisjon as number(38,0) ) as kafka_partisjon,
     cast( kafka_offset as number(38,0) ) as kafka_offset,
