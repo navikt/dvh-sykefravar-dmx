@@ -283,4 +283,75 @@ models:
           - type: not_null
 
 
+  - name: stg_sykp__annullering
+    config:
+      materialized: incremental
+      incremental_strategy: append
+      on_schema_change: append_new_columns
+      contract:
+        enforced: true
+    columns:
+      - name: utbetaling_id
+        description: utbetalings-id
+        data_type: varchar2(100)
+      - name: organisasjonsnummer
+        description: organisasjonsnummer til arbeidsgiveren til den sykmeldte
+        data_type: varchar2(9 char)
+      - name: pasient_fk_person1
+        description: fk_person1 til den sykmeldte
+        data_type: number(38,0)
+        constraints:
+          - type: not_null
+      - name: fom
+        description: Sykepenge-utbetalingsdag fra-og-med for utbetalingen som blir annullert
+        data_type: date
+      - name: tom
+        description: Sykepenge-utbetalingsdag til-og-med for utbetalingen som blir annullert
+        data_type: date
+      - name: arbeidsgiver_fagsystem_id
+        description: Fagsystem-id for annullert utbetaling til arbeidsgiver
+        data_type: varchar2(50 char)
+      - name: person_fagsystem_id
+        description: Fagsystem-id for annullert utbetaling til person/arbeidstaker
+        data_type: varchar2(50 char)
+      - name: utbetaling_event
+        description: Utbetalings-hendelse. Denne skal alltid vere 'utbetaling_annullert'
+        data_type: varchar2(100 char)
+      - name: kafka_topic
+        description: kafka-topic det har blitt lastet fra
+        data_type: varchar2(100 char)
+        constraints:
+          - type: not_null
+      - name: kafka_partisjon
+        description: Kafka-partisjonen meldingen ble konsumert fra
+        data_type: number(38,0)
+        constraints:
+          - type: not_null
+      - name: kafka_offset
+        description: Offset for meldingen i Kafka-partisjonen
+        data_type: number(38,0)
+        constraints:
+          - type: not_null
+      - name: kafka_mottatt_dato
+        description: Datoen da meldingen ble mottatt av systemet
+        data_type: date
+        constraints:
+          - type: not_null
+      - name: oppdatert_dato
+        description: Datoen da raden sist ble oppdatert
+        data_type: date
+        constraints:
+          - type: not_null
+      - name: lastet_dato
+        description: Datoen da raden ble lagt inn i tabellen
+        data_type: date
+        constraints:
+          - type: not_null
+      - name: kildesystem
+        description: Kildesystemet dataene kommer fra
+        data_type: varchar2(10)
+        constraints:
+          - type: not_null
+
+
 
