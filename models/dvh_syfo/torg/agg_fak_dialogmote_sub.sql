@@ -114,7 +114,7 @@ GROUP BY
     dim_org.nav_enhet_navn,
     dim_geografi.fylke_navn,
     dim_geografi.kommune_navn,
-    dim_alder.TI_AAR_GRUPPE_BESK,
+    dim_alder.ungdomssatsing,
     naering.gruppe5_besk_lang,
     CASE
         WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
