@@ -21,7 +21,7 @@ with src_utbetaling as (
     utbetaling.kildesystem,
     sysdate as lastet_dato,
     sysdate as oppdatert_dato
-  from {{ source('sykp', 'raw_utbetaling') }} utbetaling
+  from {{ source('dvh_sykp', 'raw_utbetaling') }} utbetaling
   where json_value(utbetaling.kafka_message,'$.event') = 'utbetaling_utbetalt'
   and kafka_mottatt_dato < trunc(sysdate)
 

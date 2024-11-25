@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: sykp
+  - name: dvh_sykp
     tags: ['sykp']
     schema: dvh_sykp
     tables:
@@ -16,5 +16,11 @@ sources:
       - name: fk_sporbar_annullering
       - name: raw_vedtak
         description: Sykepengevedtak fra vedtaksløsningen for sykepenger
+        freshness:
+          warn_after: {count: 1, period: day}
+        loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
       - name: raw_utbetaling
         description: Sykepengeutbetalinger fra vedtaksløsningen for sykepenger
+        freshness:
+          warn_after: {count: 1, period: day}
+        loaded_at_field: "CAST(lastet_dato AS TIMESTAMP)"
