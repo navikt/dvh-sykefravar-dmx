@@ -22,7 +22,7 @@ with src_annullering as (
     annullering.kildesystem,
     sysdate as lastet_dato,
     sysdate as oppdatert_dato
-  from {{ source('sykp', 'raw_utbetaling') }} annullering
+  from {{ source('dvh_sykp', 'raw_utbetaling') }} annullering
   where json_value(annullering.kafka_message,'$.event') = 'utbetaling_annullert'
   and kafka_mottatt_dato < trunc(sysdate)
 

@@ -17,7 +17,7 @@ with src_vedtak as (
     vedtak.kildesystem,
     sysdate as oppdatert_dato,
     sysdate as lastet_dato
-  from {{ source('sykp', 'raw_vedtak') }} vedtak
+  from {{ source('dvh_sykp', 'raw_vedtak') }} vedtak
   where kafka_mottatt_dato < trunc(sysdate)
   and nvl(json_value(vedtak.kafka_message,'$.event'), 'vedtak_ok') <> 'vedtak_annullert'
 

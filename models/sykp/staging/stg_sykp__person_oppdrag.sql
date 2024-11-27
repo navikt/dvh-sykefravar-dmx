@@ -22,7 +22,7 @@ with src_person_oppdrag as (
     utbetaling.kafka_offset,
     sysdate as oppdatert_dato,
     sysdate as lastet_dato
-  from {{ source('sykp', 'raw_utbetaling') }} utbetaling
+  from {{ source('dvh_sykp', 'raw_utbetaling') }} utbetaling
     CROSS JOIN JSON_TABLE(utbetaling.kafka_message, '$.personOppdrag.utbetalingslinjer[*]'
           COLUMNS (totalbelop        NUMBER(10,0) PATH '$.totalbeløp',
                    stonadsdager      NUMBER(3,0)  PATH '$.stønadsdager',
