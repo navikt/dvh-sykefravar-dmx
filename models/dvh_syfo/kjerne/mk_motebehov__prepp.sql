@@ -3,7 +3,7 @@ WITH motebehov AS (
         motebehov.*,
         case when fk_person1_sm = fk_person1_opprettet_av then 1 else 0 end as behov_sykm,
         case when fk_person1_sm != fk_person1_opprettet_av then 1 else 0 end as behov_arbeidsg
-    FROM {{ ref("fk_motebehov")}} motebehov
+    FROM {{ ref("fk_modia__motebehov")}} motebehov
     where  motebehov.skjematype in  ('MELD_BEHOV', 'SVAR_BEHOV') and --ikke skjematype lik null (der hvor det allerede er kalt inn)
            motebehov.har_motebehov = 1--bare de som har meldt at de har behov
 )
