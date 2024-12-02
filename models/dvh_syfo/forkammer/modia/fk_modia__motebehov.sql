@@ -1,5 +1,5 @@
 WITH motebehov AS (
-  SELECT * FROM {{ source('modia', 'fk_motebehov_sky') }}
+  SELECT * FROM {{ source('modia', 'fk_motebehov') }}
 )
 ,dvh_person_ident AS (
     SELECT * FROM {{ref('felles_dt_person__ident_off_id_til_fk_person1') }}

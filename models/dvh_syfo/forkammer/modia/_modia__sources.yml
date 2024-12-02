@@ -12,7 +12,7 @@ sources:
     - name: raw_aktivitetskrav
     - name: fk_syfo_person_oversikt_status__snapshot
     - name: aktivitetskrav_key
-    - name: fk_motebehov_sky
+    - name: fk_motebehov
       description: Møtebehov RAW fra sky
     - name: fk_syfo_person_oversikt_status
       description: Kandidater for dialogmøte med korrekte nav -enheter
