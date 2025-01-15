@@ -3,6 +3,19 @@
 with dialogmote_forkammer as
 (SELECT * FROM {{ref('fk_modia__dialogmote')}})
 
+-- Finn dialogmøter som er avholdt av ROE Vestviken
+, dialogmote_roe as (
+  select d.fk_person1,
+         d.hendelse,
+         cast(d.dialogmote_tidspunkt as date) as hendelse_dato,
+         1 as roe_flagg
+      --   case when nav_ident in ('B160279', 'G154329', 'L154047', 'N146924') then 1 else 0 end
+  from dialogmote_forkammer d
+  join dim_syfo_reg_oppf_enhet_ident r on r.nav_ident = d.nav_ident
+  where d.hendelse = 'FERDIGSTILT'
+  and trunc(d.dialogmote_tidspunkt) between r.gyldig_fom_dato and r.gyldig_tom_dato
+)
+
 , dialogmote_patch as (
   select dialogmote_forkammer.*,
   case
@@ -28,6 +41,13 @@ with dialogmote_forkammer as
   from dialogmote_forkammer
 )
 
+dm_med_roe_flagg as (
+  select p.*
+  r.roe_flagg
+  from dialogmote_patch p
+  left outer join dialogmote_roe r on r.fk_person1 = p.fk_person1 and r.hendelse = d.hendelse and r.hendelse_dato = cast(d.dialogmote_tidspunkt as date)
+)
+
 , final AS (
   SELECT
     kilde_uuid,
@@ -42,13 +62,14 @@ with dialogmote_forkammer as
     arbeidstaker_flagg,
     arbeidsgiver_flagg,
     sykmelder_flagg,
+    roe_flagg,
     kafka_topic,
     kafka_partisjon,
     kafka_offset,
     kafka_mottatt_dato,
     lastet_dato,
     kildesystem
-  FROM dialogmote_patch
+  FROM dm_med_roe_flagg
 )
 
 SELECT * FROM final
