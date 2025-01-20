@@ -85,7 +85,6 @@ NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Sk
     ,tilfelle_startdato
 ),
 
--- Left outer join mot dialogmote_roe for å få satt region_oppf_enhet_vviken_flagg
 final as (
     SELECT
       pivotert.fk_person1,
