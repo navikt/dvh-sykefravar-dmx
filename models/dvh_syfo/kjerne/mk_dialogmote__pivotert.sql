@@ -36,14 +36,21 @@ unntakarsak_modia as (
     group by fk_person1, tilfelle_startdato
 )
 
-/* Flagg for regional oppfølgingsenhet Vest-Viken for gitte nav-identer.
-Dersom en hendelse er registrert med en identene under, skal flagget settes til 1.
-Velger max-verdi for at alle rader tilknyttet et tilfelle skal indikere at minst ett av hendelsene har kommet inn med denne identen.
-Dersom ikke max-verdi settes, vil pivoteringen resultere i flere rader per tilfelle der det er ulike identer.  */
-,not_null_region_oppf_enhet_vviken_flagg as (
-    select fk_person1, tilfelle_startdato, max(case when nav_ident in ('B160279', 'G154329', 'L154047', 'N146924') then 1 else 0 end) as region_oppf_enhet_vviken_flagg
-    from hendelser
-    group by fk_person1, tilfelle_startdato
+/* Finner dialogmøter som er avholdt av Regional Oppfølgingsenhet (ROE) Vest-Viken.
+Nav-identer som jobber for ROE Vest-Viken ligger i tabellen dim_syfo_reg_oppf_enhet_ident.
+Dersom en 'FERDIGSTILT'-hendelse er registrert med en av disse identene i tidsrommet identen er gyldig, blir region_oppf_enhet_vviken_flagg satt til 1.
+NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Skal berre hente eitt tidspunkt per tilfelle, */
+, dialogmote_roe as (
+  select h.fk_person1,
+         h.tilfelle_startdato,
+         min(h.dialogmote_tidspunkt) as dialogmote_tidspunkt,
+         1 as region_oppf_enhet_vviken_flagg
+  from hendelser h
+  join dim_syfo_reg_oppf_enhet_ident r on r.nav_ident = h.nav_ident
+  where h.hendelse = 'FERDIGSTILT'
+  and trunc(h.dialogmote_tidspunkt) between r.gyldig_fra_dato and r.gyldig_til_dato
+  group by h.fk_person1,
+           h.tilfelle_startdato
 )
 
 ,pivotert AS (
@@ -54,12 +61,12 @@ Dersom ikke max-verdi settes, vil pivoteringen resultere i flere rader per tilfe
       ,CONCAT(a.hendelse, a.ROW_NUMBER) AS hendelse1
       ,a.hendelse_tidspunkt1
       ,b.virksomhetsnr
-      ,c.region_oppf_enhet_vviken_flagg
+      ,nvl(c.region_oppf_enhet_vviken_flagg,0) as region_oppf_enhet_vviken_flagg
     FROM hendelser a
     left join not_null_virksomhetsnr b on
       a.fk_person1=b.fk_person1 and a.tilfelle_startdato=b.tilfelle_startdato
-    left join not_null_region_oppf_enhet_vviken_flagg c on
-        a.fk_person1=c.fk_person1 and a.tilfelle_startdato=c.tilfelle_startdato
+    left join dialogmote_roe c on
+      a.fk_person1=c.fk_person1 and a.tilfelle_startdato=c.tilfelle_startdato
   )
   PIVOT(
     MAX(hendelse_tidspunkt1) FOR hendelse1 IN (
@@ -97,7 +104,6 @@ final as (
     left join unntakarsak_modia um on um.fk_person1 = pivotert.fk_person1
                                   and um.tilfelle_startdato = pivotert.tilfelle_startdato
                                   and um.hendelse_tidspunkt1 = pivotert.unntak
-
  )
 
 select * from final
