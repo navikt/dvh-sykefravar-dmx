@@ -103,43 +103,43 @@ models:
         description: "År for dialogmøtet"
         data_type: number
       - name: maaned
-        data_type: number
         description: "Måned for dialogmøtet"
-      - name: uke
-        data_type: varchar2
-        description: "Ukenummer for dialogmøtet"
-      - name: Enhet_fylke
-        data_type: varchar2
-        description: "Fylke for NAV-enhet"
-      - name: nav_enhet_navn
-        data_type: varchar2
-        description: "Navn på NAV-enhet"
-      - name: bosted_fylke
-        data_type: varchar2
-        description: "Fylke for bosted"
-      - name: bosted_kommune
-        data_type: varchar2
-        description: "Kommune for bosted"
-      - name: alder_intervall
-        data_type: varchar2
-        description: "Alder på den sykmeldte- oppgitt i intervaller"
-      - name: naering
-        data_type: varchar2
-        description: "Næring for den sykmeldte"
-      - name: kjonn
-        data_type: varchar2
-        description: "Kjønn på den sykmeldte"
-      - name: antall_dialogmoter2
         data_type: number
+      - name: uke
+        description: "Ukenummer for dialogmøtet"
+        data_type: varchar2
+      - name: Enhet_fylke
+        description: "Fylke for NAV-enhet"
+        data_type: varchar2
+      - name: nav_enhet_navn
+        description: "Navn på NAV-enhet"
+        data_type: varchar2
+      - name: bosted_fylke
+        description: "Fylke for bosted"
+        data_type: varchar2
+      - name: bosted_kommune
+        description: "Kommune for bosted"
+        data_type: varchar2
+      - name: alder_intervall
+        description: "Alder på den sykmeldte- oppgitt i intervaller"
+        data_type: varchar2
+      - name: naering
+        description: "Næring for den sykmeldte"
+        data_type: varchar2
+      - name: kjonn
+        description: "Kjønn på den sykmeldte"
+        data_type: varchar2
+      - name: antall_dialogmoter2
         description: "Antall dialogmøter - DM2"
+        data_type: number
       - name: antall_dialogmoter3
         data_type: number
         description: "Antall dialogmøter - DM3"
       - name: antall_unntak
-        data_type: number
         description: "Antall unntak"
+        data_type: number(38,0)
       - name: ant_dialogmote2_innen_26_uker
-        data_type: number
+        data_type: NUMBER
         description: "Antall dialogmøter avholdt innen 26 uker"
       - name: ant_dialogmote3_innen_39_uker
         data_type: number
