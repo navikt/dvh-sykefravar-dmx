@@ -96,6 +96,64 @@ models:
         data_type: number
         description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
 
+  - name: agg_fak_dialogmote_sub
+    description: "Faktatabell med oversikt over alle dialogmøter, tall per uke, måned og år. Inneholder også informasjon om unntak og behov meldt"
+    columns:
+      - name: aar
+        description: "År for dialogmøtet"
+        data_type: number
+      - name: maaned
+        data_type: number
+        description: "Måned for dialogmøtet"
+      - name: uke
+        data_type: varchar2
+        description: "Ukenummer for dialogmøtet"
+      - name: Enhet_fylke
+        data_type: varchar2
+        description: "Fylke for NAV-enhet"
+      - name: nav_enhet_navn
+        data_type: varchar2
+        description: "Navn på NAV-enhet"
+      - name: bosted_fylke
+        data_type: varchar2
+        description: "Fylke for bosted"
+      - name: bosted_kommune
+        data_type: varchar2
+        description: "Kommune for bosted"
+      - name: alder_intervall
+        data_type: varchar2
+        description: "Alder på den sykmeldte- oppgitt i intervaller"
+      - name: naering
+        data_type: varchar2
+        description: "Næring for den sykmeldte"
+      - name: kjonn
+        data_type: varchar2
+        description: "Kjønn på den sykmeldte"
+      - name: antall_dialogmoter2
+        data_type: number
+        description: "Antall dialogmøter - DM2"
+      - name: antall_dialogmoter3
+        data_type: number
+        description: "Antall dialogmøter - DM3"
+      - name: antall_unntak
+        data_type: number
+        description: "Antall unntak"
+      - name: ant_dialogmote2_innen_26_uker
+        data_type: number
+        description: "Antall dialogmøter avholdt innen 26 uker"
+      - name: ant_dialogmote3_innen_39_uker
+        data_type: number
+        description: "Antall dialogmøter avholdt innen 39 uker"
+      - name: ant_unntak_innen_26_uker
+        data_type: number
+        description: "Antall unntak innen 26 uker"
+      - name: antall_behov_meldt
+        data_type: number
+        description: "Antall behov meldt"
+      - name: antall_behov_meldt_innen_26_uker
+        data_type: number
+        description: "Antall behov meldt innen 26 uker"
+
   - name: fak_syfo_aktivitetskrav_mnd_dbt
     description: final table to BO
     config:
