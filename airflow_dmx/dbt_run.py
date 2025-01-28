@@ -1,4 +1,5 @@
 import subprocess
+import requests
 import os
 import time
 import json
@@ -6,6 +7,8 @@ import sys
 import logging
 from typing import List
 
+
+DBT_PROJECT = 'dmx_poc'
 
 def write_to_xcom_push_file(content: List[dict]):
     with open('/airflow/xcom/return.json', 'w') as xcom_file:
@@ -51,9 +54,26 @@ def set_secrets_as_dict_gcp() -> dict:
   return secrets
 
 mySecret = set_secrets_as_dict_gcp()
-
-
 os.environ.update(mySecret)
+
+
+def publish_docs():
+    # Connection informasjon for å pushe dbt docs
+    dbt_docs_url = f'{os.environ["DBT_DOCS_URL"]}{DBT_PROJECT}'
+    files = [
+        "target/manifest.json",
+        "target/catalog.json",
+        "target/index.html",
+    ]
+    multipart_form_data = {}
+    for file_path in files:
+        file_name = os.path.basename(file_path)
+        with open(file_path, "rb") as file:
+            file_contents = file.read()
+            multipart_form_data[file_name] = (file_name, file_contents)
+
+    res = requests.put(dbt_docs_url, files=multipart_form_data)
+    res.raise_for_status()
 
 
 if __name__ == "__main__":
@@ -94,6 +114,8 @@ if __name__ == "__main__":
                 ),
                 check=True, capture_output=True
             )
+            if "docs" in command:
+              publish_docs()
             logger.info(output.stdout.decode("utf-8"))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
