@@ -61,9 +61,9 @@ def publish_docs(my_path):
     # Connection informasjon for å pushe dbt docs
     dbt_docs_url = f'{os.environ["DBT_DOCS_URL"]}{DBT_PROJECT}'
     files = [
-        my_path + "target/manifest.json",
-        my_path + "target/catalog.json",
-        my_path + "target/index.html",
+        my_path + "/target/manifest.json",
+        my_path + "/target/catalog.json",
+        my_path + "/target/index.html",
     ]
     multipart_form_data = {}
     for file_path in files:
