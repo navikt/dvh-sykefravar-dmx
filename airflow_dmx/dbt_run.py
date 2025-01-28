@@ -57,13 +57,13 @@ mySecret = set_secrets_as_dict_gcp()
 os.environ.update(mySecret)
 
 
-def publish_docs():
+def publish_docs(my_path):
     # Connection informasjon for å pushe dbt docs
     dbt_docs_url = f'{os.environ["DBT_DOCS_URL"]}{DBT_PROJECT}'
     files = [
-        "target/manifest.json",
-        "target/catalog.json",
-        "target/index.html",
+        my_path + "target/manifest.json",
+        my_path + "target/catalog.json",
+        my_path + "target/index.html",
     ]
     multipart_form_data = {}
     for file_path in files:
@@ -115,7 +115,7 @@ if __name__ == "__main__":
                 check=True, capture_output=True
             )
             if "docs" in command:
-              publish_docs()
+              publish_docs(project_path)
             logger.info(output.stdout.decode("utf-8"))
             logger.debug(dbt_logg(project_path))
         except subprocess.CalledProcessError as err:
