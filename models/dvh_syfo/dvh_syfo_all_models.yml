@@ -139,7 +139,7 @@ models:
         description: "Antall unntak"
         type: number
       - name: ant_dialogmote2_innen_26_uker
-        type: NUMBER
+        type: number
         description: "Antall dialogmøter avholdt innen 26 uker"
       - name: ant_dialogmote3_innen_39_uker
         type: number
