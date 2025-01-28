@@ -130,11 +130,11 @@ models:
         description: "Kjønn på den sykmeldte"
         type: varchar2(1)
       - name: antall_dialogmoter2
-        description: "Antall dialogmøter - DM2"
+        description: "Antall dialogmøter 2 - DM2"
         type: number
       - name: antall_dialogmoter3
         type: number
-        description: "Antall dialogmøter - DM3"
+        description: "Antall dialogmøter 3 - DM3"
       - name: antall_unntak
         description: "Antall unntak"
         type: number
