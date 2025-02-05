@@ -7,94 +7,152 @@ models:
     columns:
       - name: fk_person1
         description: "#NAVN fk_person1 #INNHOLD unik pseudonymiseringsnøkkel for person"
-        data_type: number
+        type: number
       - name: tilfelle_startdato
-        data_type: date
+        type: date
         description: "#NAVN tilfelle_startdato #INNHOLD startdato for sykefraværstilfellet"
       - name: virksomhetsnr
-        data_type: varchar2
+        type: varchar2
         description: "#NAVN virksomhetsnr #INNHOLD virksomhetsnummer"
       - name: dm2_innen_26_uker_flagg
-        data_type: number
+        type: number
         description: "#NAVN dm2_innen_26_uker_flagg #INNHOLD flagg for om dialogmøtet har blitt holdt før 26 uker etter sykefraværstilfellestart"
       - name: behov_meldt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN behov_meldt_dato #INNHOLD dato for når behov for dialogmøte ble meldt"
       - name: behov_sykmeldt
-        data_type: number
+        type: number
         description: "#NAVN behov_sykmeldt #INNHOLD om den sykmeldte har meldt behov for dialogmøte, 1 eller 0"
       - name: behov_arbeidsgiver
-        data_type: number
+        type: number
         description: "#NAVN behov_arbeidsgiver #INNHOLD om arbeidsgiver har meldt behov for dialogmøte, 1 eller 0"
       - name: dialogmote2_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote2_avholdt_dato #INNHOLD dato for når dialogmøte 2 ble avholdt (ferdigstilt)"
       - name: dialogmote3_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote3_avholdt_dato #INNHOLD dato for når dialogmøte 3 ble avholdt (ferdigstilt)"
       - name: dialogmote4_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote4_avholdt_dato #INNHOLD dato for når dialogmøte 4 ble avholdt (ferdigstilt)"
       - name: dialogmote5_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote5_avholdt_dato #INNHOLD dato for når dialogmøte 5 ble avholdt (ferdigstilt)"
       - name: dialogmote6_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote6_avholdt_dato #INNHOLD dato for når dialogmøte 6 ble avholdt (ferdigstilt)"
       - name: dialogmote7_avholdt_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN dialogmote7_avholdt_dato #INNHOLD dato for når dialogmøte 7 ble avholdt (ferdigstilt)"
       - name: unntak_dato
-        data_type: timestamp(6)
+        type: timestamp(6)
         description: "#NAVN unntak_dato #INNHOLD dato for når unntak på dialogmøte ble satt"
       - name: unntakarsak_modia
-        data_type: varchar2
+        type: varchar2
         description: "#NAVN unntakarsak_modia #INNHOLD årsak til at unntak ble satt på dialogmøte"
       - name: tilfelle_26uker_mnd_startdato
-        data_type: date
+        type: date
         description: "#NAVN tilfelle_26uker_mnd_startdato #INNHOLD dato 26 uker etter sykefraværstilfellestart"
       - name: fk_dim_organisasjon
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_organisasjon #INNHOLD fremmednøkkel til dim_organisasjon"
       - name: fk_dim_tid__behov_meldt
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__behov_meldt #INNHOLD fremmednøkkel til dim_tid for behov meldt-dato"
       - name: fk_dim_tid__tilfelle_startdato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__tilfelle_startdato #INNHOLD fremmednøkkel til dim_tid for sykefraværstilfellestart-dato"
       - name: fk_dim_tid__dm2_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm2_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 2-avholdtdato"
       - name: fk_dim_tid__dm3_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm3_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 3-avholdtdato"
       - name: fk_dim_tid__dm4_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm4_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 4-avholdtdato"
       - name: fk_dim_tid__dm5_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm5_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 5-avholdtdato"
       - name: fk_dim_tid__dm6_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm6_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 6-avholdtdato"
       - name: fk_dim_tid__dm7_avholdt_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__dm7_avholdt_dato #INNHOLD fremmednøkkel til dim_tid for dialogmøte 7-avholdtdato"
       - name: fk_dim_tid__unntak_dato
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_tid__unntak_dato #INNHOLD fremmednøkkel til dim_tid for dato da unntak ble satt "
       - name: fk_dim_alder
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_alder #INNHOLD fremmednøkkel til dim_alder"
       - name: fk_dim_kjonn
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_kjonn #INNHOLD fremmednøkkel til dim_kjonn"
       - name: fk_dim_naering
-        data_type: number
+        type: number
         description: "#NAVN fk_dim_naering #INNHOLD fremmednøkkel til dim_naering"
       - name: region_oppf_enhet_vviken_flagg
-        data_type: number
+        type: number
         description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
+
+  - name: agg_fak_dialogmote_sub
+    description: "Faktatabell med oversikt over alle dialogmøter, tall per uke, måned og år. Inneholder også informasjon om unntak og behov meldt"
+    columns:
+      - name: aar
+        description: "År for dialogmøtet"
+        type: number
+      - name: maaned
+        description: "Måned for dialogmøtet"
+        type: number
+      - name: uke
+        description: "Ukenummer for dialogmøtet"
+        type: varchar2(2)
+      - name: Enhet_fylke(1000)
+        description: "Fylke for NAV-enhet"
+        type: varchar2(1000)
+      - name: nav_enhet_navn
+        description: "Navn på NAV-enhet"
+        type: varchar2(1000)
+      - name: bosted_fylke(60)
+        description: "Fylke for bosted"
+        type: varchar2(60)
+      - name: bosted_kommune
+        description: "Kommune for bosted"
+        type: varchar2(60)
+      - name: alder_intervall
+        description: "Alder på den sykmeldte- oppgitt i intervaller"
+        type: varchar2(20)
+      - name: naering
+        description: "Næring for den sykmeldte"
+        type: varchar2(255)
+      - name: kjonn
+        description: "Kjønn på den sykmeldte"
+        type: varchar2(1)
+      - name: antall_dialogmoter2
+        description: "Antall dialogmøter 2 - DM2"
+        type: number
+      - name: antall_dialogmoter3
+        type: number
+        description: "Antall dialogmøter 3 - DM3"
+      - name: antall_unntak
+        description: "Antall unntak"
+        type: number
+      - name: ant_dialogmote2_innen_26_uker
+        type: number
+        description: "Antall dialogmøter avholdt innen 26 uker"
+      - name: ant_dialogmote3_innen_39_uker
+        type: number
+        description: "Antall dialogmøter avholdt innen 39 uker"
+      - name: ant_unntak_innen_26_uker
+        type: number
+        description: "Antall unntak innen 26 uker"
+      - name: antall_behov_meldt
+        type: number
+        description: "Antall behov meldt"
+      - name: antall_behov_meldt_innen_26_uker
+        type: number
+        description: "Antall behov meldt innen 26 uker"
 
   - name: fak_syfo_aktivitetskrav_mnd_dbt
     description: final table to BO
