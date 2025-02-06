@@ -120,7 +120,7 @@ models:
       - name: bosted_kommune
         description: "Kommune for bosted"
         type: varchar2(60)
-      - name: alder_intervall
+      - name: alder_interval
         description: "Alder på den sykmeldte- oppgitt i intervaller"
         type: varchar2(20)
       - name: naering
