@@ -129,10 +129,10 @@ models:
       - name: kjonn
         description: "Kjønn på den sykmeldte"
         type: varchar2(1)
-      - name: antall_dialogmoter2
+      - name: antall_dialogmøter2
         description: "Antall dialogmøter 2 - DM2"
         type: number
-      - name: antall_dialogmoter3
+      - name: antall_dialogmøter3
         type: number
         description: "Antall dialogmøter 3 - DM3"
       - name: antall_unntak
@@ -150,7 +150,7 @@ models:
       - name: antall_behov_meldt
         type: number
         description: "Antall behov meldt"
-      - name: antall_behov_meldt_innen_26_uker
+      - name: ANT_BEHOV_MELDT_INNEN_26_UKER
         type: number
         description: "Antall behov meldt innen 26 uker"
 
