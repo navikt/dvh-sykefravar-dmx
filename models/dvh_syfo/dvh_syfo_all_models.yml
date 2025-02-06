@@ -108,13 +108,13 @@ models:
       - name: uke
         description: "Ukenummer for dialogmøtet"
         type: varchar2(2)
-      - name: Enhet_fylke(1000)
+      - name: Enhet_fylke
         description: "Fylke for NAV-enhet"
         type: varchar2(1000)
       - name: nav_enhet_navn
         description: "Navn på NAV-enhet"
         type: varchar2(1000)
-      - name: bosted_fylke(60)
+      - name: bosted_fylke
         description: "Fylke for bosted"
         type: varchar2(60)
       - name: bosted_kommune
