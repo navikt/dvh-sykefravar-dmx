@@ -43,12 +43,12 @@ NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Sk
 , dialogmote_roe as (
   select h.fk_person1,
          h.tilfelle_startdato,
-         min(h.dialogmote_tidspunkt) as dialogmote_tidspunkt,
+         min(h.hendelse_tidspunkt1) as hendelse_tidspunkt,
          1 as region_oppf_enhet_vviken_flagg
   from hendelser h
   join dim_syfo_reg_oppf_enhet_ident r on r.nav_ident = h.nav_ident
-  where h.hendelse = 'FERDIGSTILT'
-  and trunc(h.dialogmote_tidspunkt) between r.gyldig_fra_dato and r.gyldig_til_dato
+  where h.hendelse in ('FERDIGSTILT', 'UNNTAK')
+  and trunc(h.hendelse_tidspunkt1) between r.gyldig_fra_dato and r.gyldig_til_dato
   group by h.fk_person1,
            h.tilfelle_startdato
 )
