@@ -10,6 +10,7 @@ WITH kandidater AS (
     kandidater.kafka_message.arsak as hendelse,
     kandidater.kafka_message.unntakArsak as unntakarsak,
     TO_DATE(kandidater.kafka_message.tilfelleStart, 'YYYY-MM-DD') as tilfelle_startdato,
+    kandidater.kafka_message.unntakVeilederident as nav_ident,
     kafka_topic,
     kafka_partisjon,
     kafka_offset,
