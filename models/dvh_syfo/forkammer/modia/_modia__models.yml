@@ -6,3 +6,9 @@ models:
     columns:
       - name: kilde_uuid
         description: Unik id for hendelsen
+
+  - name: fk_modia__kandidat_unntak
+    description: Kandidatliste endringer, inkludert nav-ident på unntak
+    columns:
+      - name: kilde_uuid
+        description: Unik id for hendelsen
