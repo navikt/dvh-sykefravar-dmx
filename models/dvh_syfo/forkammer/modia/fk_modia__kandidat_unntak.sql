@@ -21,7 +21,7 @@ final as (
   from kandidater k
   left outer join {{ source('modia', 'fk_dm_unntak_historikk_2023_til_2025') }} u
     on k.fk_person1 = u.fk_person1
-    and trunc(k.hendelse_tidspunkt) = u.created_at_dato
+    and trunc(k.hendelse_tidspunkt) = u.created_at
 )
 
 select * from final
