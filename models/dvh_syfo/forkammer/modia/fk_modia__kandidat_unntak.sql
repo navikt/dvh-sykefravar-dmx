@@ -19,7 +19,7 @@ final as (
     k.lastet_dato,
     k.kildesystem
   from kandidater k
-  left outer join {{ source('modia', 'fk_dm_unntak_historikk_fra_2023') }} u
+  left outer join {{ source('modia', 'fk_dm_unntak_historikk_2023_til_2025') }} u
     on k.fk_person1 = u.fk_person1
     and trunc(k.hendelse_tidspunkt) = u.created_at_dato
 )
