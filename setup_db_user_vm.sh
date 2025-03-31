@@ -38,3 +38,6 @@ echo "dbt_profiles_dir er :  $DBT_PROFILES_DIR"
 echo "Skjema er     :  $DBT_DB_SCHEMA"
 echo "Proxy bruker  :  $DBT_ENV_SECRET_USER"
 
+# fjerner unødvenig env var
+unset HTTPS_PROXY
+
