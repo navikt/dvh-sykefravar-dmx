@@ -44,6 +44,8 @@ models:
     dvh_syfo:
       +schema: dvh_syfo
       +tags: syfo
+      kjerne:
+        +enabled: true
 
     syfra:
       +tags: syfra

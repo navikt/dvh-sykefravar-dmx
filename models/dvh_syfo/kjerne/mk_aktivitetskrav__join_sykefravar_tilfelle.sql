@@ -4,7 +4,7 @@ WITH aktivitetskrav as (
 ),
 
 sykefravar_tilfeller as(
-  select * from {{ ref("stg_fak_sykm_sykefravar_tilfelle") }}
+  select * from {{ ref("stg_fak_sykm_sykefravar_tilfelle") }} # denne referer til stg
 
 ),
 
