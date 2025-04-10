@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: dvh_sykm
+    schema: dvh_sykm
+    tables:
+      - name: fak_sykm_sykefravar_tilfelle
