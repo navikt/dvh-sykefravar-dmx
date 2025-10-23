@@ -86,7 +86,7 @@ NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Sk
 ),
 
 final as (
-    SELECT
+    SELECT distinct
       pivotert.fk_person1,
       pivotert.tilfelle_startdato,
       pivotert.virksomhetsnr,
