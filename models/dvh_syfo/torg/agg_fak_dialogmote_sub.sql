@@ -115,20 +115,13 @@ inner join
     and naering.gyldig_flagg=1
 GROUP BY
     TRUNC(gen_dato.dato),
-    EXTRACT(YEAR FROM gen_dato.dato),
-    EXTRACT(MONTH FROM gen_dato.dato),
-    TO_CHAR(gen_dato.dato, 'IW'),
     dim_org.nav_nivaa2_navn,
     dim_org.nav_enhet_navn,
     dim_geografi.fylke_navn,
     dim_geografi.kommune_navn,
     dim_alder.ungdomssatsing,
     naering.gruppe5_besk_lang,
-    CASE
-        WHEN dim_person1.fk_dim_kjonn = 5002 THEN 'K'
-        WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
-        ELSE 'U'
-    END
+    dim_person1.fk_dim_kjonn
 )
 SELECT * FROM dialogmøter_agg
 
