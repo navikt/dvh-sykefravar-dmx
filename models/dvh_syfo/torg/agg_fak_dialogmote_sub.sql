@@ -70,7 +70,7 @@ naering as (
 
 dialogmøter_agg AS (
 SELECT
-    gen_dato.dato,
+    TRUNC(gen_dato.dato) as dato,
     EXTRACT(YEAR FROM gen_dato.dato) AS aar,
     EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
     TO_CHAR(gen_dato.dato, 'IW') as uke,
@@ -114,7 +114,7 @@ inner join
     naering on  fakta_gen.fk_dim_naering = naering.pk_dim_naering
     and naering.gyldig_flagg=1
 GROUP BY
-    gen_dato.dato,
+    TRUNC(gen_dato.dato),
     EXTRACT(YEAR FROM gen_dato.dato),
     EXTRACT(MONTH FROM gen_dato.dato),
     TO_CHAR(gen_dato.dato, 'IW'),
