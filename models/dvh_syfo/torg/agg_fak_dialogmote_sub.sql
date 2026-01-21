@@ -1,11 +1,17 @@
 {{ config(
-    materialized='table',
+    materialized='incremental',
+    unique_key='dato',
+    incremental_strategy='delete+insert'
 )}}
 
 wITH gen_dato AS (
     SELECT CAST((DATE '2023-01-01' + LEVEL - 1) AS TIMESTAMP) AS dato
     FROM dual
     CONNECT BY LEVEL <= (DATE '2025-12-31' - DATE '2023-01-01' + 1)
+    {% if is_incremental() %}
+    -- Ved inkrementell kjøring: kun siste 14 dager for å fange opp eventuelle etterregistreringer
+    HAVING CAST((DATE '2023-01-01' + LEVEL - 1) AS TIMESTAMP) >= CURRENT_DATE - 14
+    {% endif %}
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,
@@ -64,6 +70,7 @@ naering as (
 
 dialogmøter_agg AS (
 SELECT
+    gen_dato.dato,
     EXTRACT(YEAR FROM gen_dato.dato) AS aar,
     EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
     TO_CHAR(gen_dato.dato, 'IW') as uke,
