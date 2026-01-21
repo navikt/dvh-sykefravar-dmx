@@ -1,11 +1,27 @@
 {{ config(
-    materialized='table',
+    materialized='incremental',
+    unique_key=['fk_person1', 'tilfelle_startdato'],
+    incremental_strategy='delete+insert',
     post_hook= ["grant READ ON dvh_syfo.fak_dialogmote to DVH_SYK_DBT"]
 )}}
 
 
 WITH hendelser AS (
   SELECT * FROM {{ ref('mk_dialogmote__pivotert')}}
+  {% if is_incremental() %}
+  -- Filtrerer på tilfeller hvor det har vært aktivitet siste 7 dager
+  -- Dette inkluderer nye dialogmøter, unntakstidspunkt eller andre oppdateringer
+  WHERE GREATEST(
+    NVL(dialogmote_tidspunkt1, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(dialogmote_tidspunkt2, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(dialogmote_tidspunkt3, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(dialogmote_tidspunkt4, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(dialogmote_tidspunkt5, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(dialogmote_tidspunkt6, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(unntak, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+    NVL(stoppunkt, TO_DATE('1900-01-01', 'YYYY-MM-DD'))
+  ) >= CURRENT_DATE - 7
+  {% endif %}
 )
 
 ,dim_person1 AS (
