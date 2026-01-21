@@ -1,6 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key='dato',
+    unique_key='sk_agg_dialogmote',
     incremental_strategy='delete+insert'
 )}}
 
@@ -70,7 +70,6 @@ naering as (
 
 dialogmøter_agg AS (
 SELECT
-    TRUNC(gen_dato.dato) as dato,
     EXTRACT(YEAR FROM gen_dato.dato) AS aar,
     EXTRACT(MONTH FROM gen_dato.dato) AS maaned,
     TO_CHAR(gen_dato.dato, 'IW') as uke,
@@ -114,7 +113,9 @@ inner join
     naering on  fakta_gen.fk_dim_naering = naering.pk_dim_naering
     and naering.gyldig_flagg=1
 GROUP BY
-    TRUNC(gen_dato.dato),
+    EXTRACT(YEAR FROM gen_dato.dato),
+    EXTRACT(MONTH FROM gen_dato.dato),
+    TO_CHAR(gen_dato.dato, 'IW'),
     dim_org.nav_nivaa2_navn,
     dim_org.nav_enhet_navn,
     dim_geografi.fylke_navn,
@@ -123,7 +124,36 @@ GROUP BY
     naering.gruppe5_besk_lang,
     dim_person1.fk_dim_kjonn
 )
-SELECT * FROM dialogmøter_agg
+,final AS (
+SELECT
+    {{ dbt_utils.generate_surrogate_key(['dato',
+    'enhet_fylke', 'nav_enhet_navn',
+    'bosted_fylke', 'bosted_kommune',
+    'alder_interval',
+    'naering',
+    'kjonn']) }} as sk_agg_dialogmote,
+    dato,
+    aar,
+    maaned,
+    uke,
+    enhet_fylke,
+    nav_enhet_navn,
+    bosted_fylke,
+    bosted_kommune,
+    alder_interval,
+    naering,
+    kjonn,
+    antall_dialogmøter2,
+    antall_dialogmøter3,
+    antall_unntak,
+    ant_dialogmote2_innen_26_uker,
+    ant_dialogmote3_innen_39_uker,
+    ant_unntak_innen_26_uker,
+    antall_behov_meldt,
+    ant_behov_meldt_innen_26_uker
+FROM dialogmøter_agg
+)
+SELECT * FROM final
 
 
 
