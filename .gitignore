@@ -1,5 +1,4 @@
-target/compiled
-target/run
+target/
 dbt_packages/
 logs/
 dmx_poc/.vscode/settings.json
