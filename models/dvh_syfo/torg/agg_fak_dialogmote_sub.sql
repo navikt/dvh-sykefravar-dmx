@@ -1,17 +1,11 @@
 {{ config(
-    materialized='incremental',
-    unique_key='sk_agg_dialogmote',
-    incremental_strategy='delete+insert'
+    materialized='table',
 )}}
 
 wITH gen_dato AS (
     SELECT CAST((DATE '2023-01-01' + LEVEL - 1) AS TIMESTAMP) AS dato
     FROM dual
-    CONNECT BY LEVEL <= (DATE '2025-12-31' - DATE '2023-01-01' + 1)
-    {% if is_incremental() %}
-    -- Ved inkrementell kjøring: kun siste 14 dager for å fange opp eventuelle etterregistreringer
-    HAVING CAST((DATE '2023-01-01' + LEVEL - 1) AS TIMESTAMP) >= TRUNC(SYSDATE) - 14
-    {% endif %}
+    CONNECT BY LEVEL <= (TRUNC(SYSDATE) - DATE '2023-01-01' + 1)
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,
@@ -127,25 +121,8 @@ GROUP BY
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
         ELSE 'U'
     END
-),
-final AS (
-    SELECT
-        {{ dbt_utils.generate_surrogate_key([
-            'aar',
-            'maaned',
-            'uke',
-            'enhet_fylke',
-            'nav_enhet_navn',
-            'bosted_fylke',
-            'bosted_kommune',
-            'alder_interval',
-            'naering',
-            'kjonn'
-        ]) }} as sk_agg_dialogmote,
-        *
-    FROM dialogmøter_agg
 )
-SELECT * FROM final
+SELECT * FROM dialogmøter_agg
 
 
 
