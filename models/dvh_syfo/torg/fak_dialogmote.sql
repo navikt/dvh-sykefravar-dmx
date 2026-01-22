@@ -9,18 +9,23 @@
 WITH hendelser AS (
   SELECT * FROM {{ ref('mk_dialogmote__pivotert')}}
   {% if is_incremental() %}
-  -- Filtrerer på tilfeller hvor det har vært aktivitet siste 7 dager
-  -- Dette inkluderer nye dialogmøter, unntakstidspunkt eller andre oppdateringer
-  WHERE GREATEST(
-    NVL(dialogmote_tidspunkt1, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(dialogmote_tidspunkt2, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(dialogmote_tidspunkt3, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(dialogmote_tidspunkt4, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(dialogmote_tidspunkt5, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(dialogmote_tidspunkt6, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(unntak, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
-    NVL(stoppunkt, TO_DATE('1900-01-01', 'YYYY-MM-DD'))
-  ) >= CURRENT_DATE - 7
+  -- Filtrerer på tilfeller hvor:
+  -- 1. Nye tilfeller siste 180 dager, ELLER
+  -- 2. Tilfeller med aktivitet (dialogmøter/unntak) siste 7 dager
+  WHERE (
+    tilfelle_startdato >= TRUNC(SYSDATE) - 180
+    OR
+    GREATEST(
+      NVL(dialogmote_tidspunkt1, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(dialogmote_tidspunkt2, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(dialogmote_tidspunkt3, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(dialogmote_tidspunkt4, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(dialogmote_tidspunkt5, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(dialogmote_tidspunkt6, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(unntak, TO_DATE('1900-01-01', 'YYYY-MM-DD')),
+      NVL(stoppunkt, TO_DATE('1900-01-01', 'YYYY-MM-DD'))
+    ) >= CURRENT_DATE - 7
+  )
   {% endif %}
 )
 
