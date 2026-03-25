@@ -17,7 +17,7 @@ with siste_periode as (
   from {{ source('dt_kodeverk', 'dim_versjon') }}  b
   join {{ source('dt_kodeverk', 'publiseringstabell') }}  p on
       p.rapport_periode = b.rapport_periode and
-      p.tabell_navn = 'IA_PARAM' and
+      p.tabell_navn = 'FAK_SYKEFRAVAR' and
       p.offentlig_dato < sysdate and
       b.tabell_navn = 'FAK_IA_SYKEFRAVAR'
 ),
