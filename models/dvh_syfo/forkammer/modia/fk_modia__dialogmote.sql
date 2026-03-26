@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH dialogmote AS (
     select dialogmote.kafka_message.dialogmoteUuid as kilde_uuid,
     CAST(TO_TIMESTAMP_TZ(dialogmote.kafka_message.dialogmoteTidspunkt, 'YYYY-MM-DD HH24:MI:SS:TZH:TZM') at TIME ZONE 'CET' as timestamp) AS dialogmote_tidspunkt,
