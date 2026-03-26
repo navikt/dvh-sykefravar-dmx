@@ -36,6 +36,13 @@ unntakarsak_modia as (
     group by fk_person1, tilfelle_startdato
 )
 
+-- Samme som over
+,not_null_nav_id as (
+    select fk_person1, tilfelle_startdato,  max(nav_ident) as nav_ident
+    from hendelser
+    group by fk_person1, tilfelle_startdato
+)
+
 /* Finner dialogmøter som er avholdt av Regional Oppfølgingsenhet (ROE) Vest-Viken.
 Nav-identer som jobber for ROE Vest-Viken ligger i tabellen dim_syfo_reg_oppf_enhet_ident.
 Dersom en 'FERDIGSTILT'-hendelse er registrert med en av disse identene i tidsrommet identen er gyldig, blir region_oppf_enhet_vviken_flagg satt til 1.
@@ -61,12 +68,15 @@ NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Sk
       ,CONCAT(a.hendelse, a.ROW_NUMBER) AS hendelse1
       ,a.hendelse_tidspunkt1
       ,b.virksomhetsnr
+      ,d.nav_ident
       ,nvl(c.region_oppf_enhet_vviken_flagg,0) as region_oppf_enhet_vviken_flagg
     FROM hendelser a
     left join not_null_virksomhetsnr b on
       a.fk_person1=b.fk_person1 and a.tilfelle_startdato=b.tilfelle_startdato
     left join dialogmote_roe c on
       a.fk_person1=c.fk_person1 and a.tilfelle_startdato=c.tilfelle_startdato
+    left join not_null_nav_id d on
+      a.fk_person1=d.fk_person1 and a.tilfelle_startdato=d.tilfelle_startdato
   )
   PIVOT(
     MAX(hendelse_tidspunkt1) FOR hendelse1 IN (
@@ -90,6 +100,7 @@ final as (
       pivotert.fk_person1,
       pivotert.tilfelle_startdato,
       pivotert.virksomhetsnr,
+      pivotert.nav_ident,
       pivotert.stoppunkt,
       pivotert.dialogmote_tidspunkt1,
       pivotert.dialogmote_tidspunkt2,
