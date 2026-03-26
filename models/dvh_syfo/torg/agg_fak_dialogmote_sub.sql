@@ -5,7 +5,7 @@
 wITH gen_dato AS (
     SELECT CAST((DATE '2023-01-01' + LEVEL - 1) AS TIMESTAMP) AS dato
     FROM dual
-    CONNECT BY LEVEL <= (DATE '2025-12-31' - DATE '2023-01-01' + 1)
+    CONNECT BY LEVEL <= (TRUNC(SYSDATE) - DATE '2023-01-01' + 1)
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,

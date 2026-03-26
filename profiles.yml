@@ -45,3 +45,14 @@ dmx_poc:
       service: dwh_ha
       schema: "{{env_var('DBT_DB_SCHEMA')}}"
       threads: 10
+    knast:
+      host: "{{env_var('DBT_DB_HOST')}}"
+      password: placeholder
+      port: "{{env_var('DBT_DB_PORT')}}"
+      protocol: tcp
+      schema: dvh_syfo
+      service: "{{env_var('DBT_ENV_SERVICE')}}"
+      database: "{{env_var('DBT_DB_NAME')}}"
+      threads: 1
+      type: oracle
+      user: "{{env_var('DBT_ENV_SECRET_USER')}}"

@@ -38,6 +38,8 @@ models:
   +persist_docs:
     relation: true
     columns:  true
+  +pre-hook:
+    - "ALTER SESSION SET NLS_LENGTH_SEMANTICS = CHAR"
   dmx_poc:
     dvh_syfo:
       +schema: dvh_syfo
