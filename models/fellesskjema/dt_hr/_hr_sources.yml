@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: dt_hr
+    schema: dt_hr
+    tables:
+    - name: hr_navkontor_ansatt
