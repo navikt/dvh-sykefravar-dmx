@@ -1,3 +1,7 @@
+{{ config(
+    materialized='table'
+)}}
+
 WITH kandidater AS (
   SELECT * FROM {{ source('modia', 'raw_isdialogmotekandidat') }}
 )
