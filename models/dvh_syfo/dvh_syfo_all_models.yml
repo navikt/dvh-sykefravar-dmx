@@ -95,6 +95,18 @@ models:
       - name: region_oppf_enhet_vviken_flagg
         type: number
         description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
+      - name: veileder_nav_kontor
+        type: varchar2
+        description: "#NAVN veileder_nav_kontor #INNHOLD NAV-kontoret til veilederen som behandler dialogmøtet"
+      - name: kildesystem
+        type: varchar2
+        description: "#NAVN kildesystem #INNHOLD kildesystem for dialogmøtedata"
+      - name: oppdatert_dato
+        type: date
+        description: "#NAVN oppdatert_dato #INNHOLD dato for siste oppdatering av raden"
+      - name: lastet_dato
+        type: date
+        description: "#NAVN lastet_dato #INNHOLD dato for når raden ble lastet"
 
   - name: agg_fak_dialogmote_sub
     description: "Faktatabell med oversikt over alle dialogmøter, tall per uke, måned og år. Inneholder også informasjon om unntak og behov meldt"
