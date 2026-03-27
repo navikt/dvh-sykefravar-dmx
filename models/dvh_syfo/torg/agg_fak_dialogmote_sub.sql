@@ -9,7 +9,7 @@ wITH gen_dato AS (
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,
-    TILFELLE_STARTDATO,fk_dim_organisasjon,fk_dim_alder,fk_person1,fk_dim_naering
+    TILFELLE_STARTDATO,fk_dim_org,fk_dim_alder,fk_person1,fk_dim_naering
     FROM {{ ref('fak_dialogmote') }}
 ),
 fakta_gen AS (
@@ -93,7 +93,7 @@ INNER JOIN
     trunc(fakta_gen.unntak_dato),trunc(dialogmote2_innen_26_uker_dato), trunc(dialogmote3_innen_39_uker_dato),
     trunc(dialogmote3_innen_39_uker_dato), trunc(unntak_innen_26_uker_dato),trunc(behov_meldt_innen_26_uker_dato), trunc(behov_meldt_dato))
 INNER JOIN
-    dim_org ON fakta_gen.fk_dim_organisasjon = dim_org.pk_dim_organisasjon
+    dim_org ON fakta_gen.fk_dim_org = dim_org.pk_dim_organisasjon
 INNER JOIN
     dim_person1  ON fakta_gen.fk_person1 = dim_person1.fk_person1
     and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')
