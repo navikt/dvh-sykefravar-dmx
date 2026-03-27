@@ -287,7 +287,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     CAST(dm2_innen_26_uker_flagg            AS NUMBER(1,0))        AS dm2_innen_26_uker_flagg,
     CAST(TRUNC(behov_meldt_dato)            AS DATE)               AS behov_meldt_dato,
     CAST(behov_sykmeldt                     AS NUMBER(1,0))        AS behov_sykmeldt,
-    CAST(behov_arbeidsgiver                 AS NUMBER(38,0))       AS behov_arbeidsgiver,
+    CAST(behov_arbeidsgiver                 AS NUMBER(1,0))       AS behov_arbeidsgiver,
     CAST(TRUNC(dialogmote2_avholdt_dato)    AS DATE)               AS dialogmote2_avholdt_dato,
     CAST(TRUNC(dialogmote3_avholdt_dato)    AS DATE)               AS dialogmote3_avholdt_dato,
     CAST(TRUNC(dialogmote4_avholdt_dato)    AS DATE)               AS dialogmote4_avholdt_dato,

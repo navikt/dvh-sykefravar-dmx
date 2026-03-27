@@ -18,7 +18,7 @@ models:
         type: number
         description: "#NAVN dm2_innen_26_uker_flagg #INNHOLD flagg for om dialogmøtet har blitt holdt før 26 uker etter sykefraværstilfellestart"
       - name: behov_meldt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN behov_meldt_dato #INNHOLD dato for når behov for dialogmøte ble meldt"
       - name: behov_sykmeldt
         type: number
@@ -27,25 +27,25 @@ models:
         type: number
         description: "#NAVN behov_arbeidsgiver #INNHOLD om arbeidsgiver har meldt behov for dialogmøte, 1 eller 0"
       - name: dialogmote2_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote2_avholdt_dato #INNHOLD dato for når dialogmøte 2 ble avholdt (ferdigstilt)"
       - name: dialogmote3_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote3_avholdt_dato #INNHOLD dato for når dialogmøte 3 ble avholdt (ferdigstilt)"
       - name: dialogmote4_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote4_avholdt_dato #INNHOLD dato for når dialogmøte 4 ble avholdt (ferdigstilt)"
       - name: dialogmote5_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote5_avholdt_dato #INNHOLD dato for når dialogmøte 5 ble avholdt (ferdigstilt)"
       - name: dialogmote6_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote6_avholdt_dato #INNHOLD dato for når dialogmøte 6 ble avholdt (ferdigstilt)"
       - name: dialogmote7_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote7_avholdt_dato #INNHOLD dato for når dialogmøte 7 ble avholdt (ferdigstilt)"
       - name: unntak_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN unntak_dato #INNHOLD dato for når unntak på dialogmøte ble satt"
       - name: unntakarsak_modia
         type: varchar2
@@ -55,7 +55,7 @@ models:
         description: "#NAVN tilfelle_26uker_mnd_startdato #INNHOLD dato 26 uker etter sykefraværstilfellestart"
       - name: fk_dim_org
         type: number
-        description: "#NAVN fk_dim_organisasjon #INNHOLD fremmednøkkel til org_enhet_til_node der tildelt enhet finnes, hvis ikke fk_dim_organisasjon i dim_person1"
+        description: "#NAVN fk_dim_org #INNHOLD fremmednøkkel til org_enhet_til_node der tildelt enhet finnes, hvis ikke fk_dim_organisasjon i dim_person1"
       - name: fk_dim_tid__behov_meldt
         type: number
         description: "#NAVN fk_dim_tid__behov_meldt #INNHOLD fremmednøkkel til dim_tid for behov meldt-dato"
