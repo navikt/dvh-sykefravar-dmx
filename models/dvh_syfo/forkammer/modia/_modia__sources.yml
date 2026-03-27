@@ -20,3 +20,5 @@ sources:
     - name: fk_dm_unntak_historikk_2023_til_2025
       description:  Tabell som inneheld info om nav-ident kopla til unntak for dialogmøter.
                     Data vart lasta inn som ein eingongsjobb i februar 2025. Ref STO-5263
+
+    - name: stg_modia__person_tildelt_enhet

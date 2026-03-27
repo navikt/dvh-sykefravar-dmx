@@ -29,6 +29,22 @@ WITH hendelser AS (
   {% endif %}
 )
 
+-- Henter Nav enhet og hekter på ek_org_node
+,hente_tildelt_enhet as (
+  select enhet.fk_person1,
+         enhet.tildelt_enhet,
+         enhet.gyldig_fra_dato,
+         enhet.gyldig_til_dato,
+         org.ek_org_node
+  from {{ source('modia', 'stg_modia__person_tildelt_enhet') }} enhet
+  inner join {{ source('dt_kodeverk', 'org_enhet_til_node') }} org
+          on org.enhet_kode = enhet.tildelt_enhet
+          and org.enhet_type = 'NORGENHET'
+)
+
+-- Henter fk_dim_organisasjon fra dim_person1
+-- Brukes når vi ikke har tildelt_enhet i
+-- stg_modia__person_tildelt_enhet-tabellen
 ,dim_person1 AS (
   SELECT * FROM {{ ref('felles_dt_person__dim_person1') }}
 )
@@ -195,7 +211,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,hendelser.unntak AS unntak_dato
     ,hendelser.unntakarsak_modia
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    ,dim_person1.fk_dim_organisasjon
+    --,dim_person1.fk_dim_organisasjon
+    ,coalesce(d.ek_org_node, dim_person1.fk_dim_organisasjon) as fk_dim_org
     ,NVL(TO_NUMBER(
       TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
     ), -1) AS fk_dim_tid__behov_meldt
@@ -228,6 +245,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     , fk_dim_naering
     , veileder.nav_kontor_stilling as veileder_nav_kontor
     , hendelser.region_oppf_enhet_vviken_flagg as region_oppf_enhet_vviken_flagg
+    , hendelser.kildesystem
   FROM hendelser
   LEFT JOIN dim_person1 ON
     hendelser.fk_person1 = dim_person1.fk_person1 AND
@@ -236,12 +254,15 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   LEFT JOIN flagg_innen_26Uker ON
     hendelser.fk_person1 = flagg_innen_26Uker.fk_person1 AND
     hendelser.tilfelle_startdato = flagg_innen_26Uker.tilfelle_startdato
-  LEFT JOIN dim_organisasjon ON
-    dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
-  LEFT JOIN dim_org ON
-    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
-    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
-    dim_org.mapping_node_type = 'NORGENHET'
+  LEFT JOIN hente_tildelt_enhet d
+        ON d.fk_person1 = hendelser.fk_person1
+        AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(d.gyldig_fra_dato) AND trunc(d.gyldig_til_dato)
+--  LEFT JOIN dim_organisasjon ON
+--    dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
+-- LEFT JOIN dim_org ON
+--    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
+--    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
+--    dim_org.mapping_node_type = 'NORGENHET'
   LEFT JOIN motebehov ON
     hendelser.fk_person1 = motebehov.fk_person1 AND
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
@@ -255,7 +276,6 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   LEFT JOIN veileder ON
     hendelser.nav_ident = veileder.nav_id
     and hendelser.tilfelle_startdato between veileder.funksjonell_fra_dato and veileder.funksjonell_til_dato
-
   )
 
 ,final as (
@@ -277,7 +297,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     CAST(TRUNC(unntak_dato)                 AS DATE)               AS unntak_dato,
     CAST(unntakarsak_modia                  AS VARCHAR2(100))      AS unntakarsak_modia,
     CAST(TRUNC(tilfelle_26uker_mnd_startdato) AS DATE)             AS tilfelle_26uker_mnd_startdato,
-    CAST(fk_dim_organisasjon                AS NUMBER(38,0))       AS fk_dim_organisasjon,
+    CAST(fk_dim_org                         AS NUMBER(38,0))       AS fk_dim_org,
     CAST(fk_dim_tid__behov_meldt            AS NUMBER(38,0))       AS fk_dim_tid__behov_meldt,
     CAST(fk_dim_tid__tilfelle_startdato     AS NUMBER(38,0))       AS fk_dim_tid__tilfelle_startdato,
     CAST(fk_dim_tid__dm2_avholdt_dato       AS NUMBER(38,0))       AS fk_dim_tid__dm2_avholdt_dato,
@@ -290,7 +310,10 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     CAST(fk_dim_alder                       AS NUMBER(38,0))       AS fk_dim_alder,
     CAST(fk_dim_kjonn                       AS NUMBER(38,0))       AS fk_dim_kjonn,
     CAST(fk_dim_naering                     AS NUMBER(38,0))       AS fk_dim_naering,
-    CAST(region_oppf_enhet_vviken_flagg     AS NUMBER(1,0))        AS region_oppf_enhet_vviken_flagg
+    CAST(region_oppf_enhet_vviken_flagg     AS NUMBER(1,0))        AS region_oppf_enhet_vviken_flagg,
+    CAST(kildesystem                        AS VARCHAR2(100))      AS kildesystem,
+    sysdate AS oppdatert_dato,
+    sysdate AS lastet_dato
 
   from joined
 )

@@ -12,3 +12,4 @@ sources:
     - name: dim_tid
     - name: dim_varighet
     - name: dim_geografi
+    - name: org_enhet_til_node
