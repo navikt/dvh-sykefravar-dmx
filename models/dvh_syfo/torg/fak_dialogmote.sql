@@ -29,6 +29,7 @@ WITH hendelser AS (
   {% endif %}
 )
 
+/*
 -- Henter Nav enhet og hekter på ek_org_node
 ,hente_tildelt_enhet as (
   select enhet.fk_person1,
@@ -40,7 +41,7 @@ WITH hendelser AS (
   inner join {{ source('dt_kodeverk', 'org_enhet_til_node') }} org
           on org.enhet_kode = enhet.tildelt_enhet
           and org.enhet_type = 'NORGENHET'
-)
+) */
 
 -- Henter fk_dim_organisasjon fra dim_person1
 -- Brukes når vi ikke har tildelt_enhet i
@@ -71,6 +72,10 @@ WITH hendelser AS (
 
 ,veileder as (
   select * from {{ ref('felles_dt_hr__hr_navkontor_ansatt') }}
+)
+
+,org as (
+  select * from {{ source('dt_kodeverk', 'org_enhet_til_node') }}
 )
 
 ,dm_2 as (
@@ -211,8 +216,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,hendelser.unntak AS unntak_dato
     ,hendelser.unntakarsak_modia
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
-    --,dim_person1.fk_dim_organisasjon
-    ,coalesce(d.ek_org_node, dim_person1.fk_dim_organisasjon) as fk_dim_org
+    ,dim_person1.fk_dim_organisasjon
+    --,coalesce(d.ek_org_node, dim_person1.fk_dim_organisasjon) as fk_dim_org -------NY VARIANT, MÅ TESTES BEDRE DA DET FØRER MED STORE ENDRINGER (hver 10. får ny nøkkel)
     ,NVL(TO_NUMBER(
       TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
     ), -1) AS fk_dim_tid__behov_meldt
@@ -243,7 +248,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
     , fk_dim_naering
-    , veileder.nav_kontor_stilling as veileder_nav_kontor
+   -- , veileder.nav_kontor_stilling as veileder_nav_kontor     fk_dim_org_bruker og fk_dim_org_veileder
+    , org.ek_org_node as fk_dim_org_veileder
     , hendelser.region_oppf_enhet_vviken_flagg as region_oppf_enhet_vviken_flagg
     , hendelser.kildesystem
   FROM hendelser
@@ -254,15 +260,16 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   LEFT JOIN flagg_innen_26Uker ON
     hendelser.fk_person1 = flagg_innen_26Uker.fk_person1 AND
     hendelser.tilfelle_startdato = flagg_innen_26Uker.tilfelle_startdato
-  LEFT JOIN hente_tildelt_enhet d
+/*  LEFT JOIN hente_tildelt_enhet d
         ON d.fk_person1 = hendelser.fk_person1
-        AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(d.gyldig_fra_dato) AND trunc(d.gyldig_til_dato)
---  LEFT JOIN dim_organisasjon ON
---    dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
--- LEFT JOIN dim_org ON
---    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
---    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
---    dim_org.mapping_node_type = 'NORGENHET'
+        AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(d.gyldig_fra_dato) AND trunc(d.gyldig_til_dato) */
+  LEFT JOIN dim_organisasjon ON
+    dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
+ LEFT JOIN dim_org ON
+    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
+    --AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(dim_org.funk_gyldig_fra_dato) AND trunc(dim_org.funk_gyldig_til_dato) AND --RIKTIG MÅTE
+    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
+    dim_org.mapping_node_type = 'NORGENHET'
   LEFT JOIN motebehov ON
     hendelser.fk_person1 = motebehov.fk_person1 AND
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
@@ -276,28 +283,32 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   LEFT JOIN veileder ON
     hendelser.nav_ident = veileder.nav_id
     and hendelser.tilfelle_startdato between veileder.funksjonell_fra_dato and veileder.funksjonell_til_dato
+  LEFT JOIN org ON
+    veileder.nav_kontor_stilling = org.enhet_kode
+    and org.enhet_type = 'NORGENHET'
   )
 
 ,final as (
   select
     CAST(fk_person1                         AS NUMBER(38,0))       AS fk_person1,
-    CAST(TRUNC(tilfelle_startdato)          AS DATE)               AS tilfelle_startdato,
+    CAST(tilfelle_startdato                 AS DATE)               AS tilfelle_startdato,
     CAST(virksomhetsnr                      AS VARCHAR2(100))      AS virksomhetsnr,
-    CAST(veileder_nav_kontor                AS VARCHAR2(100))      AS veileder_nav_kontor,
     CAST(dm2_innen_26_uker_flagg            AS NUMBER(1,0))        AS dm2_innen_26_uker_flagg,
-    CAST(TRUNC(behov_meldt_dato)            AS DATE)               AS behov_meldt_dato,
+    CAST(behov_meldt_dato                   AS DATE)               AS behov_meldt_dato,
     CAST(behov_sykmeldt                     AS NUMBER(1,0))        AS behov_sykmeldt,
-    CAST(behov_arbeidsgiver                 AS NUMBER(1,0))       AS behov_arbeidsgiver,
-    CAST(TRUNC(dialogmote2_avholdt_dato)    AS DATE)               AS dialogmote2_avholdt_dato,
-    CAST(TRUNC(dialogmote3_avholdt_dato)    AS DATE)               AS dialogmote3_avholdt_dato,
-    CAST(TRUNC(dialogmote4_avholdt_dato)    AS DATE)               AS dialogmote4_avholdt_dato,
-    CAST(TRUNC(dialogmote5_avholdt_dato)    AS DATE)               AS dialogmote5_avholdt_dato,
-    CAST(TRUNC(dialogmote6_avholdt_dato)    AS DATE)               AS dialogmote6_avholdt_dato,
-    CAST(TRUNC(dialogmote7_avholdt_dato)    AS DATE)               AS dialogmote7_avholdt_dato,
-    CAST(TRUNC(unntak_dato)                 AS DATE)               AS unntak_dato,
+    CAST(behov_arbeidsgiver                 AS NUMBER(1,0))        AS behov_arbeidsgiver,
+    CAST(dialogmote2_avholdt_dato           AS DATE)               AS dialogmote2_avholdt_dato,
+    CAST(dialogmote3_avholdt_dato           AS DATE)               AS dialogmote3_avholdt_dato,
+    CAST(dialogmote4_avholdt_dato           AS DATE)               AS dialogmote4_avholdt_dato,
+    CAST(dialogmote5_avholdt_dato           AS DATE)               AS dialogmote5_avholdt_dato,
+    CAST(dialogmote6_avholdt_dato           AS DATE)               AS dialogmote6_avholdt_dato,
+    CAST(dialogmote7_avholdt_dato           AS DATE)               AS dialogmote7_avholdt_dato,
+    CAST(unntak_dato                        AS DATE)               AS unntak_dato,
     CAST(unntakarsak_modia                  AS VARCHAR2(100))      AS unntakarsak_modia,
-    CAST(TRUNC(tilfelle_26uker_mnd_startdato) AS DATE)             AS tilfelle_26uker_mnd_startdato,
-    CAST(fk_dim_org                         AS NUMBER(38,0))       AS fk_dim_org,
+    CAST(tilfelle_26uker_mnd_startdato      AS DATE)             AS tilfelle_26uker_mnd_startdato,
+    --CAST(fk_dim_org                         AS NUMBER(38,0))       AS fk_dim_org,
+    CAST(fk_dim_organisasjon                AS NUMBER(38,0))       AS fk_dim_organisasjon,
+    CAST(fk_dim_org_veileder                AS VARCHAR2(100))      AS fk_dim_org_veileder,
     CAST(fk_dim_tid__behov_meldt            AS NUMBER(38,0))       AS fk_dim_tid__behov_meldt,
     CAST(fk_dim_tid__tilfelle_startdato     AS NUMBER(38,0))       AS fk_dim_tid__tilfelle_startdato,
     CAST(fk_dim_tid__dm2_avholdt_dato       AS NUMBER(38,0))       AS fk_dim_tid__dm2_avholdt_dato,

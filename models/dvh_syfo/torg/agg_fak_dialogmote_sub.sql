@@ -93,7 +93,7 @@ INNER JOIN
     trunc(fakta_gen.unntak_dato),trunc(dialogmote2_innen_26_uker_dato), trunc(dialogmote3_innen_39_uker_dato),
     trunc(dialogmote3_innen_39_uker_dato), trunc(unntak_innen_26_uker_dato),trunc(behov_meldt_innen_26_uker_dato), trunc(behov_meldt_dato))
 INNER JOIN
-    dim_org ON fakta_gen.fk_dim_org = dim_org.pk_dim_organisasjon
+    dim_org ON fakta_gen.fk_dim_organisasjon = dim_org.pk_dim_organisasjon
 INNER JOIN
     dim_person1  ON fakta_gen.fk_person1 = dim_person1.fk_person1
     and  dim_person1.gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD')

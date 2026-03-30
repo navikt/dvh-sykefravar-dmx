@@ -58,7 +58,7 @@ dialogmøter_agg AS (
     LEFT JOIN
         fakta_gen  ON TO_CHAR(gen_dato.dato,'YYYYMMDD') = TO_CHAR(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO, 'YYYYMMDD')
     JOIN
-        dim_org  ON fakta_gen.fk_dim_org = dim_org.pk_dim_organisasjon
+        dim_org  ON fakta_gen.fk_dim_organisasjon = dim_org.pk_dim_organisasjon
     join
         dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
     join
@@ -123,7 +123,7 @@ dialogmøter_agg AS (
     LEFT JOIN
         fakta_gen  ON TO_CHAR(gen_dato.dato,'YYYYMMDD') = TO_CHAR(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO, 'YYYYMMDD')
     JOIN
-        dim_org  ON fakta_gen.fk_dim_org = dim_org.pk_dim_organisasjon
+        dim_org  ON fakta_gen.fk_dim_organisasjon = dim_org.pk_dim_organisasjon
     join
         dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
     join
@@ -181,7 +181,7 @@ dialogmøter_agg AS (
     LEFT JOIN
         fakta_gen  ON TO_CHAR(gen_dato.dato,'YYYYMMDD') = TO_CHAR(fakta_gen.tilfelle_startdato, 'YYYYMMDD')
     JOIN
-        dim_org  ON fakta_gen.fk_dim_org = dim_org.pk_dim_organisasjon
+        dim_org  ON fakta_gen.fk_dim_organisasjon = dim_org.pk_dim_organisasjon
     join
         dim_alder  ON fakta_gen.fk_dim_alder = dim_alder.pk_dim_alder
     join
