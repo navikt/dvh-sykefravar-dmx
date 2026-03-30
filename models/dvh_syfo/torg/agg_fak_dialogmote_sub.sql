@@ -9,7 +9,7 @@ wITH gen_dato AS (
 ),
 fakta_gen_org AS (
     SELECT dialogmote2_avholdt_dato,DIALOGMOTE3_AVHOLDT_DATO,unntak_dato,behov_meldt_dato,
-    TILFELLE_STARTDATO,fk_dim_org,fk_dim_alder,fk_person1,fk_dim_naering
+    TILFELLE_STARTDATO,fk_dim_organisasjon,fk_dim_alder,fk_person1,fk_dim_naering
     FROM {{ ref('fak_dialogmote') }}
 ),
 fakta_gen AS (
