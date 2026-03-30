@@ -266,10 +266,10 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
   LEFT JOIN dim_organisasjon ON
     dim_person1.fk_dim_organisasjon = dim_organisasjon.pk_dim_organisasjon
  LEFT JOIN dim_org ON
-    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode AND
-    --AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(dim_org.funk_gyldig_fra_dato) AND trunc(dim_org.funk_gyldig_til_dato) AND --RIKTIG MÅTE
-    dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
-    dim_org.mapping_node_type = 'NORGENHET'
+    dim_organisasjon.mapping_node_kode = dim_org.mapping_node_kode
+    AND trunc(hendelser.tilfelle_startdato) BETWEEN trunc(dim_org.funk_gyldig_fra_dato) AND trunc(dim_org.funk_gyldig_til_dato)  --RIKTIG MÅTE
+    --dim_org.funk_gyldig_til_dato = TO_DATE('9999-12-31', 'YYYY-MM-DD') AND -- TODO: Bør settes på en annen måte
+    AND dim_org.mapping_node_type = 'NORGENHET'
   LEFT JOIN motebehov ON
     hendelser.fk_person1 = motebehov.fk_person1 AND
     hendelser.tilfelle_startdato = motebehov.tilfelle_startdato
