@@ -95,9 +95,9 @@ models:
       - name: region_oppf_enhet_vviken_flagg
         type: number
         description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
-      - name: veileder_nav_kontor
+      - name: fk_dim_org_veileder
         type: varchar2
-        description: "#NAVN veileder_nav_kontor #INNHOLD NAV-kontoret til veilederen som behandler dialogmøtet"
+        description: "#NAVN fk_dim_org_veileder #INNHOLD Fremmednøkkel til tabell dt_kodeverk.org_enhet_til_node og oppslag for Nav-kontoret til veilederen som behandler dialogmøtet"
       - name: kildesystem
         type: varchar2
         description: "#NAVN kildesystem #INNHOLD kildesystem for dialogmøtedata"
