@@ -55,7 +55,7 @@ models:
         description: "#NAVN tilfelle_26uker_mnd_startdato #INNHOLD dato 26 uker etter sykefraværstilfellestart"
       - name: fk_dim_organisasjon
         type: number
-        description: "#NAVN fk_dim_organisasjon #INNHOLD fremmednøkkel til org_enhet_til_node der tildelt enhet finnes, hvis ikke fk_dim_organisasjon i dim_person1"
+        description: "#NAVN fk_dim_organisasjon #INNHOLD fremmednøkkel til dim_organisasjon"
       - name: fk_dim_tid__behov_meldt
         type: number
         description: "#NAVN fk_dim_tid__behov_meldt #INNHOLD fremmednøkkel til dim_tid for behov meldt-dato"
