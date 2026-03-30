@@ -28,10 +28,10 @@ unntakarsak_modia as (
     and kildesystem = 'MODIA'
 )
 
--- Får kun virksomhetsnr fra dialogmøter i Modia, så i union-tabellen får virksomhetsnr null-verdier idet flere tabeller sammenstilles.
+-- Får kun virksomhetsnr, nav_ident og satt kildesystem fra dialogmøter i Modia, så i union-tabellen får alt annet null-verdier idet flere tabeller sammenstilles.
 -- Joiner denne i neste steg for å hindre feil i pivoteringen da vi får flere rader per fk_person1 + tilfelle_startdato (null fra Arena + kandidater og not-null fra dialogmøter i Modia).
-,not_null_virksomhetsnr as (
-    select fk_person1, tilfelle_startdato, max(virksomhetsnr) as virksomhetsnr
+,not_null_rader as (
+    select fk_person1, tilfelle_startdato, max(virksomhetsnr) as virksomhetsnr, max(nav_ident) as nav_ident, max(kildesystem) as kildesystem
     from hendelser
     group by fk_person1, tilfelle_startdato
 )
@@ -61,9 +61,11 @@ NB! Må bruke min(dialogmote_tidspunkt) for ikkje å få med for mange rader. Sk
       ,CONCAT(a.hendelse, a.ROW_NUMBER) AS hendelse1
       ,a.hendelse_tidspunkt1
       ,b.virksomhetsnr
+      ,b.nav_ident
       ,nvl(c.region_oppf_enhet_vviken_flagg,0) as region_oppf_enhet_vviken_flagg
+      ,b.kildesystem
     FROM hendelser a
-    left join not_null_virksomhetsnr b on
+    left join not_null_rader b on
       a.fk_person1=b.fk_person1 and a.tilfelle_startdato=b.tilfelle_startdato
     left join dialogmote_roe c on
       a.fk_person1=c.fk_person1 and a.tilfelle_startdato=c.tilfelle_startdato
@@ -90,6 +92,7 @@ final as (
       pivotert.fk_person1,
       pivotert.tilfelle_startdato,
       pivotert.virksomhetsnr,
+      pivotert.nav_ident,
       pivotert.stoppunkt,
       pivotert.dialogmote_tidspunkt1,
       pivotert.dialogmote_tidspunkt2,
@@ -99,7 +102,8 @@ final as (
       pivotert.dialogmote_tidspunkt6,
       pivotert.unntak,
       um.unntakarsak_modia,
-      pivotert.region_oppf_enhet_vviken_flagg
+      pivotert.region_oppf_enhet_vviken_flagg,
+      pivotert.kildesystem
     FROM pivotert
     left join unntakarsak_modia um on um.fk_person1 = pivotert.fk_person1
                                   and um.tilfelle_startdato = pivotert.tilfelle_startdato

@@ -18,7 +18,7 @@ models:
         type: number
         description: "#NAVN dm2_innen_26_uker_flagg #INNHOLD flagg for om dialogmøtet har blitt holdt før 26 uker etter sykefraværstilfellestart"
       - name: behov_meldt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN behov_meldt_dato #INNHOLD dato for når behov for dialogmøte ble meldt"
       - name: behov_sykmeldt
         type: number
@@ -27,25 +27,25 @@ models:
         type: number
         description: "#NAVN behov_arbeidsgiver #INNHOLD om arbeidsgiver har meldt behov for dialogmøte, 1 eller 0"
       - name: dialogmote2_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote2_avholdt_dato #INNHOLD dato for når dialogmøte 2 ble avholdt (ferdigstilt)"
       - name: dialogmote3_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote3_avholdt_dato #INNHOLD dato for når dialogmøte 3 ble avholdt (ferdigstilt)"
       - name: dialogmote4_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote4_avholdt_dato #INNHOLD dato for når dialogmøte 4 ble avholdt (ferdigstilt)"
       - name: dialogmote5_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote5_avholdt_dato #INNHOLD dato for når dialogmøte 5 ble avholdt (ferdigstilt)"
       - name: dialogmote6_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote6_avholdt_dato #INNHOLD dato for når dialogmøte 6 ble avholdt (ferdigstilt)"
       - name: dialogmote7_avholdt_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN dialogmote7_avholdt_dato #INNHOLD dato for når dialogmøte 7 ble avholdt (ferdigstilt)"
       - name: unntak_dato
-        type: timestamp(6)
+        type: date
         description: "#NAVN unntak_dato #INNHOLD dato for når unntak på dialogmøte ble satt"
       - name: unntakarsak_modia
         type: varchar2
@@ -95,6 +95,18 @@ models:
       - name: region_oppf_enhet_vviken_flagg
         type: number
         description: "#NAVN region_oppf_enhet_vviken_flagg #INNHOLD flagg for om dialogmøteforløpet har blitt behandlet av Regional Oppfølgingsenhet i Vest-Viken"
+      - name: fk_dim_org_veileder
+        type: varchar2
+        description: "#NAVN fk_dim_org_veileder #INNHOLD Fremmednøkkel til tabell dt_kodeverk.org_enhet_til_node og oppslag for Nav-kontoret til veilederen som behandler dialogmøtet"
+      - name: kildesystem
+        type: varchar2
+        description: "#NAVN kildesystem #INNHOLD kildesystem for dialogmøtedata"
+      - name: oppdatert_dato
+        type: date
+        description: "#NAVN oppdatert_dato #INNHOLD dato for siste oppdatering av raden"
+      - name: lastet_dato
+        type: date
+        description: "#NAVN lastet_dato #INNHOLD dato for når raden ble lastet"
 
   - name: agg_fak_dialogmote_sub
     description: "Faktatabell med oversikt over alle dialogmøter, tall per uke, måned og år. Inneholder også informasjon om unntak og behov meldt"
