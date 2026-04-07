@@ -215,7 +215,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,dialogmote7_avholdt_dato
     ,hendelser.unntak AS unntak_dato
     ,hendelser.unntakarsak_modia
-    ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'MM') AS tilfelle_26uker_mnd_startdato
+    ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'DD') AS tilfelle_26uker_mnd_startdato
     ,dim_person1.fk_dim_organisasjon
     --,coalesce(d.ek_org_node, dim_person1.fk_dim_organisasjon) as fk_dim_org -------NY VARIANT, MÅ TESTES BEDRE DA DET FØRER MED STORE ENDRINGER (hver 10. får ny nøkkel)
     ,NVL(TO_NUMBER(
