@@ -216,7 +216,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ,hendelser.unntak AS unntak_dato
     ,hendelser.unntakarsak_modia
     ,TRUNC(hendelser.tilfelle_startdato + 26*7, 'DD') AS tilfelle_26uker_mnd_startdato
-    ,dim_person1.fk_dim_organisasjon
+    ,NVL(dim_person1.fk_dim_organisasjon, -1) as fk_dim_organisasjon
     --,coalesce(d.ek_org_node, dim_person1.fk_dim_organisasjon) as fk_dim_org -------NY VARIANT, MÅ TESTES BEDRE DA DET FØRER MED STORE ENDRINGER (hver 10. får ny nøkkel)
     ,NVL(TO_NUMBER(
       TO_CHAR(motebehov.behov_meldt_dato, 'YYYYMMDD')
@@ -247,9 +247,8 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     ), -1) AS fk_dim_tid__unntak_dato
     , NVL(dim_alder.pk_dim_alder, -1) as fk_dim_alder
     , NVL(dim_person1.fk_dim_kjonn, -1) as fk_dim_kjonn
-    , fk_dim_naering
-   -- , veileder.nav_kontor_stilling as veileder_nav_kontor     fk_dim_org_bruker og fk_dim_org_veileder
-    , org.ek_org_node as fk_dim_org_veileder
+    , NVL(fk_dim_naering, -1) as fk_dim_naering
+    , NVL(org.ek_org_node, -1) as fk_dim_org_veileder
     , hendelser.region_oppf_enhet_vviken_flagg as region_oppf_enhet_vviken_flagg
     , hendelser.kildesystem
   FROM hendelser
@@ -308,7 +307,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
     CAST(tilfelle_26uker_mnd_startdato      AS DATE)             AS tilfelle_26uker_mnd_startdato,
     --CAST(fk_dim_org                         AS NUMBER(38,0))       AS fk_dim_org,
     CAST(fk_dim_organisasjon                AS NUMBER(38,0))       AS fk_dim_organisasjon,
-    CAST(fk_dim_org_veileder                AS VARCHAR2(100))      AS fk_dim_org_veileder,
+    CAST(fk_dim_org_veileder                AS NUMBER(38,0))       AS fk_dim_org_veileder,
     CAST(fk_dim_tid__behov_meldt            AS NUMBER(38,0))       AS fk_dim_tid__behov_meldt,
     CAST(fk_dim_tid__tilfelle_startdato     AS NUMBER(38,0))       AS fk_dim_tid__tilfelle_startdato,
     CAST(fk_dim_tid__dm2_avholdt_dato       AS NUMBER(38,0))       AS fk_dim_tid__dm2_avholdt_dato,
