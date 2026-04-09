@@ -290,7 +290,7 @@ Samler alle dialogmote_avholdt_dato fra dm_2 til dm_7
 ,final as (
   select
     CAST(fk_person1                         AS NUMBER(38,0))       AS fk_person1,
-    CAST(tilfelle_startdato                 AS DATE)               AS tilfelle_startdato,
+    CAST(TRUNC(tilfelle_startdato)          AS DATE)               AS tilfelle_startdato, -- NB! Se om behov i nytt repo, STO-5159
     CAST(virksomhetsnr                      AS VARCHAR2(100))      AS virksomhetsnr,
     CAST(dm2_innen_26_uker_flagg            AS NUMBER(1,0))        AS dm2_innen_26_uker_flagg,
     CAST(behov_meldt_dato                   AS DATE)               AS behov_meldt_dato,
