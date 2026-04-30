@@ -53,14 +53,10 @@ sykefravar_statistikk_virksomhet_metadata as (
     arstall,
     kvartal,
     sektor,
-    gruppe3_kode as primar_naring,
+    substr(primar_naring_kode, 1, 2) as primar_naring,
     primar_naring_kode,
     rectype
   from sykefravar_statistikk
-  left join dt_p.dim_naering nar on
-    nar.naering_kode = primar_naring_kode
-    and trunc(siste_dag_i_kvartal) between trunc(gyldig_fra_dato) and trunc(gyldig_til_dato)
-    and naeringsstandard = 'SN2007'
 ),
 
 final as (
