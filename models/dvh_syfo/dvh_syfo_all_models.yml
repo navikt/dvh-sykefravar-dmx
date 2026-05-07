@@ -109,62 +109,62 @@ models:
         description: "#NAVN lastet_dato #INNHOLD dato for når raden ble lastet"
 
   - name: agg_fak_dialogmote_sub
-    description: "Faktatabell med oversikt over alle dialogmøter, tall per uke, måned og år. Inneholder også informasjon om unntak og behov meldt"
+    description: "#NAVN agg_fak_dialogmote_sub #INNHOLD Faktatabell med oversikt over alle dialogmoter, tall per uke, maaned og aar. Inneholder ogsaa informasjon om unntak og behov meldt"
     columns:
       - name: aar
-        description: "År for dialogmøtet"
+        description: "#NAVN aar #INNHOLD Aar for dialogmotet"
         type: number
       - name: maaned
-        description: "Måned for dialogmøtet"
+        description: "#NAVN maaned #INNHOLD Maaned for dialogmotet"
         type: number
       - name: uke
-        description: "Ukenummer for dialogmøtet"
+        description: "#NAVN uke #INNHOLD Ukenummer for dialogmotet"
         type: varchar2(2)
       - name: Enhet_fylke
-        description: "Fylke for NAV-enhet"
+        description: "#NAVN Enhet_fylke #INNHOLD Fylke for NAV-enhet"
         type: varchar2(1000)
       - name: nav_enhet_navn
-        description: "Navn på NAV-enhet"
+        description: "#NAVN nav_enhet_navn #INNHOLD Navn paa NAV-enhet"
         type: varchar2(1000)
       - name: bosted_fylke
-        description: "Fylke for bosted"
+        description: "#NAVN bosted_fylke #INNHOLD Fylke for bosted"
         type: varchar2(60)
       - name: bosted_kommune
-        description: "Kommune for bosted"
+        description: "#NAVN bosted_kommune #INNHOLD Kommune for bosted"
         type: varchar2(60)
       - name: alder_interval
-        description: "Alder på den sykmeldte- oppgitt i intervaller"
+        description: "#NAVN alder_interval #INNHOLD Alder paa den sykmeldte- oppgitt i intervaller"
         type: varchar2(20)
       - name: naering
-        description: "Næring for den sykmeldte"
+        description: "#NAVN naering #INNHOLD Naering for den sykmeldte"
         type: varchar2(255)
       - name: kjonn
-        description: "Kjønn på den sykmeldte"
+        description: "#NAVN kjonn #INNHOLD Kjonn paa den sykmeldte"
         type: varchar2(1)
-      - name: antall_dialogmøter2
-        description: "Antall dialogmøter 2 - DM2"
+      - name: antall_dialogmoter2
+        description: "#NAVN antall_dialogmoter2 #INNHOLD Antall dialogmoter 2 - DM2"
         type: number
-      - name: antall_dialogmøter3
+      - name: antall_dialogmoter3
         type: number
-        description: "Antall dialogmøter 3 - DM3"
+        description: "#NAVN antall_dialogmoter3 #INNHOLD Antall dialogmoter 3 - DM3"
       - name: antall_unntak
-        description: "Antall unntak"
+        description: "#NAVN antall_unntak #INNHOLD Antall unntak"
         type: number
       - name: ant_dialogmote2_innen_26_uker
         type: number
-        description: "Antall dialogmøter avholdt innen 26 uker"
+        description: "#NAVN ant_dialogmote2_innen_26_uker #INNHOLD Antall dialogmoter avholdt innen 26 uker"
       - name: ant_dialogmote3_innen_39_uker
         type: number
-        description: "Antall dialogmøter avholdt innen 39 uker"
+        description: "#NAVN ant_dialogmote3_innen_39_uker #INNHOLD Antall dialogmoter avholdt innen 39 uker"
       - name: ant_unntak_innen_26_uker
         type: number
-        description: "Antall unntak innen 26 uker"
+        description: "#NAVN ant_unntak_innen_26_uker #INNHOLD Antall unntak innen 26 uker"
       - name: antall_behov_meldt
         type: number
-        description: "Antall behov meldt"
+        description: "#NAVN antall_behov_meldt #INNHOLD Antall behov meldt"
       - name: ANT_BEHOV_MELDT_INNEN_26_UKER
         type: number
-        description: "Antall behov meldt innen 26 uker"
+        description: "#NAVN ANT_BEHOV_MELDT_INNEN_26_UKER #INNHOLD Antall behov meldt innen 26 uker"
 
   - name: fak_syfo_aktivitetskrav_mnd_dbt
     description: final table to BO

@@ -78,8 +78,8 @@ SELECT
         WHEN dim_person1.fk_dim_kjonn = 5001 THEN 'M'
         ELSE 'U'
     END as kjonn,
-    COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmøter2,
-    COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmøter3,
+    COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE2_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmoter2,
+    COUNT(CASE WHEN TRUNC(fakta_gen.DIALOGMOTE3_AVHOLDT_DATO) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_dialogmoter3,
     COUNT(CASE WHEN TRUNC(fakta_gen.unntak_dato) = TRUNC(gen_dato.dato) THEN 1 END) AS antall_unntak,
     COUNT(CASE WHEN TRUNC(fakta_gen.dialogmote2_innen_26_uker_dato) = TRUNC(gen_dato.dato) THEN 1 END) AS ant_dialogmote2_innen_26_uker,
     COUNT(CASE WHEN TRUNC(fakta_gen.dialogmote3_innen_39_uker_dato) = TRUNC(gen_dato.dato) THEN 1 END) AS ant_dialogmote3_innen_39_uker,
@@ -123,7 +123,3 @@ GROUP BY
     END
 )
 SELECT * FROM dialogmøter_agg
-
-
-
-
