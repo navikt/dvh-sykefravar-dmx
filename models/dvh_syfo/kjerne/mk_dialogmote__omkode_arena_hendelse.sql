@@ -1,5 +1,11 @@
+{{
+  config(
+    materialized = 'table',
+  )
+}}
+
 WITH arena AS (
-  SELECT * FROM {{ ref('felles_dt_p__fak_sf_hendelse_dag') }}
+  SELECT * FROM {{ source('dt_p', 'fak_sf_hendelse_dag') }}
 )
 
 ,final AS (
