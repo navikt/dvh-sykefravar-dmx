@@ -1,3 +1,8 @@
+{{
+  config(
+    materialized = 'table',
+  )
+}}
 WITH hendelser as (
   SELECT aktuelle_hendelser.fk_person1,
          aktuelle_hendelser.tilfelle_startdato,
