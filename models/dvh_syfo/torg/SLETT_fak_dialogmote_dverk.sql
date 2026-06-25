@@ -1,3 +1,4 @@
+-------- OBS! Gjennomgang med Elisabeth og Julie 25.06.2026: Ikke i bruk. Ligger ikke i databasen. Kan slettes.
 {{ config(
     materialized='table',
     post_hook= ["grant READ ON dvh_syfo.fak_dialogmote to DVH_SYK_DBT"]

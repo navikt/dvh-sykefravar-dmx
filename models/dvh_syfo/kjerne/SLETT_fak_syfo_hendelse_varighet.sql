@@ -1,4 +1,4 @@
-
+-------- OBS! Gjennomgang med Elisabeth og Julie 25.06.2026: Ikke i bruk. Ligger ikke i databasen. Kan slettes.
 WITH fak_syfo_hendelse_org_v AS (
   SELECT * FROM {{ref('felles_dt_p__fak_sf_hendelse_dag' )}}
 ),

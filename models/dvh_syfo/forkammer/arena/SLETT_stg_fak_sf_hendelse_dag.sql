@@ -1,3 +1,5 @@
+-------- OBS! Gjennomgang med Elisabeth og Julie 25.06.2026: Ikke i bruk. Ligger ikke i databasen. Kan slettes.
+
 {{ config(materialized='table') }}
 
 with source_fak_sf_hendelse as (
