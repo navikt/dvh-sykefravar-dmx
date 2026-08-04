@@ -5,4 +5,4 @@ sources:
     schema: dt_person
     tables:
     - name: dim_person1
-    - name: IDENT_OFF_ID_TIL_FK_PERSON1
+    - name: ident_off_id_til_fk_person1

@@ -1,5 +1,5 @@
 WITH source AS (
-  SELECT * FROM {{source('dt_person', 'IDENT_OFF_ID_TIL_FK_PERSON1')}}
+  SELECT * FROM {{source('dt_person', 'ident_off_id_til_fk_person1')}}
   )
 
 SELECT * FROM source
