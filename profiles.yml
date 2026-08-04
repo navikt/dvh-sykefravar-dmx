@@ -50,7 +50,7 @@ dmx_poc:
       password: placeholder
       port: "{{env_var('DBT_DB_PORT')}}"
       protocol: tcp
-      schema: dvh_syfra
+      schema: dvh_syfo
       service: "{{env_var('DBT_ENV_SERVICE')}}"
       database: "{{env_var('DBT_DB_NAME')}}"
       threads: 1
