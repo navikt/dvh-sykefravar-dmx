@@ -5,7 +5,7 @@
 }}
 
 WITH arena AS (
-  SELECT * FROM {{ source('dt_p', 'fak_sf_hendelse_dag') }}
+  SELECT * FROM {{ source('dvh_syfo', 'fak_sf_hendelse_dag_2008_2025') }}
 )
 
 ,final AS (

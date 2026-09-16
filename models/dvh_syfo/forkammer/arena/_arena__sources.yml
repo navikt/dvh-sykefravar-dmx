@@ -4,5 +4,9 @@ sources:
   - name: arena
     schema: dt_p
     tables:
-    - name: fak_sf_hendelse_dag
+   # - name: fak_sf_hendelse_dag -- UTFASET OG FLYTTET TIL DVH_SYFO
     - name: dim_sf_aarsak
+  - name: dvh_syfo
+    schema: dvh_syfo
+    tables:
+    - name: fak_sf_hendelse_dag_2008_2025
